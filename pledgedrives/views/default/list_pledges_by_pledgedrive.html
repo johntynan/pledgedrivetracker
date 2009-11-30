@@ -1,0 +1,31 @@
+{{response.files.append(URL(r=request,c='static',f='jquery.dataTables.min.js'))}}
+{{response.files.append(URL(r=request,c='static',f='demo_table.css'))}}
+{{extend 'layout.html'}}
+
+<script type="text/javascript" charset="utf-8">
+$(document).ready(function() {
+    jQuery('.smarttable').dataTable();
+} );
+</script>
+
+<h1>Pledges by Pledge Drive</h1>
+
+<table class="smarttable">
+<thead>
+    <th>Amount</th>
+    <th>Name</th>
+    <th>Actions</th>
+</thead>
+<tbody>
+{{for pledge in pledges:}}
+<tr>
+    <td>{{=pledge.amount}}</td>    
+    <td>{{=pledge.name}}</td>    
+
+    <td>
+    <a href="{{=URL(r=request,f='edit_pledge',args=pledge.id)}}">Edit</a>
+    </td>
+</tr>
+{{pass}}
+</tbody>
+</table>

@@ -1,0 +1,38 @@
+(dp1
+S'description'
+p2
+S'TEXT'
+p3
+sS'title'
+p4
+S'CHAR(512)'
+p5
+sS'amount'
+p6
+S'INTEGER'
+p7
+sS'created_by'
+p8
+S'CHAR(512)'
+p9
+sS'person'
+p10
+S'REFERENCES person(id) ON DELETE CASCADE'
+p11
+sS'pledgedrive'
+p12
+S'REFERENCES pledgedrive(id) ON DELETE CASCADE'
+p13
+sS'created_on'
+p14
+S'TIMESTAMP'
+p15
+sS'organization'
+p16
+S'REFERENCES organization(id) ON DELETE CASCADE'
+p17
+sS'id'
+p18
+S'INTEGER PRIMARY KEY AUTOINCREMENT'
+p19
+s.

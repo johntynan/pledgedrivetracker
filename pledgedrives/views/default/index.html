@@ -1,0 +1,125 @@
+{{extend 'layout.html'}}
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+    jQuery('div.pledgedrive_id_reports,div#pledgedrive_id_reports').slideToggle();
+
+{{for organization in organizations:}}
+    jQuery('table.{{=organization.id}}_setup,table#{{=organization.id}}_setup').slideToggle();
+{{pass}}
+ });
+
+</script>
+
+
+{{try:}}{{=H2(message)}}{{except:}}{{=BEAUTIFY(response._vars)}}{{pass}}
+
+{{try:}}
+    {{=pledgedrive}}
+{{except:}}
+<!-- ul>
+    <li><a href="">On-air Screen</a></li>
+    <li><a href="">Pledge Entry</a></li>
+    <li>Drive Setup</li>
+    <li>Drive Reports</li>
+</ul -->
+<!-- 
+{{=session}}
+-->
+
+{{pass}}
+
+
+{{=button('On-air Screen','frame_wrapper_onair.html')}}
+{{=button('Pledge Entry','frame_wrapper_pledge_entry.html')}}
+<button onclick="jQuery('div.pledgedrive_id_reports,div#pledgedrive_id_reports').slideToggle();">Reports</button>
+<div class="pledgedrive_id_reports">
+<ul>
+<li><a href="{{=URL(r=request,f='list_segments_by_pledgedrive',args=session.pledgedrive_id)}}">Break Overview (without totals)</a></li>
+<li><a href="{{=URL(r=request,f='list_programs_by_organization',args=organization.id)}}">Complete Programs List</a></li>
+<li><a href="challengereport.html">Challenge Report (by day)</a></li>
+<li><a href="{{=URL(r=request,f='list_challenges_by_pledgedrive',args=session.pledgedrive_id)}}">Complete Challenge Report</a></li>
+<li><a href="goalreport.html">Projected Goals Report</a></li>
+<li><a href="selectbreak.html">Single Break Report</a></li>
+<li><a href="selectday.html">Day Totals (detailed)</a></li>
+<li><a href="selectdaysummary.html">Day Totals (summary)</a></li>
+
+<li><a href="pledgelevels.html">Pledge Levels</a></li>
+<li><a href="drivereport.html">Drive Totals (detailed)</a></li>
+<li><a href="drivesummary.html">Drive Totals (summary)</a></li>
+</ul>
+</div>
+
+
+
+{{for organization in organizations:}}
+<!-- h2>{{=organization.name}}</h2 -->
+<button onclick="jQuery('table.{{=organization.id}}_setup,table#{{=organization.id}}_setup').slideToggle();">Setup</button>
+<table class="{{=organization.id}}_setup">
+<th>Organization</th>
+<th>Actions</th>
+<tr>
+    <td style="width:25%;"><a href="{{=URL(r=request,f='view_organization',args=organization.id)}}">{{=organization.name}}</a></td>
+    <td><a href="{{=URL(r=request,f='view_organization',args=organization.id)}}">View Organization</a> |
+    <a href="{{=URL(r=request,f='edit_organization',args=organization.id)}}">Edit Organization</a> |<br />
+    <a href="{{=URL(r=request,f='list_programs_by_organization',args=organization.id)}}">View Programs</a> |
+    <a href="{{=URL(r=request,f='create_program',args=organization.id)}}">Add a New Program</a> |<br />
+    <a href="{{=URL(r=request,f='list_persons_by_organization',args=organization.id)}}">View Persons</a> |
+    <a href="{{=URL(r=request,f='create_person',args=organization.id)}}">Add a New Person</a> |<br />
+    <a href="{{=URL(r=request,f='list_pledgedrives_by_organization',args=organization.id)}}">View Pledgedrives</a> |
+    <a href="{{=URL(r=request,f='create_pledgedrive',args=organization.id)}}">Add a New Pledge Drive</a> <br />
+    <a href="{{=URL(r=request,f='view_pledgedrive',args=session.pledgedrive_id)}}">View Current Pledgedrive</a><br />
+    <a href="{{=URL(r=request,f='list_challenges_by_pledgedrive',args=session.pledgedrive_id)}}">View Challenges for Current Pledgedrive</a> |
+    <a href="{{=URL(r=request,f='create_challenge',args=session.pledgedrive_id)}}">Add Challenge to Current Pledge Drive</a> <br />
+    <a href="{{=URL(r=request,f='list_segments_by_pledgedrive',args=session.pledgedrive_id)}}">View Segments for Current Pledge Drive</a> |    <a href="{{=URL(r=request,f='create_segment',args=session.pledgedrive_id)}}">Add Segment to Current Pledge Drive</a> <br />
+    <a href="{{=URL(r=request,f='list_pledges_by_pledgedrive',args=session.pledgedrive_id)}}">View Pledges for Current Pledge Drive</a> <br />
+    <a href="{{=URL(r=request,f='list_pledges_by_segment',args=session.segment_id)}}">View Pledges for Current Segment</a> |
+    <a href="{{=URL(r=request,f='create_pledge',args=session.segment_id)}}">Add Pledge to Current Segment</a>
+
+    </td>
+</tr>
+</table>
+{{pass}}
+
+
+{{try:}}
+<p>
+You have slected organization #: {{=organization_id}}.
+
+{{for organization in organizations:}}
+
+You have selected {{=organization.name}}
+
+{{pass}}<br />
+{{=button('Select a new Organization','session_form.html')}}
+<br />
+You have slected pledgedrive #: {{=pledgedrive_id}}. {{for pledgedrive in pledgedrives:}}
+
+You have selected {{=pledgedrive.title}}
+
+{{pass}}<br />
+{{=button('Select a new Pledge Drive','session_form.html')}}
+</p>
+You have slected section #: {{=session.segment_id}}. {{for segment in segments:}}
+
+You have selected {{=segment.title}}
+
+{{pass}}<br />
+{{=button('Select a New Section','session_form.html')}}
+</p>
+
+
+{{except:}}
+{{pass}}
+
+
+<table>
+<tr>
+    <td><a href="{{=URL(r=request,f='list_organizations',args='')}}">View All Organizations</a></td>
+    <td><a href="{{=URL(r=request,f='create_organization',args='')}}">Add a New Organization</a></td>
+<!--    <td><a href="{{=URL(r=request,f='list_programs',args='')}}">View All Programs</a></td>
+    <td><a href="{{=URL(r=request,f='list_persons',args='')}}">View All Persons</a></td>
+    <td><a href="{{=URL(r=request,f='list_pledgedrives',args='')}}">View All Pledgedrives</a></td> -->
+</tr>
+</table>

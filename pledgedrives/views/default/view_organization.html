@@ -1,0 +1,34 @@
+{{response.files.append(URL(r=request,c='static',f='jquery.dataTables.min.js'))}}
+{{response.files.append(URL(r=request,c='static',f='demo_table.css'))}}
+{{extend 'layout.html'}}
+
+<script type="text/javascript" charset="utf-8">
+$(document).ready(function() {
+    jQuery('.smarttable').dataTable();
+} );
+</script>
+
+<h1>Organization</h1>
+
+<table class="smarttable">
+<thead>
+    <th>Title</th>
+    <th>URL</th>
+    <th>Address</th>
+    <th>Phone</th>
+    <th></th>
+</thead>
+<tbody>
+
+<tr>
+    <td>{{=organization.name}}</td>    
+    <td>{{=organization.url}}</td>
+    <td>{{=organization.address}}</td>
+    <td>{{=organization.phone}}</td>
+    <td>
+    <a href="{{=URL(r=request,f='edit_organization',args=organization.id)}}">Edit</a>
+    </td>
+</tr>
+
+</tbody>
+</table>

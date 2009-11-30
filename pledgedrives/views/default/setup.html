@@ -1,0 +1,105 @@
+{{extend 'layout.html'}}
+
+<table class="smarttable">
+<th>Organization</th>
+<th>Actions</th>
+{{for organization in organizations:}}
+<tr>
+    <td style="width:25%;"><a href="{{=URL(r=request,f='view_organization',args=organization.id)}}">{{=organization.name}}</a></td>
+    <td><a href="{{=URL(r=request,f='view_organization',args=organization.id)}}">View Organization</a> |
+    <a href="{{=URL(r=request,f='edit_organization',args=organization.id)}}">Edit Organization</a> |<br />
+    <a href="{{=URL(r=request,f='list_programs_by_organization',args=organization.id)}}">View Programs</a> |
+    <a href="{{=URL(r=request,f='create_program',args=organization.id)}}">Add a New Program</a> |<br />
+    <a href="{{=URL(r=request,f='list_persons_by_organization',args=organization.id)}}">View Persons</a> |
+    <a href="{{=URL(r=request,f='create_person',args=organization.id)}}">Add a New Person</a> |<br />
+    <a href="{{=URL(r=request,f='list_pledgedrives_by_organization',args=organization.id)}}">View Pledgedrives</a> |
+    <a href="{{=URL(r=request,f='create_pledgedrive',args=organization.id)}}">Add a New Pledgedrive</a>
+    </td>
+</tr>
+{{pass}}
+</table>
+
+<table>
+<tr>
+    <td><a href="{{=URL(r=request,f='list_organizations',args='')}}">View All Organizations</a></td>
+    <td><a href="{{=URL(r=request,f='list_programs',args='')}}">View All Programs</a></td>
+    <td><a href="{{=URL(r=request,f='list_persons',args='')}}">View All Persons</a></td>
+    <td><a href="{{=URL(r=request,f='list_pledgedrives',args='')}}">View All Pledgedrives</a></td>
+</tr>
+</table>
+
+<!-- 
+<h2>Plan Pledge Drive</h2>
+
+<h3>Organizations</h3>
+<ul>
+    <li><a href="{{=URL(request.application,'default','create_organization',args='')}}">Create an Organization</a></li>
+    <li><a href="{{=URL(request.application,'default','view_organization',args='1')}}">View an Organization</a></li>
+    <li><a href="{{=URL(request.application,'default','edit_organization',args='1')}}">Edit an Organization</a></li>
+    <li><a href="{{=URL(request.application,'default','list_organizations',args='')}}">List all Organizations</a></li>
+</ul>
+
+<h3>Pledge Drives</h3>
+<ul>
+    <li><a href="{{=URL(request.application,'default','create_pledgedrive',args='1')}}">Create a pledgedrive</a></li>
+    <li><a href="{{=URL(request.application,'default','view_pledgedrive',args='1')}}">View a pledgedrive</a></li>
+    <li><a href="{{=URL(request.application,'default','edit_pledgedrive',args='1')}}">Edit a pledgedrive</a></li>
+    <li><a href="{{=URL(request.application,'default','list_pledgedrives',args='')}}">List all pledgedrives</a></li>
+    <li><a href="{{=URL(request.application,'default','list_pledgedrives_by_organization',args='1')}}">List pledgedrives by Organization</a></li>
+</ul>
+
+<h3>Programs</h3>
+<ul>
+    <li><a href="{{=URL(request.application,'default','create_program',args='1')}}">Create a program</a></li>
+    <li><a href="{{=URL(request.application,'default','view_program',args='1')}}">View a program</a></li>
+    <li><a href="{{=URL(request.application,'default','edit_program',args='1')}}">Edit a program</a></li>
+    <li><a href="{{=URL(request.application,'default','list_programs',args='')}}">List all programs</a></li>
+    <li><a href="{{=URL(request.application,'default','list_programs_by_organization',args='1')}}">List programs by Organization</a></li>
+</ul>
+
+<h3>Persons</h3>
+<ul>
+    <li><a href="{{=URL(request.application,'default','create_person',args='1')}}">Create a person</a></li>
+    <li><a href="{{=URL(request.application,'default','view_person',args='1')}}">View a person</a></li>
+    <li><a href="{{=URL(request.application,'default','edit_person',args='1')}}">Edit a person</a></li>
+    <li><a href="{{=URL(request.application,'default','list_persons',args='')}}">List all persons</a></li>
+    <li><a href="{{=URL(request.application,'default','list_persons_by_organization',args='1')}}">List persons by Organization</a></li>
+</ul>
+
+
+<h3>Challenges</h3>
+<ul>
+    <li><a href="{{=URL(request.application,'default','create_challenge',args='1')}}">Create a challenge</a></li>
+    <li><a href="{{=URL(request.application,'default','view_challenge',args='1')}}">View a challenge</a></li>
+    <li><a href="{{=URL(request.application,'default','edit_challenge',args='1')}}">Edit a challenge</a></li>
+    <li><a href="{{=URL(request.application,'default','list_challenges',args='')}}">List all challenges</a></li>
+    <li><a href="{{=URL(request.application,'default','list_challenges_by_pledgedrive',args='1')}}">List challenges by Pledge Drive</a></li>
+</ul>
+
+<h3>Segments</h3>
+<ul>
+    <li><a href="{{=URL(request.application,'default','create_segment',args='1')}}">Create a segment</a></li>
+    <li><a href="{{=URL(request.application,'default','view_segment',args='2')}}">View a segment</a></li>
+    <li><a href="{{=URL(request.application,'default','edit_segment',args='2')}}">Edit a segment</a></li>
+    <li><a href="{{=URL(request.application,'default','list_segments',args='')}}">List all segments</a></li>
+    <li><a href="{{=URL(request.application,'default','list_segments_by_pledgedrive',args='1')}}">List segments by Pledge Drive</a></li>
+</ul>
+
+
+<h2>Conduct Pledge Drive</h2>
+
+<h3>Pledges</h3>
+<ul>
+    <li><a href="{{=URL(request.application,'default','create_pledge',args='2')}}">Create a pledge</a></li>
+    <li><a href="{{=URL(request.application,'default','view_pledge',args='1')}}">View a pledge</a></li>
+    <li><a href="{{=URL(request.application,'default','edit_pledge',args='1')}}">Edit a pledge</a></li>
+    <li><a href="{{=URL(request.application,'default','list_pledges',args='')}}">List all pledges</a></li>
+    <li><a href="{{=URL(request.application,'default','list_pledges_by_pledgedrive',args='1')}}">List pledges by Pledge Drive</a></li>
+</ul>
+
+
+
+<h3>Messages</h3>
+<ul>
+    <li><a href="{{=URL(request.application,'default','create_message',args='')}}">Create a Message</a></li>
+</ul>

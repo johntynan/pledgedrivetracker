@@ -1,0 +1,78 @@
+{{extend 'layout.html'}}
+
+{{try:}}
+<p>
+You have slected organization #: {{=organization_id}}.
+
+{{for organization in organizations:}}
+
+You have selected {{=organization.name}}
+
+{{pass}}<br />
+<button onclick="delete_cookie('organization_id');">Select a new Organization</button><br />
+You have slected pledgedrive #: {{=pledgedrive_id}}. {{for pledgedrive in pledgedrives:}}
+
+You have selected {{=pledgedrive.title}}
+
+{{pass}}<br />
+<button onclick="delete_cookie('pledgedrive_id');">Select a new Pledge Drive</button>
+</p>
+    
+{{except:}}
+{{pass}}
+
+
+
+{{if organization_id:}}
+You have selected organization: 
+{{for organization in organizations:}}
+{{=organization.name}}
+<button onclick="delete_cookie('organization_id');">Select a new Organization</button>
+{{pass}}
+{{else:}}
+
+<form name="setOrganization">
+<input type=hidden name=expires value="45">
+<input type=hidden name=path type=text size=20 value="/pledgedrives/">
+<input type=hidden name=cookieName type=text value="organization_id">
+<!-- input type=hidden name=cookieValue type=text value="2" -->
+<select name="selectOrganization">
+{{for organization in organizations:}}
+    <option name="cookieName" value="{{=organization.id}}">{{=organization.name}}</option>
+{{pass}}
+</select>
+<!-- input name=b1 type=button value="Set Organization" onClick="SetOrganization(this.form.expires.value,this.form.path.value,this.form.cookieName.value,this.form.cookieValue.value);" -->
+<input name=b1 type=button value="Set Organization" onClick="SetOrganization(this.form.expires.value,this.form.path.value,this.form.cookieName.value,
+document.setOrganization.selectOrganization.options[document.setOrganization.selectOrganization.options.selectedIndex].value);"><br />
+</form>
+<a href="{{=URL(r=request,f='create_organization',args='')}}">Add a New Organization</a>
+{{pass}}
+
+{{if pledgedrive_id:}}
+You have selected pledgedrive: 
+{{for pledgedrive in pledgedrives:}}
+{{=organization.name}}
+<button onclick="delete_cookie('pledgedrive_id');">Select a new Pledge Drive</button>
+{{pass}}
+{{else:}}
+<form name="setPledgedrive">
+<input type=hidden name=expires value="45">
+<input type=hidden name=path type=text size=20 value="/pledgedrives/">
+<input type=hidden name=cookieName type=text value="pledgedrive_id">
+<!-- input type=hidden name=cookieValue type=text value="2" -->
+<select name="selectPledgedrive">
+{{for pledgedrive in pledgedrives:}}
+    <option name="cookieName" value="{{=pledgedrive.id}}">{{=pledgedrive.title}}</option>
+{{pass}}
+</select>
+
+<!-- input name=b1 type=button value="Set Pledgedrive" onClick="SetPledgedrive(this.form.expires.value,this.form.path.value,this.form.cookieName.value,this.form.cookieValue.value);" -->
+<input name=b1 type=button value="Set Pledgedrive" onClick="SetPledgedrive(this.form.expires.value,this.form.path.value,this.form.cookieName.value,
+document.setPledgedrive.selectPledgedrive.options[document.setPledgedrive.selectPledgedrive.options.selectedIndex].value);">
+</form>
+
+<a href="{{=URL(r=request,f='create_pledgedrive',args='')}}">Add a New Pledgedrive</a>
+
+{{pass}}
+
+{{pass}}

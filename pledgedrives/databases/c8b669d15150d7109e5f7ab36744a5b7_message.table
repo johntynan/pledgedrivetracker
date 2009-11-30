@@ -1,0 +1,26 @@
+(dp1
+S'body'
+p2
+S'TEXT'
+p3
+sS'created_by'
+p4
+S'CHAR(512)'
+p5
+sS'person'
+p6
+S'REFERENCES person(id) ON DELETE CASCADE'
+p7
+sS'created_on'
+p8
+S'TIMESTAMP'
+p9
+sS'organization'
+p10
+S'REFERENCES organization(id) ON DELETE CASCADE'
+p11
+sS'id'
+p12
+S'INTEGER PRIMARY KEY AUTOINCREMENT'
+p13
+s.

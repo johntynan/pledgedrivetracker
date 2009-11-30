@@ -1,0 +1,41 @@
+{{response.files.append(URL(r=request,c='static',f='jquery.dataTables.min.js'))}}
+{{response.files.append(URL(r=request,c='static',f='demo_table.css'))}}
+{{extend 'layout.html'}}
+
+<script type="text/javascript" charset="utf-8">
+$(document).ready(function() {
+    jQuery('.smarttable').dataTable();
+} );
+</script>
+
+<h1>Pledgedrives by Organization</h1>
+
+<button onclick="document.location='{{=URL(r=request,f='create_pledgedrive',args=organization.id)}}'">Create a New Pledge Drive</button>
+
+<table class="smarttable">
+<thead>
+    <th>Title</th>
+    <th>Start</th>
+    <th>End</th>
+    <th>Pledge Goal</th>
+    <th>Projected Average Pledge</th>
+    <th>Dollar Goal</th>
+    <th></th>
+</thead>
+<tbody>
+{{for pledgedrive in pledgedrives:}}
+<tr>
+    <td>{{=pledgedrive.title}}</td>    
+    <td>{{=pledgedrive.start_time}}</td>
+    <td>{{=pledgedrive.end_time}}</td>
+    <td>{{=pledgedrive.pledge_goal}}</td>
+    <td>{{=pledgedrive.projected_average_pledge}}</td>
+    <td>{{=dollar_goal}}</td>
+    <td>
+    <a href="{{=URL(r=request,f='view_pledgedrive',args=pledgedrive.id)}}">View</a> | 
+    <a href="{{=URL(r=request,f='edit_pledgedrive',args=pledgedrive.id)}}">Edit</a>
+    </td>
+</tr>
+{{pass}}
+</tbody>
+</table>
