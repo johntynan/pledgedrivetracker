@@ -37,7 +37,7 @@ $(document).ready(function(){
 <div class="pledgedrive_id_reports">
 <ul>
 <li><a href="{{=URL(r=request,f='list_segments_by_pledgedrive',args=session.pledgedrive_id)}}">Break Overview (without totals)</a></li>
-<li><a href="{{=URL(r=request,f='list_programs_by_organization',args=organization.id)}}">Complete Programs List</a></li>
+<li><a href="{{=URL(r=request,f='list_programs_by_organization',args=session.organization_id)}}">Complete Programs List</a></li>
 <li><a href="challengereport.html">Challenge Report (by day)</a></li>
 <li><a href="{{=URL(r=request,f='list_challenges_by_pledgedrive',args=session.pledgedrive_id)}}">Complete Challenge Report</a></li>
 <li><a href="goalreport.html">Projected Goals Report</a></li>
