@@ -428,6 +428,26 @@ def frame_pledge_entry():
     # check_cookies()
     return dict()
 
+def report_mini_segment_goal():
+    # check_cookies()
+    return dict()
+
+def report_mini_segment_challenge():
+    # check_cookies()
+    return dict()
+
+def report_mini_segment_select():
+    # check_cookies()
+    return dict()
+
+def report_mini_segment_overview():
+    # check_cookies()
+    return dict()
+
+def report_mini_pledgedrive_goal():
+    # check_cookies()
+    return dict()
+
 def create_message():
     form = crud.create(db.message)
     return dict(form=form)

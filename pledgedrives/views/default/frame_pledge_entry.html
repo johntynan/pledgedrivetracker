@@ -3,9 +3,9 @@
  <title>Pledge Drive Manager</title>
 
 <frameset  rows="35%,35%,*" cols="33%,33%,*">
-    <frame name="goals" src="viewgoals.html" marginwidth="10" marginheight="10" scrolling="auto" frameborder="1">
-    <frame name="challenges" src="viewchallenges.html" marginwidth="10" marginheight="10" scrolling="auto" frameborder="1">
-    <frame name="currentprogram" src="currentprogram.html" marginwidth="10" marginheight="10" scrolling="auto" frameborder="1">
+    <frame name="goals" src="{{=URL(r=request,f='list_pledges_by_pledgedrive{{=URL(r=request,f='report_mini_segment_goal',args=session.segment_id)}}" marginwidth="10" marginheight="10" scrolling="auto" frameborder="1">
+    <frame name="challenges" src="{{=URL(r=request,f='report_mini_segment_challenge',args=session.segment_id)}}" marginwidth="10" marginheight="10" scrolling="auto" frameborder="1">
+    <frame name="currentprogram" src="{{=URL(r=request,f='report_mini_segment_select',args=session.pledgedrive_id)}}" marginwidth="10" marginheight="10" scrolling="auto" frameborder="1">
     <frame name="producer" src="/chat/producer_chat" marginwidth="10" marginheight="10" scrolling="auto" frameborder="1">
     <frame name="producer" src="/chat/producer_messages" marginwidth="10" marginheight="10" scrolling="auto" frameborder="1">
 
@@ -13,7 +13,7 @@
     <frame name="thankyou" src="/chat/thank_you_chat" marginwidth="10" marginheight="10" scrolling="auto" frameborder="1">
     <frame name="thankyou" src="/chat/thank_you_messages" marginwidth="10" marginheight="10" scrolling="auto" frameborder="1">
 
-    <frame name="drivetotals" src="drivetotals.html" marginwidth="10" marginheight="10" scrolling="auto" frameborder="1">
+    <frame name="drivetotals" src="{{=URL(r=request,f='report_mini_pledgedrive_goal',args=session.pledgedrive_id)}}" marginwidth="10" marginheight="10" scrolling="auto" frameborder="1">
 </frameset>
 <noframes>
  <body bgcolor="#FFFFFF">
@@ -22,4 +22,3 @@ insert alternate presentation here
 </noframes>
 
 </html>
-
