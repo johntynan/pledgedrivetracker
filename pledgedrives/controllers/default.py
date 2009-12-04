@@ -429,7 +429,24 @@ def report_mini_segment_overview():
 def report_mini_pledgedrive_goal():
     check_session()
     return dict()
+    
+def mini_pledgedrive_goal():
+    check_session()
 
+    pledgedrive_id=session.pledgedrive_id
+    pledgedrive=db(db.pledgedrive.id==pledgedrive_id).select()
+    
+    pledgedrive_total_pledges = len(db(db.pledge.pledgedrive==pledgedrive_id).select())
+
+    pledgedrive_total_dollars = sum(db(db.pledge.pledgedrive==pledgedrive_id).select())
+
+
+    return dict(pledgedrive_total_pledges=pledgedrive_total_pledges,pledgedrive_total_dollars=pledgedrive_total_dollars)
+
+    # content = DIV('<h1>Drive Totals</h1>' + '<p><strong>Total Pledges</strong>: <strong>'+ str(pledgedrive_total_pledges) + '</strong>',  _id='content')
+    # return dict(content=content)
+ 
+    
 def create_message():
     form = crud.create(db.message)
     return dict(form=form)
