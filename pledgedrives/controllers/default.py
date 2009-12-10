@@ -44,8 +44,8 @@ def check_session_segment_id():
 def check_session():
     check_session_organization_id()
     check_session_pledgedrive_id()
-    # segments are not required for challenges or programs
-    # check_session_segment_id()
+    # segments are not required for challenges or programs, we'll check for them anyway
+    check_session_segment_id()
     # create check_session classes for programs and challenges when adding a segment
     # check for persons when adding a challenge
                 
@@ -62,23 +62,16 @@ def index():
 
     response.flash = T('Welcome to the Pledge Drive Tracker')
 
-    organizations=db(db.organization.id>0).select(orderby=db.organization.name)
-
     organization_id=session.organization_id
-    organization=db(db.organization.id==session.organization_id).select()
+    # organization=db(db.organization.id==session.organization_id).select()
     
     pledgedrive_id=session.pledgedrive_id
     pledgedrive=db(db.pledgedrive.id==pledgedrive_id).select()
 
     segment_id=session.segment_id
-    segments=db(db.segment.id==segment_id).select()
+    segment=db(db.segment.id==segment_id).select()
  
-    return dict(message=T('Pledge Drive Tracker'),organization=organization,organizations=organizations,organization_id=organization_id, pledgedrive=pledgedrive, pledgedrive_id=pledgedrive_id,segments=segments,segment_id=segment_id)
-
-    # return dict(message=T('Pledge Drive Tracker'))
-
-
-    return dict(message=T('Pledge Drive Tracker'),organizations=organizations,pledgedrives=pledgedrives, organization_id=organization_id, pledgedrive_id=pledgedrive_id,segments=segments,segment_id=segment_id)
+    return dict(message=T('Pledge Drive Tracker'),organization_id=organization_id,pledgedrive_id=pledgedrive_id,segment_id=segment_id)
 
 
 @auth.requires_login()
@@ -355,8 +348,6 @@ def list_segments_by_pledgedrive():
     segments=db(db.segments.pledgedrive==pledgedrive.id).select(orderby=db.segments.start_time)
     return dict(pledgedrive=pledgedrive, segments=segments)
 
-
-
 @auth.requires_login()
 def edit_segment():
     check_session()
@@ -376,9 +367,7 @@ def list_segments_by_pledgedrive():
 @auth.requires_login()
 def create_pledge():
     check_session()
-    check_session_segment_id()
-    # segment_id=request.args(0)
-    segment_id=session.segment_id
+    segment_id=request.args(0)
     segment=db.segment[segment_id] or redirect(error_page)
     form=crud.create(db.pledge)
     return dict(form=form,segment=segment)
