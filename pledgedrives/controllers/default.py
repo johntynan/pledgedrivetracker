@@ -210,8 +210,6 @@ def create_program():
     check_session_organization_id()
     organization_id=request.args(0)
     organization=db.organization[organization_id] or redirect(error_page)
-    db.program.organization.writable=False
-    db.program.organization.readable=False
     form=crud.create(db.program)
     return dict(form=form,organization=organization)
 
