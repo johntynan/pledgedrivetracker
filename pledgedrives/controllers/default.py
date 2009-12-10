@@ -27,6 +27,16 @@ def check_session_pledgedrive_id():
         redirect(URL(r=request, f='session_pledgedrive_id_form'))
 
 @auth.requires_login()
+def check_session_person_id():
+    if not request.function=='session_person_id_form' and not session.person_id:
+        redirect(URL(r=request, f='session_person_id_form'))
+
+@auth.requires_login()
+def check_session_challenge_id():
+    if not request.function=='session_challenge_id_form' and not session.challenge_id:
+        redirect(URL(r=request, f='session_challenge_id_form'))
+
+@auth.requires_login()
 def check_session_segment_id():
     if not request.function=='session_segment_id_form' and not session.segment_id:
         redirect(URL(r=request, f='session_segment_id_form'))
@@ -110,8 +120,33 @@ def session_segment_id_form():
 
     return dict(form=form,segments=segments)
 
+def session_person_id_form():
+
+    persons=db(db.person.id>0).select(orderby=db.person.name)
+
+    form = FORM(INPUT(_name='person_id', requires=IS_NOT_EMPTY()), INPUT(_type='submit'))
+    # form = SQLFORM(db.person.id>0).select(orderby=db.person.name)
+    if form.accepts(request.vars, session):
+        session.person_id = form.vars.person_id
+        redirect(URL(r=request, f='index'))
+
+    return dict(form=form,persons=persons)
+
+def session_challenge_id_form():
+
+    challenges=db(db.challenge.id>0).select(orderby=db.challenge.title)
+
+    form = FORM(INPUT(_name='challenge_id', requires=IS_NOT_EMPTY()), INPUT(_type='submit'))
+    # form = SQLFORM(db.challenge.id>0).select(orderby=db.challenge.name)
+    if form.accepts(request.vars, session):
+        session.challenge_id = form.vars.challenge_id
+        redirect(URL(r=request, f='index'))
+
+    return dict(form=form,challenges=challenges)    
     
 @auth.requires_login()
+
+
 def create_organization():
     # check_session()
     form=crud.create(db.organization,next=url('list_organizations'))
@@ -293,6 +328,10 @@ def list_challenges_by_pledgedrive():
 @auth.requires_login()
 def create_segment():
     check_session_organization_id()
+    check_session_pledgedrive_id()
+    check_session_person_id()
+    check_session_challenge_id()
+    
     form=crud.create(db.segment,next=url('list_segments'))
     return dict(form=form)
 
@@ -337,7 +376,9 @@ def list_segments_by_pledgedrive():
 @auth.requires_login()
 def create_pledge():
     check_session()
-    segment_id=request.args(0)
+    check_session_segment_id()
+    # segment_id=request.args(0)
+    segment_id=session.segment_id
     segment=db.segment[segment_id] or redirect(error_page)
     form=crud.create(db.pledge)
     return dict(form=form,segment=segment)

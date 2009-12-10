@@ -109,7 +109,7 @@ db.define_table('segment',
     Field('goal','integer'),
     Field('goal_type'),
     Field('program',db.program),
-    Field('challenge',db.challenge),
+    Field('challenge',db.challenge,'%(title)s'),
     Field('pledgedrive',db.pledgedrive),
     Field('organization',db.organization), # default=request.args(0),readable=False,writable=False 
     Field('created_by',default=me,writable=False,readable=False),

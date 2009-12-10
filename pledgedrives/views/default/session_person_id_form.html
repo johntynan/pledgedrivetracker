@@ -1,11 +1,11 @@
 {{extend 'layout.html'}}
-<h1>Select or Add an segment</h1>
+<h1>Select or Add an person</h1>
 
 <div>
 <form action="" enctype="multipart/form-data" method="post">
-<select name="segment_id">
-{{for segment in segments:}}
-    <option value="{{=segment.id}}">{{=segment.title}}</option>
+<select name="person_id">
+{{for person in persons:}}
+    <option value="{{=person.id}}">{{=person.name}}</option>
 {{pass}}
 </select>
 <input type="submit" />
@@ -14,7 +14,7 @@
 <input name="_formname" type="hidden" value="default" /-->
 </div>
 </form>
-{{=button('Add a New segment','create_segment')}}
+{{=button('Add a New person','create_person')}}
 </div>
 
 {{=BEAUTIFY(response._vars)}}

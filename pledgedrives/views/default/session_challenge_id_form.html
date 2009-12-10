@@ -5,7 +5,7 @@
 <form action="" enctype="multipart/form-data" method="post">
 <select name="segment_id">
 {{for segment in segments:}}
-    <option value="{{=segment.id}}">{{=segment.title}}</option>
+    <option value="{{=segment.id}}">{{=segment.name}}</option>
 {{pass}}
 </select>
 <input type="submit" />
