@@ -77,10 +77,15 @@ def index():
 @auth.requires_login()
 def session_organization_id_form():
 
-    organizations=db(db.organization.id>0).select(orderby=db.organization.name)
+    organizations=db(db.organization.id>0).select(orderby=db.organization.name).as_list()
+    
+    # ids = organizations[0]['id']
+    # names = organizations[0]['name']
+    
+    form=FORM(SELECT(organizations, _name='organization_id',requires=IS_IN_SET(organizations)),INPUT(_type='submit'))
 
-    form = FORM(INPUT(_name='organization_id', requires=IS_NOT_EMPTY()), INPUT(_type='submit'))
-    # form = SQLFORM(db.organization.id>0).select(orderby=db.organization.name)
+    #  form=FORM(SELECT(organizations[0]['id'], _name='organization_id',requires=IS_IN_SET(organizations[0]['id'])))
+    
     if form.accepts(request.vars, session):
         session.organization_id = form.vars.organization_id
         redirect(URL(r=request, f='index'))
@@ -113,6 +118,7 @@ def session_segment_id_form():
 
     return dict(form=form,segments=segments)
 
+@auth.requires_login()
 def session_person_id_form():
 
     persons=db(db.person.id>0).select(orderby=db.person.name)
@@ -125,6 +131,7 @@ def session_person_id_form():
 
     return dict(form=form,persons=persons)
 
+@auth.requires_login()
 def session_challenge_id_form():
 
     challenges=db(db.challenge.id>0).select(orderby=db.challenge.title)
@@ -138,8 +145,6 @@ def session_challenge_id_form():
     return dict(form=form,challenges=challenges)    
     
 @auth.requires_login()
-
-
 def create_organization():
     # check_session()
     form=crud.create(db.organization,next=url('list_organizations'))
@@ -287,6 +292,11 @@ def create_challenge():
     # pledgedrive_id=session.pledgedrive_id
     pledgedrive=db.pledgedrive[pledgedrive_id] or redirect(error_page)
     form=crud.create(db.challenge)
+    """
+    form=SQLFORM(db.challenge)
+    if FORM.accepts(form,request.vars):
+        session.form_vars=form.vars
+    """ 
     return dict(form=form,pledgedrive=pledgedrive,organization=organization)
 
 @auth.requires_login()

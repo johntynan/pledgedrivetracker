@@ -2,19 +2,6 @@
 <h1>Select or Add an Organization</h1>
 
 <div>
-<form action="" enctype="multipart/form-data" method="post">
-<select name="organization_id">
-{{for organization in organizations:}}
-    <option value="{{=organization.id}}">{{=organization.name}}</option>
-{{pass}}
-</select>
-<input type="submit" />
-<div class="hidden">
-<!-- input name="_formkey" type="hidden" value="54eeda43-d683-4c6e-880e-1a9fb249fb32" />
-<input name="_formname" type="hidden" value="default" /-->
-</div>
-</form>
+{{=form}}
 {{=button('Add a New Organization','create_organization')}}
 </div>
-
-{{=BEAUTIFY(response._vars)}}
