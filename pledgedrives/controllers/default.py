@@ -17,35 +17,35 @@ def url(f, args=[]): return URL(r=request,f=f,args=args)
 error_page=URL(r=request,f='error')
 
 @auth.requires_login()
-def check_session_organization_id():
-    if not request.function=='session_organization_id_form' and not session.organization_id:
+def check_session_organization():
+    if not request.function=='session_organization_id_form' and not session.organization:
         redirect(URL(r=request, f='session_organization_id_form'))
 
 @auth.requires_login()
-def check_session_pledgedrive_id():
-    if not request.function=='session_pledgedrive_id_form' and not session.pledgedrive_id:
+def check_session_pledgedrive():
+    if not request.function=='session_pledgedrive_id_form' and not session.pledgedrive:
         redirect(URL(r=request, f='session_pledgedrive_id_form'))
 
 @auth.requires_login()
-def check_session_person_id():
-    if not request.function=='session_person_id_form' and not session.person_id:
+def check_session_person():
+    if not request.function=='session_person_id_form' and not session.person:
         redirect(URL(r=request, f='session_person_id_form'))
 
 @auth.requires_login()
-def check_session_challenge_id():
-    if not request.function=='session_challenge_id_form' and not session.challenge_id:
+def check_session_challenge():
+    if not request.function=='session_challenge_id_form' and not session.challenge:
         redirect(URL(r=request, f='session_challenge_id_form'))
 
 @auth.requires_login()
-def check_session_segment_id():
-    if not request.function=='session_segment_id_form' and not session.segment_id:
+def check_session_segment():
+    if not request.function=='session_segment_id_form' and not session.segment:
         redirect(URL(r=request, f='session_segment_id_form'))
 
 def check_session():
-    check_session_organization_id()
-    check_session_pledgedrive_id()
+    check_session_organization()
+    check_session_pledgedrive()
     # segments are not required for challenges or programs, we'll check for them anyway
-    check_session_segment_id()
+    check_session_segment()
     # create check_session classes for programs and challenges when adding a segment
     # check for persons when adding a challenge
                 
@@ -62,32 +62,27 @@ def index():
 
     response.flash = T('Welcome to the Pledge Drive Tracker')
 
-    organization_id=session.organization_id
-    # organization=db(db.organization.id==session.organization_id).select()
-    
-    pledgedrive_id=session.pledgedrive_id
-    pledgedrive=db(db.pledgedrive.id==pledgedrive_id).select()
-
-    segment_id=session.segment_id
-    segment=db(db.segment.id==segment_id).select()
+    organization = session.organization
+    pledgedrive=session.pledgedrive
+    segment=session.segment
  
-    return dict(message=T('Pledge Drive Tracker'),organization_id=organization_id,pledgedrive_id=pledgedrive_id,segment_id=segment_id)
+    return dict(message=T('Pledge Drive Tracker'),organization=organization,pledgedrive=pledgedrive,segment=segment)
 
 
 @auth.requires_login()
 def session_organization_id_form():
 
-    organizations=db(db.organization.id>0).select(orderby=db.organization.name).as_list()
-    
-    # ids = organizations[0]['id']
-    # names = organizations[0]['name']
-    
-    form=FORM(SELECT(organizations, _name='organization_id',requires=IS_IN_SET(organizations)),INPUT(_type='submit'))
+    organizations=db(db.organization.id>0).select(orderby=db.organization.name)    
+    ids=[o.id for o in organizations]
+    names=[o.name for o in organizations]
 
-    #  form=FORM(SELECT(organizations[0]['id'], _name='organization_id',requires=IS_IN_SET(organizations[0]['id'])))
+    form=SQLFORM.factory(Field('organization_id',requires=IS_IN_SET(ids,names))) 
     
     if form.accepts(request.vars, session):
         session.organization_id = form.vars.organization_id
+        organization = db(db.organization.id==session.organization_id).select()
+        session.organization = organization
+        session.organization_name = organization[0].name
         redirect(URL(r=request, f='index'))
 
     return dict(form=form,organizations=organizations)
@@ -95,12 +90,17 @@ def session_organization_id_form():
 @auth.requires_login()
 def session_pledgedrive_id_form():
 
-    pledgedrives=db(db.pledgedrive.id>0).select(orderby=db.pledgedrive.title)
+    pledgedrives=db(db.pledgedrive.id>0).select(orderby=db.pledgedrive.title)    
+    ids=[o.id for o in pledgedrives]
+    titles=[o.title for o in pledgedrives]
 
-    form = FORM(INPUT(_name='pledgedrive_id', requires=IS_NOT_EMPTY()), INPUT(_type='submit'))
-    # form = SQLFORM(db.pledgedrive.id>0).select(orderby=db.pledgedrive.name)
+    form=SQLFORM.factory(Field('pledgedrive_id',requires=IS_IN_SET(ids,titles))) 
+    
     if form.accepts(request.vars, session):
         session.pledgedrive_id = form.vars.pledgedrive_id
+        pledgedrive = db(db.pledgedrive.id==session.pledgedrive_id).select()
+        session.pledgedrive = pledgedrive
+        session.pledgedrive_title = pledgedrive[0].title
         redirect(URL(r=request, f='index'))
 
     return dict(form=form,pledgedrives=pledgedrives)
@@ -108,12 +108,17 @@ def session_pledgedrive_id_form():
 @auth.requires_login()
 def session_segment_id_form():
 
-    segments=db(db.segment.id>0).select(orderby=db.segment.title)
+    segments=db(db.segment.id>0).select(orderby=db.segment.title)    
+    ids=[o.id for o in segments]
+    titles=[o.title for o in segments]
 
-    form = FORM(INPUT(_name='segment_id', requires=IS_NOT_EMPTY()), INPUT(_type='submit'))
-    # form = SQLFORM(db.segment.id>0).select(orderby=db.segment.name)
+    form=SQLFORM.factory(Field('segment_id',requires=IS_IN_SET(ids,titles))) 
+    
     if form.accepts(request.vars, session):
         session.segment_id = form.vars.segment_id
+        segment = db(db.segment.id==session.segment_id).select()
+        session.segment = segment
+        session.segment_name = segment[0].title
         redirect(URL(r=request, f='index'))
 
     return dict(form=form,segments=segments)
@@ -121,12 +126,17 @@ def session_segment_id_form():
 @auth.requires_login()
 def session_person_id_form():
 
-    persons=db(db.person.id>0).select(orderby=db.person.name)
+    persons=db(db.person.id>0).select(orderby=db.person.name)    
+    ids=[o.id for o in persons]
+    names=[o.name for o in persons]
 
-    form = FORM(INPUT(_name='person_id', requires=IS_NOT_EMPTY()), INPUT(_type='submit'))
-    # form = SQLFORM(db.person.id>0).select(orderby=db.person.name)
+    form=SQLFORM.factory(Field('person_id',requires=IS_IN_SET(ids,names))) 
+    
     if form.accepts(request.vars, session):
         session.person_id = form.vars.person_id
+        person = db(db.person.id==session.person_id).select()
+        session.person = person
+        session.person_name = person[0].name
         redirect(URL(r=request, f='index'))
 
     return dict(form=form,persons=persons)
@@ -134,15 +144,19 @@ def session_person_id_form():
 @auth.requires_login()
 def session_challenge_id_form():
 
-    challenges=db(db.challenge.id>0).select(orderby=db.challenge.title)
+    challenges=db(db.challenge.id>0).select(orderby=db.challenge.title)    
+    ids=[o.id for o in challenges]
+    titles=[o.title for o in challenges]
 
-    form = FORM(INPUT(_name='challenge_id', requires=IS_NOT_EMPTY()), INPUT(_type='submit'))
-    # form = SQLFORM(db.challenge.id>0).select(orderby=db.challenge.name)
+    form=SQLFORM.factory(Field('challenge_id',requires=IS_IN_SET(ids,names))) 
+    
     if form.accepts(request.vars, session):
         session.challenge_id = form.vars.challenge_id
+        challenge = db(db.challenge.id==session.challenge_id).select()
+        session.challenge = challenge
         redirect(URL(r=request, f='index'))
 
-    return dict(form=form,challenges=challenges)    
+    return dict(form=form,challenges=challenges)
     
 @auth.requires_login()
 def create_organization():
@@ -173,7 +187,7 @@ def edit_organization():
 
 @auth.requires_login()
 def create_person():
-    check_session_organization_id()
+    check_session_organization()
     organization_id=request.args(0)
     organization=db.organization[organization_id] or redirect(error_page)
     db.person.organization.writable=False
@@ -212,7 +226,7 @@ def list_persons_by_organization():
 
 @auth.requires_login()
 def create_program():
-    check_session_organization_id()
+    check_session_organization()
     organization_id=request.args(0)
     organization=db.organization[organization_id] or redirect(error_page)
     form=crud.create(db.program)
@@ -249,7 +263,7 @@ def list_programs_by_organization():
 
 @auth.requires_login()
 def create_pledgedrive():
-    check_session_organization_id()
+    check_session_organization()
     form=crud.create(db.pledgedrive,next=url('list_pledgedrives'))
     return dict(form=form)
 
@@ -276,7 +290,7 @@ def edit_pledgedrive():
 
 @auth.requires_login()
 def list_pledgedrives_by_organization():
-    check_session_organization_id()
+    check_session_organization()
     organization_id=request.args(0)
     organization=db.organization[organization_id] or redirect(error_page)
     pledgedrives=db(db.pledgedrive.organization==organization.id).select(orderby=db.pledgedrive.title)
@@ -328,10 +342,10 @@ def list_challenges_by_pledgedrive():
 
 @auth.requires_login()
 def create_segment():
-    check_session_organization_id()
-    check_session_pledgedrive_id()
-    check_session_person_id()
-    check_session_challenge_id()
+    check_session_organization()
+    check_session_pledgedrive()
+    check_session_person()
+    check_session_challenge()
     
     form=crud.create(db.segment,next=url('list_segments'))
     return dict(form=form)

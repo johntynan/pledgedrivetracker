@@ -1,19 +1,10 @@
 {{extend 'layout.html'}}
-<h1>Select or Add an segment</h1>
+<h1>Select or Add a Segment</h1>
 
 <div>
-<form action="" enctype="multipart/form-data" method="post">
-<select name="segment_id">
-{{for segment in segments:}}
-    <option value="{{=segment.id}}">{{=segment.title}}</option>
-{{pass}}
-</select>
-<input type="submit" />
-<div class="hidden">
-<!-- input name="_formkey" type="hidden" value="54eeda43-d683-4c6e-880e-1a9fb249fb32" />
-<input name="_formname" type="hidden" value="default" /-->
+{{=form}}
 </div>
-</form>
+<div>
 {{=button('Add a New segment','create_segment')}}
 </div>
 
