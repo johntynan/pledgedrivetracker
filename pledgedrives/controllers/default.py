@@ -27,6 +27,11 @@ def check_session_pledgedrive():
         redirect(URL(r=request, f='session_pledgedrive_id_form'))
 
 @auth.requires_login()
+def check_session_program():
+    if not request.function=='session_program_id_form' and not session.program:
+        redirect(URL(r=request, f='session_program_id_form'))
+
+@auth.requires_login()
 def check_session_person():
     if not request.function=='session_person_id_form' and not session.person:
         redirect(URL(r=request, f='session_person_id_form'))
@@ -122,6 +127,23 @@ def session_segment_id_form():
 
     return dict(form=form,segments=segments)
 
+def session_program_id_form():
+
+    programs=db(db.program.organization==session.organization_id).select(orderby=db.program.title)    
+    ids=[o.id for o in programs]
+    titles=[o.title for o in programs]
+
+    form=SQLFORM.factory(Field('program_id',requires=IS_IN_SET(ids,titles))) 
+    
+    if form.accepts(request.vars, session):
+        session.program_id = form.vars.program_id
+        program = db(db.program.id==session.program_id).select()
+        session.program = program
+        session.program_name = program[0].title
+        redirect(URL(r=request, f='index'))
+
+    return dict(form=form,programs=programs)
+
 @auth.requires_login()
 def session_person_id_form():
 
@@ -189,8 +211,6 @@ def create_person():
     check_session_organization()
     organization_id=session.organization_id
     organization=db.organization[organization_id] or redirect(error_page)
-    db.person.organization.writable=False
-    db.person.organization.readable=False
     form=crud.create(db.person,next=url('list_persons_by_organization',organization_id))
     return dict(form=form,organization=organization)
 
@@ -299,7 +319,9 @@ def list_pledgedrives_by_organization():
 
 @auth.requires_login()
 def create_challenge():
-    check_session()
+    check_session_organization()
+    check_session_pledgedrive()
+    check_session_person()
     organization=session.organization_id
     pledgedrive_id=session.pledgedrive_id
     # pledgedrive_id=session.pledgedrive_id
@@ -343,6 +365,7 @@ def list_challenges_by_pledgedrive():
 def create_segment():
     check_session_organization()
     check_session_pledgedrive()
+    check_session_program()
     check_session_person()
     check_session_challenge()
     

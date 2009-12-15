@@ -38,6 +38,7 @@ db.define_table('organization',
     Field('url'),
     Field('address'),
     Field('phone'),
+    Field('phone_long_distance'),
     Field('created_by',default=me,writable=False,readable=False),
     Field('created_on','datetime',default=request.now,writable=False,readable=False)
     )
