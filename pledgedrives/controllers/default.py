@@ -182,7 +182,7 @@ def session_challenge_id_form():
 @auth.requires_login()
 def create_organization():
     # check_session()
-    form=crud.create(db.organization,next=url('list_organizations'))
+    form=crud.create(db.organization,next=url('index'))
     return dict(form=form)
 
 @auth.requires_login()
@@ -203,7 +203,7 @@ def edit_organization():
     check_session()
     organization_id=session.organization_id
     organization=db.organization[organization_id] or redirect(error_page)
-    form=crud.update(db.organization,organization,next=url('list_organizations'))
+    form=crud.update(db.organization,organization,next=url('index'))
     return dict(form=form)
 
 @auth.requires_login()
@@ -211,7 +211,8 @@ def create_person():
     check_session_organization()
     organization_id=session.organization_id
     organization=db.organization[organization_id] or redirect(error_page)
-    form=crud.create(db.person,next=url('list_persons_by_organization',organization_id))
+    # form=crud.create(db.person,next=url('list_persons_by_organization',organization_id))
+    form=crud.create(db.person,next=url('index'))
     return dict(form=form,organization=organization)
 
 @auth.requires_login()
@@ -232,7 +233,8 @@ def edit_person():
     check_session()
     person_id=request.args(0)
     person=db.person[person_id] or redirect(error_page)
-    form=crud.update(db.person,person,next=url('view_person',person_id))
+    # form=crud.update(db.person,person,next=url('view_person',person_id))
+    form=crud.update(db.person,person,next=url('index'))
     return dict(form=form)
 
 @auth.requires_login()    
@@ -269,7 +271,8 @@ def edit_program():
     check_session()
     program_id=request.args(0)
     program=db.program[program_id] or redirect(error_page)
-    form=crud.update(db.program,program,next=url('view_program',program_id))
+    # form=crud.update(db.program,program,next=url('view_program',program_id))
+    form=crud.update(db.program,program,next=url('index'))
     return dict(form=form)
 
 @auth.requires_login()
@@ -283,7 +286,8 @@ def list_programs_by_organization():
 @auth.requires_login()
 def create_pledgedrive():
     check_session_organization()
-    form=crud.create(db.pledgedrive,next=url('list_pledgedrives'))
+    # form=crud.create(db.pledgedrive,next=url('list_pledgedrives'))
+    form=crud.create(db.pledgedrive,next=url('index'))
     return dict(form=form)
 
 @auth.requires_login()
@@ -369,7 +373,8 @@ def create_segment():
     check_session_person()
     check_session_challenge()
     
-    form=crud.create(db.segment,next=url('list_segments'))
+    # form=crud.create(db.segment,next=url('list_segments'))
+    form=crud.create(db.segment,next=url('index'))
     return dict(form=form)
 
 @auth.requires_login()
