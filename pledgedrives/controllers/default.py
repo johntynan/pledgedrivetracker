@@ -69,9 +69,12 @@ def index():
 
     organization = session.organization
     pledgedrive=session.pledgedrive
+    program=session.program
+    person=session.person
+    challenge=session.challenge
     segment=session.segment
  
-    return dict(message=T('Pledge Drive Tracker'),organization=organization,pledgedrive=pledgedrive,segment=segment)
+    return dict(message=T('Pledge Drive Tracker'),organization=organization,pledgedrive=pledgedrive,person=person,challenge=challenge,segment=segment)
 
 
 @auth.requires_login()

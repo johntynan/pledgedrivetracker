@@ -63,14 +63,29 @@ Selected Organization: {{=session.organization[0]['name']}}
 </div>
 
 <div>
-Selected Pledge Drive: {{=session.pledgedrive[0]['id']}}
+Selected Pledge Drive: {{=session.pledgedrive[0]['title']}}
 <div>
 {{pass}}{{=button('Select a new pledgedrive','session_pledgedrive_id_form')}}
 </div>
 </div>
 
 <div>
-Selected Segment: {{=session.segment[0]['id']}}
+Selected Person: {{=session.person[0]['name']}}
+<div>
+{{pass}}{{=button('Select a new person','session_person_id_form')}}
+</div>
+</div>
+
+
+<div>
+Selected Program: {{=session.program[0]['title']}}
+<div>
+{{pass}}{{=button('Select a new program','session_program_id_form')}}
+</div>
+</div>
+
+<div>
+Selected Segment: {{=session.segment[0]['title']}}
 <div>
 {{pass}}{{=button('Select a new segment','session_segment_id_form')}}
 </div>
