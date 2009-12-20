@@ -42,7 +42,8 @@ db.define_table('organization',
     Field('created_by',default=me,writable=False,readable=False),
     Field('created_on','datetime',default=request.now,writable=False,readable=False)
     )
-db.organization.name.requires=[IS_NOT_EMPTY(),IS_NOT_IN_DB(db,'organization.name')]
+# db.organization.name.requires=[IS_NOT_EMPTY(),IS_NOT_IN_DB(db,'organization.name')]
+db.organization.name.requires=[IS_NOT_EMPTY()]
 db.organization.url.requires=IS_URL()
 db.organization.phone.requires=is_phone
 
