@@ -48,7 +48,7 @@ db.organization.phone.requires=is_phone
 
 db.define_table('person',
     Field('name'),
-    Field('organization',db.organization), # default=request.args(0),readable=False,writable=False 
+    Field('organization',db.organization,default=session.organization_id,readable=False,writable=False),
     Field('role')
     )
 # it may be possible to have a single donor contribute to multiple organizations.  Removing IS_NOT_IN_DB until this is ironed out.
@@ -59,7 +59,7 @@ db.person.organization.requires=IS_IN_DB(db,'organization.id','%(name)s')
 
 db.define_table('program',
     Field('title'),
-    Field('organization',db.organization), # default=request.args(0),readable=False,writable=False 
+    Field('organization',db.organization,default=session.organization_id,readable=False,writable=False),
     Field('created_by',default=me,writable=False,readable=False),
     Field('created_on','datetime',default=request.now,writable=False,readable=False)
     )
@@ -72,7 +72,7 @@ db.define_table('pledgedrive',
     Field('description','text'),
     Field('pledge_goal','integer'),
     Field('projected_average_pledge','double'),
-    Field('organization',db.organization), # default=request.args(0),readable=False,writable=False 
+    Field('organization',db.organization,default=session.organization_id,readable=False,writable=False),
     Field('created_by',default=me,writable=False,readable=False),
     Field('created_on','datetime',default=request.now,writable=False,readable=False)
     )
@@ -83,15 +83,15 @@ db.pledgedrive.organization.requires=IS_IN_DB(db,'organization.id','%(name)s')
 
 db.define_table('challenge',
     Field('title'),
-    Field('person',db.person),
-    Field('pledgedrive',db.pledgedrive),
+    Field('person',db.person,default=session.person_id,readable=False,writable=False),
+    Field('pledgedrive',db.pledgedrive,default=session.pledgedrive_id,readable=False,writable=False),
     Field('amount','integer'),
     Field('description','text'),
     Field('talkingpoints','text'),
     Field('type'),
     Field('condition'),
     Field('state'),
-    Field('organization',db.organization), # default=request.args(0),readable=False,writable=False 
+    Field('organization',db.organization,default=session.organization_id,readable=False,writable=False),
     Field('created_by',default=me,writable=False,readable=False),
     Field('created_on','datetime',default=request.now,writable=False,readable=False)    
 )
@@ -109,10 +109,11 @@ db.define_table('segment',
     Field('description','text'),
     Field('goal','integer'),
     Field('goal_type'),
-    Field('program',db.program),
-    Field('challenge',db.challenge,'%(title)s'),
-    Field('pledgedrive',db.pledgedrive),
-    Field('organization',db.organization), # default=request.args(0),readable=False,writable=False 
+    Field('program',db.program,default=session.program_id,readable=False,writable=False),
+    # Field('challenge',db.challenge,'%(title)s'),
+    Field('challenge',db.challenge,default=session.challenge_id,readable=False,writable=False),
+    Field('pledgedrive',db.pledgedrive,default=session.pledgedrive_id,readable=False,writable=False),
+    Field('organization',db.organization,default=session.organization_id,readable=False,writable=False),
     Field('created_by',default=me,writable=False,readable=False),
     Field('created_on','datetime',default=request.now,writable=False,readable=False)
     )
@@ -130,9 +131,9 @@ db.segment.goal_type.requires=IS_IN_SET(GOAL_TYPES)
 db.define_table('pledge',
     Field('amount','integer'),
     Field('name'),
-    Field('segment',db.segment),# default=request.args(2),readable=False,writable=False 
-    Field('pledgedrive',db.pledgedrive), # default=request.args(1),writable=False,readable=False
-    Field('organization',db.organization), # default=request.args(0),readable=False,writable=False 
+    Field('segment',db.segment,default=session.segment_id,readable=False,writable=False), 
+    Field('pledgedrive',db.pledgedrive,default=session.pledgedrive_id,readable=False,writable=False),
+    Field('organization',db.organization,default=session.organization_id,readable=False,writable=False),
     Field('created_by',default=me,writable=False,readable=False),
     Field('created_on','datetime',default=request.now,writable=False,readable=False)
 )

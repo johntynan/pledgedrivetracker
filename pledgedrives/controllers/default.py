@@ -328,15 +328,16 @@ def create_challenge():
     check_session_person()
     organization=session.organization_id
     pledgedrive_id=session.pledgedrive_id
-    # pledgedrive_id=session.pledgedrive_id
+    person_id=session.person_id
     pledgedrive=db.pledgedrive[pledgedrive_id] or redirect(error_page)
+    person=db.person[person_id] or redirect(error_page)
     form=crud.create(db.challenge)
     """
     form=SQLFORM(db.challenge)
     if FORM.accepts(form,request.vars):
         session.form_vars=form.vars
     """ 
-    return dict(form=form,pledgedrive=pledgedrive,organization=organization)
+    return dict(form=form,pledgedrive=pledgedrive,organization=organization,person=person)
 
 @auth.requires_login()
 def view_challenge():
