@@ -70,17 +70,23 @@ Selected Pledge Drive: {{=session.pledgedrive[0]['title']}}
 </div>
 
 <div>
+Selected Program: {{=session.program[0]['title']}}
+<div>
+{{pass}}{{=button('Select a new program','session_program_id_form')}}
+</div>
+</div>
+
+<div>
 Selected Person: {{=session.person[0]['name']}}
 <div>
 {{pass}}{{=button('Select a new person','session_person_id_form')}}
 </div>
 </div>
 
-
 <div>
-Selected Program: {{=session.program[0]['title']}}
+Selected Challenge: {{=session.challenge[0]['title']}}
 <div>
-{{pass}}{{=button('Select a new program','session_program_id_form')}}
+{{pass}}{{=button('Select a new challenge','session_challenge_id_form')}}
 </div>
 </div>
 

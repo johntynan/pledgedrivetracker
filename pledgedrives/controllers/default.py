@@ -60,6 +60,9 @@ def error():
 @auth.requires_login()
 def index():
     check_session()
+    check_session_program()
+    check_session_person()
+    check_session_challenge()
     """
     example action using the internationalization operator T and flash
     rendered by views/default/index.html or views/generic.html
@@ -115,7 +118,7 @@ def session_pledgedrive_id_form():
 @auth.requires_login()
 def session_segment_id_form():
 
-    segments=db(db.segment.organization==session.pledgedrive_id).select(orderby=db.segment.title)    
+    segments=db(db.segment.organization==session.organization_id).select(orderby=db.segment.title)    
     ids=[o.id for o in segments]
     titles=[o.title for o in segments]
 
@@ -253,7 +256,7 @@ def create_program():
     check_session_organization()
     organization_id=session.organization_id
     organization=db.organization[organization_id] or redirect(error_page)
-    form=crud.create(db.program)
+    form=crud.create(db.program,next=url('index'))
     return dict(form=form,organization=organization)
 
 @auth.requires_login()
@@ -334,7 +337,7 @@ def create_challenge():
     person_id=session.person_id
     pledgedrive=db.pledgedrive[pledgedrive_id] or redirect(error_page)
     person=db.person[person_id] or redirect(error_page)
-    form=crud.create(db.challenge)
+    form=crud.create(db.challenge,next=url('index'))
     """
     form=SQLFORM(db.challenge)
     if FORM.accepts(form,request.vars):
