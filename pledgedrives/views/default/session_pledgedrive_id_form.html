@@ -1,0 +1,11 @@
+{{extend 'layout.html'}}
+<h1>Select or Add an pledgedrive</h1>
+
+<div>
+{{=form}}
+</div>
+<div>
+{{=button('Add a New pledgedrive','create_pledgedrive')}}
+</div>
+
+{{=BEAUTIFY(response._vars)}}

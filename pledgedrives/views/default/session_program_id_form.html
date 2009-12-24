@@ -1,0 +1,11 @@
+{{extend 'layout.html'}}
+<h1>Select or Add a Program</h1>
+
+<div>
+{{=form}}
+</div>
+<div>
+{{=button('Add a New Program','create_program')}}
+</div>
+
+{{=BEAUTIFY(response._vars)}}

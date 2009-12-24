@@ -1,0 +1,42 @@
+{{response.files.append(URL(r=request,c='static',f='jquery.dataTables.min.js'))}}
+{{response.files.append(URL(r=request,c='static',f='demo_table.css'))}}
+{{extend 'layout.html'}}
+
+<script type="text/javascript" charset="utf-8">
+$(document).ready(function() {
+    jQuery('.smarttable').dataTable();
+} );
+</script>
+
+<h1>Challenges by Pledgedrive</h1>
+
+<button onclick="document.location='{{=URL(r=request,f='create_challenge',args=pledgedrive.id)}}'">Create a New challenge</button>
+
+<table class="smarttable">
+<thead>
+    <th>Title</th>
+    <th>Amount</th>
+    <th>Description</th>
+    <th>Talking Points</th>
+    <th>Type</th>
+    <th>Condition</th>
+    <th>State</th>
+    <th>Actions</th>
+</thead>
+<tbody>
+{{for challenge in challenges:}}
+<tr>
+    <td>{{=challenge.title}}</td>    
+    <td>{{=challenge.amount}}</td>    
+    <td>{{=challenge.description}}</td>
+    <td>{{=challenge.talkingpoints}}</td>
+    <td>{{=challenge.type}}</td>    
+    <td>{{=challenge.condition}}</td>    
+    <td>{{=challenge.state}}</td> 
+    <td>
+    <a href="{{=URL(r=request,f='edit_challenge',args=challenge.id)}}">Edit</a>
+    </td>
+</tr>
+{{pass}}
+</tbody>
+</table>

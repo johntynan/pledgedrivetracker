@@ -1,0 +1,26 @@
+<HTML>
+<HEAD>
+<TITLE></TITLE>
+<SCRIPT LANGUAGE="javascript">
+<!-- // BEGIN Script
+"""
+function openConsole(url) {
+var remote = null;
+var window_name = "ProducerMessages";
+var window_properties = "height=500,width=800,left=0,top=0,scrollbars=yes,resizable=yes";
+// url ="/chat/driveproducer/chatframe"
+remote = window.open(url,window_name,window_properties);
+remote.location.href = url
+}
+"""
+// END Script -->
+</SCRIPT>
+</head>
+<body>
+<div style="font-size: 1.5em;" align="center">
+{{for organization in organizations:}}
+{{=organization.name}}
+{{pass}}
+: <span style="color: red">{{=organization.phone}}</span> or on the web at <span style="color: blue">{{=organization.url}}</span> |  <span style="font-size: 0.8em;"><a HREF="#" onClick="openConsole('viewchallenges.asp');">Challenges</a></span> | <span style="font-size: 0.8em;"><a HREF="#" onClick="openConsole('drivetotals.asp');">Drive Totals</a></span> | <span style="font-size: 0.8em;"><a HREF="#" onClick="openConsole('/kbaqpledgedrive/2009spring/reports/selectbreak.asp');">Pledges for Break</a></span> | <span style="font-size: 0.8em;"><a HREF="#" onClick="openConsole('/kbaqpledgedrive/webreport.htm');">Web Pledges</a></span></div>
+</body>
+</html>
