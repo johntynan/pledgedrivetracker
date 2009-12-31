@@ -533,6 +533,22 @@ def mini_pledgedrive_goal():
 
     # content = DIV('<h1>Drive Totals</h1>' + '<p><strong>Total Pledges</strong>: <strong>'+ str(pledgedrive_total_pledges) + '</strong>',  _id='content')
     # return dict(content=content)
+    
+@service.json
+def mini_segment_goal():
+    check_session()
+
+    segment_id=session.segment_id
+    segment=db(db.segment.id==segment_id).select()
+    
+    segment_total_pledges = len(db(db.pledge.segment==segment_id).select())
+
+    pledge_amounts_for_pledgdrive = db(db.pledge.segment==segment_id).select(db.pledge.amount.sum())
+
+    segment_total_dollars=pledge_amounts_for_pledgdrive[0]._extra[db.pledge.amount.sum()]
+        
+    return dict(segment_total_pledges=segment_total_pledges,segment_total_dollars=segment_total_dollars)    
+    
 
 @service.json
 @service.jsonrpc
