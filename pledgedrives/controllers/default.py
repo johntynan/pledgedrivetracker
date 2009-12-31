@@ -519,6 +519,11 @@ def report_mini_pledgedrive_goal():
 @service.json
 def mini_pledgedrive_goal():
     check_session()
+    return dict()
+
+@service.json
+def mini_pledgedrive_totals():
+    check_session()
 
     pledgedrive_id=session.pledgedrive_id
     pledgedrive=db(db.pledgedrive.id==pledgedrive_id).select()
@@ -533,9 +538,15 @@ def mini_pledgedrive_goal():
 
     # content = DIV('<h1>Drive Totals</h1>' + '<p><strong>Total Pledges</strong>: <strong>'+ str(pledgedrive_total_pledges) + '</strong>',  _id='content')
     # return dict(content=content)
+
     
 @service.json
 def mini_segment_goal():
+    check_session()
+    return dict()
+
+@service.json
+def mini_segment_totals():
     check_session()
 
     segment_id=session.segment_id
@@ -549,6 +560,20 @@ def mini_segment_goal():
         
     return dict(segment_total_pledges=segment_total_pledges,segment_total_dollars=segment_total_dollars)    
     
+@service.json
+def mini_segment_challenge():
+    check_session()
+
+    segment_id=session.segment_id
+    segment=db(db.segment.id==segment_id).select()
+    challenge_id = segment[0].challenge
+    
+    segment_challenge = db(db.challenge.id==challenge_id).select()
+
+ 
+
+
+    return dict(challenge_id=challenge_id,segment_challenge=segment_challenge)
 
 @service.json
 @service.jsonrpc
