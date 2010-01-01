@@ -515,6 +515,14 @@ def report_mini_segment_overview():
 def report_mini_pledgedrive_goal():
     check_session()
     return dict()
+    
+@auth.requires_login()
+def mini_create_pledge():
+    check_session()
+    segment_id=session.segment_id
+    segment=db.segment[segment_id] or redirect(error_page)
+    form=crud.create(db.pledge)
+    return dict(form=form,segment=segment)
 
 @service.json
 def mini_pledgedrive_goal():
@@ -569,9 +577,6 @@ def mini_segment_challenge():
     challenge_id = segment[0].challenge
     
     segment_challenge = db(db.challenge.id==challenge_id).select()
-
- 
-
 
     return dict(challenge_id=challenge_id,segment_challenge=segment_challenge)
 
