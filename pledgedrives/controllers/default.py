@@ -551,7 +551,25 @@ def mini_pledgedrive_totals():
 @service.json
 def mini_segment_goal():
     check_session()
-    return dict()
+
+    segment_id=session.segment_id
+    segment=db(db.segment.id==segment_id).select()
+    
+    segment_total_pledges = len(db(db.pledge.segment==segment_id).select())
+
+    pledge_amounts_for_segment = db(db.pledge.segment==segment_id).select(db.pledge.amount.sum())
+
+    segment_total_dollars=pledge_amounts_for_segment[0]._extra[db.pledge.amount.sum()]
+    
+    if segment[0].goal_type == 'Pledge':
+    
+        goal = 'Pledge Goal:' + str(segment[0].goal)
+        progress = segment[0].goal - segment_total_pledges 
+    else:
+        goal = 'Dollar Goal:'+  str(segment[0].goal)
+        progress = segment[0].goal - segment_total_dollars 
+
+    return dict(segment_total_pledges=segment_total_pledges,segment_total_dollars=segment_total_dollars,goal=goal,progress=progress)    
 
 @service.json
 def mini_segment_totals():
@@ -562,9 +580,9 @@ def mini_segment_totals():
     
     segment_total_pledges = len(db(db.pledge.segment==segment_id).select())
 
-    pledge_amounts_for_pledgdrive = db(db.pledge.segment==segment_id).select(db.pledge.amount.sum())
+    pledge_amounts_for_segment = db(db.pledge.segment==segment_id).select(db.pledge.amount.sum())
 
-    segment_total_dollars=pledge_amounts_for_pledgdrive[0]._extra[db.pledge.amount.sum()]
+    segment_total_dollars=pledge_amounts_for_segment[0]._extra[db.pledge.amount.sum()]
         
     return dict(segment_total_pledges=segment_total_pledges,segment_total_dollars=segment_total_dollars)    
     
