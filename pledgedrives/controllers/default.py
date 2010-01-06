@@ -91,7 +91,7 @@ def session_organization_id_form():
     if form.accepts(request.vars, session):
         session.organization_id = form.vars.organization_id
         organization = db(db.organization.id==session.organization_id).select()
-        session.organization = organization
+        session.organization = organization.as_list()
         session.organization_name = organization[0].name
         redirect(URL(r=request, f='index'))
 
@@ -109,7 +109,7 @@ def session_pledgedrive_id_form():
     if form.accepts(request.vars, session):
         session.pledgedrive_id = form.vars.pledgedrive_id
         pledgedrive = db(db.pledgedrive.id==session.pledgedrive_id).select()
-        session.pledgedrive = pledgedrive
+        session.pledgedrive = pledgedrive.as_list()
         session.pledgedrive_title = pledgedrive[0].title
         redirect(URL(r=request, f='index'))
 
@@ -127,7 +127,7 @@ def session_segment_id_form():
     if form.accepts(request.vars, session):
         session.segment_id = form.vars.segment_id
         segment = db(db.segment.id==session.segment_id).select()
-        session.segment = segment
+        session.segment = segment.as_list()
         session.segment_name = segment[0].title
         redirect(URL(r=request, f='index'))
 
@@ -144,7 +144,7 @@ def session_program_id_form():
     if form.accepts(request.vars, session):
         session.program_id = form.vars.program_id
         program = db(db.program.id==session.program_id).select()
-        session.program = program
+        session.program = program.as_list()
         session.program_name = program[0].title
         redirect(URL(r=request, f='index'))
 
@@ -162,7 +162,7 @@ def session_person_id_form():
     if form.accepts(request.vars, session):
         session.person_id = form.vars.person_id
         person = db(db.person.id==session.person_id).select()
-        session.person = person
+        session.person = person.as_list()
         session.person_name = person[0].name
         redirect(URL(r=request, f='index'))
 
@@ -180,7 +180,7 @@ def session_challenge_id_form():
     if form.accepts(request.vars, session):
         session.challenge_id = form.vars.challenge_id
         challenge = db(db.challenge.id==session.challenge_id).select()
-        session.challenge = challenge
+        session.challenge = challenge.as_list()
         redirect(URL(r=request, f='index'))
 
     return dict(form=form,challenges=challenges)
