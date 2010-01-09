@@ -91,7 +91,7 @@ def session_organization_id_form():
     if form.accepts(request.vars, session):
         session.organization_id = form.vars.organization_id
         organization = db(db.organization.id==session.organization_id).select()
-        session.organization = organization.as_list()
+        session.organization = organization.as_list()[0]
         session.organization_name = organization[0].name
         redirect(URL(r=request, f='index'))
 
@@ -109,7 +109,7 @@ def session_pledgedrive_id_form():
     if form.accepts(request.vars, session):
         session.pledgedrive_id = form.vars.pledgedrive_id
         pledgedrive = db(db.pledgedrive.id==session.pledgedrive_id).select()
-        session.pledgedrive = pledgedrive.as_list()
+        session.pledgedrive = pledgedrive.as_list()[0]
         session.pledgedrive_title = pledgedrive[0].title
         redirect(URL(r=request, f='index'))
 
@@ -127,7 +127,7 @@ def session_segment_id_form():
     if form.accepts(request.vars, session):
         session.segment_id = form.vars.segment_id
         segment = db(db.segment.id==session.segment_id).select()
-        session.segment = segment.as_list()
+        session.segment = segment.as_list()[0]
         session.segment_name = segment[0].title
         redirect(URL(r=request, f='index'))
 
@@ -144,7 +144,7 @@ def session_program_id_form():
     if form.accepts(request.vars, session):
         session.program_id = form.vars.program_id
         program = db(db.program.id==session.program_id).select()
-        session.program = program.as_list()
+        session.program = program.as_list()[0]
         session.program_name = program[0].title
         redirect(URL(r=request, f='index'))
 
@@ -162,7 +162,7 @@ def session_person_id_form():
     if form.accepts(request.vars, session):
         session.person_id = form.vars.person_id
         person = db(db.person.id==session.person_id).select()
-        session.person = person.as_list()
+        session.person = person.as_list()[0]
         session.person_name = person[0].name
         redirect(URL(r=request, f='index'))
 
@@ -180,7 +180,7 @@ def session_challenge_id_form():
     if form.accepts(request.vars, session):
         session.challenge_id = form.vars.challenge_id
         challenge = db(db.challenge.id==session.challenge_id).select()
-        session.challenge = challenge.as_list()
+        session.challenge = challenge.as_list()[0]
         redirect(URL(r=request, f='index'))
 
     return dict(form=form,challenges=challenges)
@@ -188,7 +188,14 @@ def session_challenge_id_form():
 @auth.requires_login()
 def create_organization():
     # check_session()
-    form=crud.create(db.organization,next=url('index'))
+    # form=crud.create(db.organization,next=url('index'))
+    form = SQLFORM(db.organization,next=url('index'))
+    if form.accepts(request.vars, session): 
+        response.flash='record inserted'
+        # session.organization=form.vars
+        session.organization=dict(form.vars)
+        redirect(URL(r=request, f='index'))
+    elif form.errors: response.flash='form errors'
     return dict(form=form)
 
 @auth.requires_login()
@@ -609,7 +616,8 @@ def service_pledgedrive_pledges(pledgedrive_id):
     # pledgedrive_id=request.vars.pledgedrive_id
 
     # pledgedrive_pledges = db(db.pledge.pledgedrive==pledgedrive_id).select()
-    pledgedrive_pledges = db(db.pledge.pledgedrive==pledgedrive_id).select().as_list()
+    # pledgedrive_pledges = db(db.pledge.pledgedrive==pledgedrive_id).select().as_list()
+    pledgedrive_pledges = db(db.pledge.pledgedrive==pledgedrive_id).select().as_list()[0]
 
     return dict(pledgedrive_pledges=pledgedrive_pledges)
     

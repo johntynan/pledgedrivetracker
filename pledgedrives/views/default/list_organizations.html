@@ -11,12 +11,18 @@
 {{for organization in organizations:}}
 <tr>
     <td><a href="{{=URL(r=request,f='view_organization',args=organization.id)}}">{{=organization.name}}</a></td>
+
     <td>{{=organization.url}}</td>
     <td>{{=organization.address}}</td>
     <td>{{=organization.phone}}</td>
     <td><a href="{{=URL(r=request,f='view_organization',args=organization.id)}}">View Organization</a> |
     <a href="{{=URL(r=request,f='edit_organization',args=organization.id)}}">Edit Organization</a> |<br />
+
     </td>
 </tr>
 {{pass}}
 </table>
+
+
+{{=BEAUTIFY(session)}}
+
