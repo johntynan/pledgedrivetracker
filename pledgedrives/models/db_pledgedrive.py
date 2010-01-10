@@ -49,6 +49,8 @@ db.organization.phone.requires=is_phone
 
 db.define_table('person',
     Field('name'),
+    # for some reason, organization['id'] does not work here.  Have to save the organization_id in the session as a separate variable.
+    # Field('organization',db.organization,default=session.organization['id'],readable=False,writable=False),
     Field('organization',db.organization,default=session.organization_id,readable=False,writable=False),
     Field('role')
     )

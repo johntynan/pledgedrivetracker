@@ -8,7 +8,7 @@
         <frame name="rightframe" src="mini_segment_totals.html" marginwidth="10" marginheight="10" scrolling="auto" frameborder="1">
         <frame name="leftframe" src="/chat/thank_you_chat" marginwidth="10" marginheight="10" scrolling="auto" frameborder="0">
         <frame name="leftframe" src="/chat/thank_you_messages" marginwidth="10" marginheight="10" scrolling="auto" frameborder="0">
-        <frame name="rightframe" src="{{=URL(r=request,f='mini_create_pledge',args=session.segment[0]['id'])}}" marginwidth="10" marginheight="10" scrolling="auto" frameborder="1">
+        <frame name="rightframe" src="{{=URL(r=request,f='mini_create_pledge',args=session.segment['id'])}}" marginwidth="10" marginheight="10" scrolling="auto" frameborder="1">
     </frameset>
 
 <noframes>

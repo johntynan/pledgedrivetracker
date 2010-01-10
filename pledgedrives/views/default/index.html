@@ -97,14 +97,20 @@ Selected Segment: {{=session.segment['title']}}
 </div>
 </div>
 
+{{=session.pledgedrive}}
+{{=session.pledgedrive['id']}}
 <!--
-Just in case we need to use these :)
-{{=session.organization['name']}}
-{{=session.organization['address']}}
-{{=session.organization['phone']}}
+<div>
+Just in case we need to use these :)<br />
+{{=session.organization}}<br />
+{{=session.organization['id']}}<br />
+{{=session.organization['name']}}<br />
+{{=session.organization['address']}}<br />
+{{=session.organization['phone']}}<br />
 {{=session.organization['url']}}
-{{=session.organization['created_by']}}
-{{=session.organization['created_on']}}
--->
+</div>
 
 {{=BEAUTIFY(response._vars)}}
+-->
+
+{{=BEAUTIFY(session)}}
