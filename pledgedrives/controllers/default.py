@@ -565,9 +565,27 @@ def report_mini_segment_challenge():
     check_session()
     return dict()
 
+@auth.requires_login()
 def report_mini_segment_select():
     check_session()
-    return dict()
+
+    # segments=db(db.segment.organization==session.organization['id']).select(orderby=db.segment.title)    
+    segments=db(db.segment.organization==session.organization_id).select(orderby=db.segment.start_time)    
+    ids=[o.id for o in segments]
+    # titles=[o.title for o in segments]
+    labels=[(str(o.start_time.strftime("%m/%d : %I:%m %p")) + ' - ' + o.title) for o in segments]
+
+    form=SQLFORM.factory(Field('segment_id',requires=IS_IN_SET(ids,labels))) 
+    
+    if form.accepts(request.vars, session):
+        segment_id = form.vars.segment_id
+        segment = db(db.segment.id==segment_id).select()
+        session.segment = segment.as_list()[0]
+        session.segment_id = segment.as_list()[0]['id']
+        redirect(URL(r=request, f='report_mini_segment_select'))
+
+    return dict(form=form,segments=segments)
+
 
 def report_mini_segment_overview():
     check_session()
@@ -583,7 +601,22 @@ def mini_create_pledge():
     segment_id=session.segment['id']
     segment=db.segment[segment_id] or redirect(error_page)
     form=crud.create(db.pledge)
-    return dict(form=form,segment=segment)
+
+    segments=db(db.segment.organization==session.organization_id).select(orderby=db.segment.title)    
+    ids=[o.id for o in segments]
+    # titles=[o.title for o in segments]
+    labels=[(str(o.start_time.strftime("%m/%d : %I:%m %p")) + ' - ' + o.title) for o in segments]
+
+    form2=SQLFORM.factory(Field('segment_id',requires=IS_IN_SET(ids,labels))) 
+    
+    if form2.accepts(request.vars, session):
+        segment_id = form2.vars.segment_id
+        segment = db(db.segment.id==segment_id).select()
+        session.segment = segment.as_list()[0]
+        session.segment_id = segment.as_list()[0]['id']
+        redirect(URL(r=request, f='mini_create_pledge'))
+
+    return dict(form=form,form2=form2,segment=segment,segments=segments)
 
 @service.json
 def mini_pledgedrive_goal():
@@ -658,6 +691,49 @@ def mini_segment_challenge():
     segment_challenge = db(db.challenge.id==challenge_id).select()
 
     return dict(challenge_id=challenge_id,segment_challenge=segment_challenge)
+
+
+@auth.requires_login()
+def mini_segment_select():
+    check_session()
+
+    # segments=db(db.segment.organization==session.organization['id']).select(orderby=db.segment.title)    
+    segments=db(db.segment.organization==session.organization_id).select(orderby=db.segment.start_time)    
+    ids=[o.id for o in segments]
+    # titles=[o.title for o in segments]
+    labels=[(str(o.start_time.strftime("%m/%d : %I:%m %p")) + ' - ' + o.title) for o in segments]
+
+    form=SQLFORM.factory(Field('segment_id',requires=IS_IN_SET(ids,labels))) 
+    
+    if form.accepts(request.vars, session):
+        segment_id = form.vars.segment_id
+        segment = db(db.segment.id==segment_id).select()
+        session.segment = segment.as_list()[0]
+        session.segment_id = segment.as_list()[0]['id']
+        redirect(URL(r=request, f='mini_segment_navigation'))
+
+    return dict(form=form,segments=segments)
+
+@auth.requires_login()
+def mini_segment_navigation():
+    check_session()
+
+    # segments=db(db.segment.organization==session.organization['id']).select(orderby=db.segment.title)    
+    segments=db(db.segment.organization==session.organization_id).select(orderby=db.segment.start_time)    
+    ids=[o.id for o in segments]
+    # titles=[o.title for o in segments]
+    labels=[(str(o.start_time.strftime("%m/%d : %I:%m %p")) + ' - ' + o.title) for o in segments]
+
+    form=SQLFORM.factory(Field('segment_id',requires=IS_IN_SET(ids,labels))) 
+    
+    if form.accepts(request.vars, session):
+        segment_id = form.vars.segment_id
+        segment = db(db.segment.id==segment_id).select()
+        session.segment = segment.as_list()[0]
+        session.segment_id = segment.as_list()[0]['id']
+        redirect(URL(r=request, f='mini_segment_navigation'))
+
+    return dict(form=form,segments=segments)
 
 @service.json
 @service.jsonrpc
