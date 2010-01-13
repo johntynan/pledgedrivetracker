@@ -648,7 +648,7 @@ def mini_create_pledge():
     segment=db.segment[segment_id] or redirect(error_page)
     form=crud.create(db.pledge)
 
-    segments=db(db.segment.organization==session.organization_id).select(orderby=db.segment.title)    
+    segments=db(db.segment.organization==session.organization_id).select(orderby=db.segment.start_time)    
     ids=[o.id for o in segments]
     # titles=[o.title for o in segments]
     labels=[(str(o.start_time.strftime("%m/%d : %I:%m %p")) + ' - ' + o.title) for o in segments]
