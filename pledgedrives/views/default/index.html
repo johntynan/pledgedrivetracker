@@ -16,6 +16,7 @@ $(document).ready(function(){
 {{=button('Pledge Entry','frame_wrapper_pledge_entry.html')}}
 <button onclick="jQuery('div.reports,div#_reports').slideToggle();">Reports</button>
 <button onclick="jQuery('div.setup,div#_setup').slideToggle();">Setup</button>
+{{=button('Quick Setup: Segments','quick_setup_segment')}}
 </div>
 
 <div class="reports">
@@ -75,6 +76,7 @@ Selected Segment: {{=session.segment['title']}}
 {{pass}}{{=button('Select a new segment','session_segment_id_form')}}
 </div>
 </div>
+
 <!--
 {{=session.pledgedrive}}
 {{=session.pledgedrive['id']}}

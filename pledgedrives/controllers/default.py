@@ -11,6 +11,7 @@
 # auth.settings.create_user_groups=False
 # auth.settings.login_next=URL(r=request, c='default', f='set_cookies')
 
+import time, datetime
 
 def url(f, args=[]): return URL(r=request,f=f,args=args)
 
@@ -152,7 +153,7 @@ def session_pledgedrive_id_form():
 def session_segment_id_form():
 
     # segments=db(db.segment.organization==session.organization['id']).select(orderby=db.segment.title)    
-    segments=db(db.segment.organization==session.organization_id).select(orderby=db.segment.title)    
+    segments=db(db.segment.organization==session.organization_id).select(orderby=db.segment.start_time)    
     ids=[o.id for o in segments]
     titles=[o.title for o in segments]
 
@@ -493,7 +494,7 @@ def view_segment():
 
 @auth.requires_login()
 def list_segments():
-    segments=db(db.segment.organization==session.organization['id']).select(orderby=db.segment.title)
+    segments=db(db.segment.organization==session.organization['id']).select(orderby=db.segment.start_time)
     return dict(segments=segments)
 
 @auth.requires_login()
@@ -517,7 +518,7 @@ def list_segments_by_pledgedrive():
     check_session()
     pledgedrive_id=session.pledgedrive['id']
     pledgedrive=db.pledgedrive[pledgedrive_id] or redirect(error_page)
-    segments=db(db.segment.pledgedrive==pledgedrive.id).select(orderby=db.segment.title)
+    segments=db(db.segment.pledgedrive==pledgedrive.id).select(orderby=db.segment.start_time)
     return dict(pledgedrive=pledgedrive, segments=segments)
 
 @auth.requires_login()
@@ -780,6 +781,66 @@ def mini_segment_navigation():
         redirect(URL(r=request, f='mini_segment_navigation'))
 
     return dict(form=form,segments=segments)
+
+@auth.requires_login()
+def quick_setup_segment():
+    check_session()
+
+    segments=db(db.segment.organization==session.organization_id).select(orderby=db.segment.start_time)
+
+    units=[1,2,3,4,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100]    
+    ids=[o for o in units]
+    labels=[o for o in units]
+
+    form=SQLFORM.factory(Field('units',requires=IS_IN_SET(ids,labels)))
+
+    if form.accepts(request.vars, session):
+        units = form.vars.units
+        organization_id=session.organization['id']
+        pledgedrive_id=session.pledgedrive['id']
+        segment_id=session.segment['id']
+        segment_start_time=session.segment['start_time']
+        segment_end_time=session.segment['end_time']
+        time_format = "%Y-%m-%d %H:%M:%S"
+        segment_start_time = datetime.datetime.fromtimestamp(time.mktime(time.strptime(segment_start_time, time_format)))
+        segment_end_time = datetime.datetime.fromtimestamp(time.mktime(time.strptime(segment_end_time, time_format)))
+
+        units = int(units)
+        a = 1
+
+        title=session.segment['title']
+        description=session.segment['description']
+        goal=session.segment['goal']
+        goal_type=session.segment['goal_type']
+        program=session.segment['program']
+        challenge=session.segment['challenge']
+
+        while a <= units:
+
+            segment_id += 1
+            # print segment_id
+
+
+
+
+            time_difference = segment_end_time - segment_start_time
+            segment_end_time = segment_end_time + time_difference
+            segment_start_time = segment_start_time + time_difference
+            # print segment_start_time
+            # print time_difference
+            # print segment_end_time
+
+            db.segment.insert(title=title,description=description,goal=goal,goal_type=goal_type,program=program,challenge=challenge,start_time=segment_start_time,end_time=segment_end_time)
+
+            # print a
+            a += 1
+            
+        response.flash='records inserted'
+        redirect(URL(r=request, f='quick_setup_segment'))
+
+    elif form.errors: response.flash='check for errors'
+
+    return dict(form=form, segments=segments)
 
 @service.json
 @service.jsonrpc

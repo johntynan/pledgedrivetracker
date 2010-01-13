@@ -1,0 +1,21 @@
+{{extend 'layout.html'}}
+<h1>Quick Setup: Add Segments</h1>
+{{=form}}
+
+<div>
+Selected Organization: {{=session.organization['name']}}
+</div>
+
+<div>
+Selected Pledge Drive: {{=session.pledgedrive['title']}}
+</div>
+
+<div>
+Selected Segment: {{=BEAUTIFY(session.segment)}}
+</div>
+
+{{=BEAUTIFY(segments)}}
+
+<!--
+{{=BEAUTIFY(session)}}
+-->
