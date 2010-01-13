@@ -18,13 +18,30 @@ error_page=URL(r=request,f='error')
 
 @auth.requires_login()
 def check_session_organization():
+    organizations=db(db.organization.created_by==auth.user.id).select().as_list()
+    if len(organizations) < 1:
+        redirect(URL(r=request, f='create_organization'))
+
     if not request.function=='session_organization_id_form' and not session.organization:
         redirect(URL(r=request, f='session_organization_id_form'))
 
 @auth.requires_login()
 def check_session_pledgedrive():
+    pledgedrives=db(db.pledgedrive.organization==session.organization_id).select().as_list()
+    if len(pledgedrives) < 1:
+        redirect(URL(r=request, f='create_pledgedrive'))
+
     if not request.function=='session_pledgedrive_id_form' and not session.pledgedrive:
         redirect(URL(r=request, f='session_pledgedrive_id_form'))
+
+@auth.requires_login()
+def check_session_segment():
+    segments=db(db.segment.pledgedrive==session.pledgedrive_id).select().as_list()
+    if len(segments) < 1:
+        redirect(URL(r=request, f='create_segment'))
+
+    if not request.function=='session_segment_id_form' and not session.segment:
+        redirect(URL(r=request, f='session_segment_id_form'))
 
 @auth.requires_login()
 def check_session_program():
@@ -42,9 +59,22 @@ def check_session_challenge():
         redirect(URL(r=request, f='session_challenge_id_form'))
 
 @auth.requires_login()
-def check_session_segment():
-    if not request.function=='session_segment_id_form' and not session.segment:
-        redirect(URL(r=request, f='session_segment_id_form'))
+def check_program():
+    programs=db(db.program.organization==session.organization_id).select().as_list()
+    if len(programs) < 1:
+        redirect(URL(r=request, f='create_program'))
+
+@auth.requires_login()
+def check_challenge():
+    challenges=db(db.challenge.organization==session.organization_id).select().as_list()
+    if len(challenges) < 1:
+        redirect(URL(r=request, f='create_challenge'))
+
+@auth.requires_login()
+def check_person():
+    persons=db(db.person.organization==session.organization_id).select().as_list()
+    if len(persons) < 1:
+        redirect(URL(r=request, f='create_person'))
 
 def check_session():
     check_session_organization()
@@ -60,9 +90,9 @@ def error():
 @auth.requires_login()
 def index():
     check_session()
-    check_session_program()
-    check_session_person()
-    check_session_challenge()
+    # check_session_program()
+    # check_session_person()
+    # check_session_challenge()
     """
     example action using the internationalization operator T and flash
     rendered by views/default/index.html or views/generic.html
@@ -236,14 +266,17 @@ def create_person():
     organization=db.organization[organization_id] or redirect(error_page)
     # form=crud.create(db.person,next=url('list_persons_by_organization',organization_id))
     # form=crud.create(db.person,next=url('index'))
+    form=crud.create(db.person,next=url('create_challenge'))
+    '''
     form = SQLFORM(db.person,next=url('index'))
     if form.accepts(request.vars, session): 
         response.flash='record inserted'
         session.person=dict(form.vars)
         session.person_id = dict(form.vars)['id']
-        redirect(URL(r=request, f='index'))
+        # redirect(URL(r=request, f='index'))
+        redirect(URL(r=request, f='create_challenge'))
     elif form.errors: response.flash='form errors'
-
+    '''
     return dict(form=form,organization=organization)
 
 @auth.requires_login()
@@ -281,16 +314,25 @@ def create_program():
     check_session_organization()
     organization_id=session.organization['id']
     organization=db.organization[organization_id] or redirect(error_page)
+    # rather than show the programs already in the database for this organization, how can we check to see that the program title entered is unique 
+    # (not to the db) but to this particular organization?
+    programs=db(db.program.organization==organization_id).select().as_list()
+
     # form=crud.create(db.program,next=url('index'))
+    form=crud.create(db.program,next=url('create_segment'))
+    '''
     form = SQLFORM(db.program,next=url('index'))
     if form.accepts(request.vars, session): 
         response.flash='record inserted'
         session.program=dict(form.vars)
         session.program_id = dict(form.vars)['id']
-        redirect(URL(r=request, f='index'))
+        # redirect(URL(r=request, f='index'))
+        # how to specify a "next" parameter for this class so that we can specify where the form will submit to?
+        # In this case, either index or create_segment
+        redirect(URL(r=request, f='create_segment'))
     elif form.errors: response.flash='form errors'
-
-    return dict(form=form,organization=organization)
+    '''
+    return dict(form=form,organization=organization,programs=programs)
 
 @auth.requires_login()
 def view_program():
@@ -373,13 +415,16 @@ def list_pledgedrives_by_organization():
 def create_challenge():
     check_session_organization()
     check_session_pledgedrive()
-    check_session_person()
+    # check_session_person()
+    check_person()
     organization=session.organization['id']
     pledgedrive_id=session.pledgedrive['id']
-    person_id=session.person['id']
+    # person_id=session.person['id']
     pledgedrive=db.pledgedrive[pledgedrive_id] or redirect(error_page)
-    person=db.person[person_id] or redirect(error_page)
+    # person=db.person[person_id] or redirect(error_page)
     # form=crud.create(db.challenge,next=url('index'))
+    form=crud.create(db.challenge,next=url('create_segment'))
+    '''
     form = SQLFORM(db.challenge,next=url('index'))
     if form.accepts(request.vars, session): 
         response.flash='record inserted'
@@ -387,8 +432,9 @@ def create_challenge():
         session.challenge_id = dict(form.vars)['id']
         redirect(URL(r=request, f='index'))
     elif form.errors: response.flash='form errors'
-
-    return dict(form=form,pledgedrive=pledgedrive,organization=organization,person=person)
+    '''
+    # return dict(form=form,pledgedrive=pledgedrive,organization=organization,person=person)
+    return dict(form=form,pledgedrive=pledgedrive,organization=organization)
 
 @auth.requires_login()
 def view_challenge():
@@ -422,9 +468,9 @@ def list_challenges_by_pledgedrive():
 def create_segment():
     check_session_organization()
     check_session_pledgedrive()
-    check_session_program()
-    check_session_person()
-    check_session_challenge()
+    check_program()
+    # check_person()
+    check_challenge()
     
     # form=crud.create(db.segment,next=url('list_segments'))
     # form=crud.create(db.segment,next=url('index'))
