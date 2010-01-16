@@ -92,7 +92,7 @@ db.define_table('challenge',
     Field('amount','integer'),
     Field('description','text'),
     Field('talkingpoints','text'),
-    Field('type'),
+    # Field('type'),
     Field('condition'),
     Field('state'),
     Field('organization',db.organization,default=session.organization_id,readable=False,writable=False),
@@ -102,7 +102,7 @@ db.define_table('challenge',
 db.challenge.person.requires=IS_IN_DB(db,'person.id','%(name)s')
 db.challenge.pledgedrive.requires=IS_IN_DB(db,'pledgedrive.id','%(title)s')
 db.challenge.organization.requires=IS_IN_DB(db,'organization.id','%(name)s')
-db.challenge.type.requires=IS_IN_SET(CHALLENGE_TYPES)
+# db.challenge.type.requires=IS_IN_SET(CHALLENGE_TYPES)
 db.challenge.condition.requires=IS_IN_SET(CHALLENGE_CONDITIONS)
 db.challenge.state.requires=IS_IN_SET(CHALLENGE_STATES)
 

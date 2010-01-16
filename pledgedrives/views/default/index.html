@@ -16,7 +16,6 @@ $(document).ready(function(){
 {{=button('Pledge Entry','frame_wrapper_pledge_entry.html')}}
 <button onclick="jQuery('div.reports,div#_reports').slideToggle();">Reports</button>
 <button onclick="jQuery('div.setup,div#_setup').slideToggle();">Setup</button>
-{{=button('Quick Setup: Segments','quick_setup_segment')}}
 </div>
 
 <div class="reports">
@@ -51,10 +50,9 @@ $(document).ready(function(){
     <a href="{{=URL(r=request,f='list_segments_by_pledgedrive',args=session.pledgedrive['id'])}}">View Segments for Current Pledge Drive</a> |    <a href="{{=URL(r=request,f='create_segment',args=session.pledgedrive['id'])}}">Add Segment to Current Pledge Drive</a> <br />
     <a href="{{=URL(r=request,f='list_pledges_by_pledgedrive',args=session.pledgedrive['id'])}}">View Pledges for Current Pledge Drive</a> <br />
     <a href="{{=URL(r=request,f='list_pledges_by_segment',args=session.segment['id'])}}">View Pledges for Current Segment</a> |
-    <a href="{{=URL(r=request,f='create_pledge',args=session.segment['id'])}}">Add Pledge to Current Segment</a>
+    <a href="{{=URL(r=request,f='create_pledge',args=session.segment['id'])}}">Add Pledge to Current Segment</a><br />
+{{=button('Quick Setup: Segments','quick_setup_segment')}}
 </div>
-
-
 
 <div>
 Selected Organization: {{=session.organization['name']}}

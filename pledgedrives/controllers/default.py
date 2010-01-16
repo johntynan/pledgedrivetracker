@@ -808,7 +808,6 @@ def quick_setup_segment():
         units = int(units)
         a = 1
 
-        title=session.segment['title']
         description=session.segment['description']
         goal=session.segment['goal']
         goal_type=session.segment['goal_type']
@@ -820,8 +819,7 @@ def quick_setup_segment():
             segment_id += 1
             # print segment_id
 
-
-
+            title='Auto Segment: ' + str(a)
 
             time_difference = segment_end_time - segment_start_time
             segment_end_time = segment_end_time + time_difference
