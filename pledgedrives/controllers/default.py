@@ -677,12 +677,25 @@ def mini_pledgedrive_totals():
     pledgedrive_id=session.pledgedrive['id']
     pledgedrive=db(db.pledgedrive.id==pledgedrive_id).select()
     
+    pledgedrive_pledges = db(db.pledge.pledgedrive==pledgedrive_id).select().as_list()[0]
+
     pledgedrive_total_pledges = len(db(db.pledge.pledgedrive==pledgedrive_id).select())
 
+    # commented out, since these statments don't work with Google App Engine
+    '''
     pledge_amounts_for_pledgdrive = db(db.pledge.pledgedrive==pledgedrive_id).select(db.pledge.amount.sum())
 
     pledgedrive_total_dollars=pledge_amounts_for_pledgdrive[0]._extra[db.pledge.amount.sum()]
-        
+    '''
+
+    all_pledges = db(db.pledge.pledgedrive==pledgedrive_id).select().as_list()
+
+    pledgedrive_total_dollars = 0
+     
+    for o in all_pledges:
+        pledgedrive_total_dollars = pledgedrive_total_dollars + o['amount']
+
+
     return dict(pledgedrive_total_pledges=pledgedrive_total_pledges,pledgedrive_total_dollars=pledgedrive_total_dollars)
 
     # content = DIV('<h1>Drive Totals</h1>' + '<p><strong>Total Pledges</strong>: <strong>'+ str(pledgedrive_total_pledges) + '</strong>',  _id='content')
@@ -698,10 +711,20 @@ def mini_segment_goal():
     
     segment_total_pledges = len(db(db.pledge.segment==segment_id).select())
 
+    # commented out, since these statments don't work with Google App Engine
+    '''
     pledge_amounts_for_segment = db(db.pledge.segment==segment_id).select(db.pledge.amount.sum())
 
     segment_total_dollars=pledge_amounts_for_segment[0]._extra[db.pledge.amount.sum()]
-    
+    '''
+
+    all_pledges_for_segment = db(db.pledge.pledgedrive==segment_id).select().as_list()
+
+    segment_total_dollars = 0
+     
+    for o in all_pledges_for_segment:
+        segment_total_dollars = segment_total_dollars + o['amount']
+
     if segment[0].goal_type == 'Pledge':
     
         goal = 'Pledge Goal:' + str(segment[0].goal)
@@ -721,9 +744,19 @@ def mini_segment_totals():
     
     segment_total_pledges = len(db(db.pledge.segment==segment_id).select())
 
+    # commented out, since these statments don't work with Google App Engine
+    '''
     pledge_amounts_for_segment = db(db.pledge.segment==segment_id).select(db.pledge.amount.sum())
 
     segment_total_dollars=pledge_amounts_for_segment[0]._extra[db.pledge.amount.sum()]
+    '''
+
+    all_pledges_for_segment = db(db.pledge.pledgedrive==segment_id).select().as_list()
+
+    segment_total_dollars = 0
+     
+    for o in all_pledges_for_segment:
+        segment_total_dollars = segment_total_dollars + o['amount']
         
     return dict(segment_total_pledges=segment_total_pledges,segment_total_dollars=segment_total_dollars)    
     
