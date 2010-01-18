@@ -718,7 +718,7 @@ def mini_segment_goal():
     segment_total_dollars=pledge_amounts_for_segment[0]._extra[db.pledge.amount.sum()]
     '''
 
-    all_pledges_for_segment = db(db.pledge.pledgedrive==segment_id).select().as_list()
+    all_pledges_for_segment = db(db.pledge.segment==segment_id).select().as_list()
 
     segment_total_dollars = 0
      
@@ -751,7 +751,7 @@ def mini_segment_totals():
     segment_total_dollars=pledge_amounts_for_segment[0]._extra[db.pledge.amount.sum()]
     '''
 
-    all_pledges_for_segment = db(db.pledge.pledgedrive==segment_id).select().as_list()
+    all_pledges_for_segment = db(db.pledge.segment==segment_id).select().as_list()
 
     segment_total_dollars = 0
      
@@ -834,9 +834,9 @@ def quick_setup_segment():
         segment_id=session.segment['id']
         segment_start_time=session.segment['start_time']
         segment_end_time=session.segment['end_time']
-        time_format = "%Y-%m-%d %H:%M:%S"
-        segment_start_time = datetime.datetime.fromtimestamp(time.mktime(time.strptime(segment_start_time, time_format)))
-        segment_end_time = datetime.datetime.fromtimestamp(time.mktime(time.strptime(segment_end_time, time_format)))
+        # time_format = "%Y-%m-%d %H:%M:%S"
+        # segment_start_time = datetime.datetime.fromtimestamp(time.mktime(time.strptime(segment_start_time, time_format)))
+        # segment_end_time = datetime.datetime.fromtimestamp(time.mktime(time.strptime(segment_end_time, time_format)))
 
         units = int(units)
         a = 1
