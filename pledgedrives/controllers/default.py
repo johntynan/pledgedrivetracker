@@ -383,9 +383,9 @@ def create_pledgedrive():
 @auth.requires_login()
 def view_pledgedrive():
     check_session()
-    pledgedrive_id==request.args(0)
+    pledgedrive_id=request.args(0)
     # pledgedrive_id=session.pledgedrive['id']
-    pledgedrive=db.pledgedrive[pledgedrive.id] or redirect(error_page)
+    pledgedrive=db.pledgedrive[pledgedrive_id] or redirect(error_page)
     return dict(pledgedrive=pledgedrive)
 
 @auth.requires_login()
@@ -408,8 +408,7 @@ def list_pledgedrives_by_organization():
     organization_id=session.organization['id']
     organization=db.organization[organization_id] or redirect(error_page)
     pledgedrives=db(db.pledgedrive.organization==organization_id).select(orderby=db.pledgedrive.title)
-    # dollar_goal = db.pledgedrive.pledge_goal * db.pledgedrive.projected_average_pledge
-    dollar_goal = 'TBD'
+    dollar_goal = pledgedrives[0].pledge_goal * pledgedrives[0].projected_average_pledge
     return dict(organization=organization, pledgedrives=pledgedrives, dollar_goal=dollar_goal)
 
 @auth.requires_login()
@@ -452,7 +451,7 @@ def list_challenges():
 
 @auth.requires_login()
 def edit_challenge():
-    challenge_id=session.challenge['id']
+    challenge_id=request.args(0)
     challenge=db.challenge[challenge_id] or redirect(error_page)
     form=crud.update(db.challenge,challenge,next=url('view_challenge',challenge_id))
     return dict(form=form)
@@ -552,7 +551,7 @@ def list_pledges():
 @auth.requires_login()
 def list_pledges_by_pledgedrive():
     check_session()
-    pledgedrive_id=session.pledgedrive['id']
+    pledgedrive_id=request.args(0)
     pledgedrive=db.pledgedrive[pledgedrive_id] or redirect(error_page)
     pledges=db(db.pledge.pledgedrive==pledgedrive.id).select(orderby=db.pledge.id)
     return dict(pledges=pledges)

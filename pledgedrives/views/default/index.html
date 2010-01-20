@@ -21,14 +21,12 @@ $(document).ready(function(){
 <div class="reports">
 <ul>
 <li><a href="{{=URL(r=request,f='list_segments_by_pledgedrive',args=session.pledgedrive['id'])}}">Break Overview (without totals)</a></li>
-<li><a href="{{=URL(r=request,f='list_programs_by_organization',args=session.organization['id'])}}">Complete Programs List</a></li>
-<li><a href="challengereport.html">Challenge Report (by day)</a></li>
 <li><a href="{{=URL(r=request,f='list_challenges_by_pledgedrive',args=session.pledgedrive['id'])}}">Complete Challenge Report</a></li>
+<li><a href="challengereport.html">Challenge Report (by day)</a></li>
 <li><a href="goalreport.html">Projected Goals Report</a></li>
 <li><a href="selectbreak.html">Single Break Report</a></li>
 <li><a href="selectday.html">Day Totals (detailed)</a></li>
 <li><a href="selectdaysummary.html">Day Totals (summary)</a></li>
-
 <li><a href="pledgelevels.html">Pledge Levels</a></li>
 <li><a href="drivereport.html">Drive Totals (detailed)</a></li>
 <li><a href="drivesummary.html">Drive Totals (summary)</a></li>
