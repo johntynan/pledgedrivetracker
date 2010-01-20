@@ -15,14 +15,15 @@ $(document).ready(function() {
 <table class="smarttable">
 <thead>
     <th>Name</th>
+    <th>Role</th>
     <th>Actions</th>
 </thead>
 <tbody>
 {{for person in persons:}}
 <tr>
     <td>{{=person.name}}</td>    
+    <td>{{=person.role}}</td>
     <td>
-    <a href="{{=URL(r=request,f='view_person',args=person.id)}}">View</a> | 
     <a href="{{=URL(r=request,f='edit_person',args=person.id)}}">Edit</a>
     </td>
 </tr>

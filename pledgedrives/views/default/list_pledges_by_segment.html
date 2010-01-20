@@ -16,6 +16,7 @@ $(document).ready(function() {
 <thead>
     <th>Amount</th>
     <th>Name</th>
+    <th>Time Created</th>
     <th>Actions</th>
 </thead>
 <tbody>
@@ -23,7 +24,7 @@ $(document).ready(function() {
 <tr>
     <td>{{=pledge.amount}}</td>    
     <td>{{=pledge.name}}</td>    
-
+    <td>{{=pledge.created_on}}</td>
     <td>
     <a href="{{=URL(r=request,f='edit_pledge',args=pledge.id)}}">Edit</a>
     </td>
