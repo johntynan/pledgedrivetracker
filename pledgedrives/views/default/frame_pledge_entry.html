@@ -3,11 +3,11 @@
  <title>Pledge Drive Manager</title>
 
     <frameset  rows="45%,*" cols="35%,30%,*">
-        <frame name="rightframe" src="/chat/producer_messages" marginwidth="10" marginheight="10" scrolling="auto" frameborder="1">
+        <frame name="producer" src="mini_message_add.html" marginwidth="10" marginheight="10" scrolling="auto" frameborder="1">
         <frame name="rightframe" src="mini_segment_goal.html" marginwidth="10" marginheight="10" scrolling="auto" frameborder="1">
         <frame name="rightframe" src="mini_segment_totals.html" marginwidth="10" marginheight="10" scrolling="auto" frameborder="1">
-        <frame name="leftframe" src="/chat/thank_you_chat" marginwidth="10" marginheight="10" scrolling="auto" frameborder="0">
-        <frame name="leftframe" src="/chat/thank_you_messages" marginwidth="10" marginheight="10" scrolling="auto" frameborder="0">
+        <frame name="producer" src="mini_message_list.html" marginwidth="10" marginheight="10" scrolling="auto" frameborder="1">
+        <frame name="thankyou" src="mini_pledge_names.html" marginwidth="10" marginheight="10" scrolling="auto" frameborder="1">
         <frame name="rightframe" src="{{=URL(r=request,f='mini_create_pledge',args=session.segment['id'])}}" marginwidth="10" marginheight="10" scrolling="auto" frameborder="1">
     </frameset>
 

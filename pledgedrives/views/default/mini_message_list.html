@@ -1,0 +1,15 @@
+{{extend 'layout_plain.html'}}
+
+<META HTTP-EQUIV="Refresh" Content="10; URL=mini_message_list.html">
+
+<div id="content" style="background-color:white;">
+
+<h2>Producer Messages</h2>
+
+<div style="width:100%;">
+{{for i in messages:}}
+<div>{{=i['body']}}</div>
+{{pass}}
+</div>
+
+</div>

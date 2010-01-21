@@ -136,6 +136,7 @@ db.segment.goal_type.requires=IS_IN_SET(GOAL_TYPES)
 db.define_table('pledge',
     Field('amount','integer'),
     Field('name'),
+    Field('comment'),
     Field('segment',db.segment,default=session.segment_id,readable=False,writable=False), 
     Field('pledgedrive',db.pledgedrive,default=session.pledgedrive_id,readable=False,writable=False),
     Field('organization',db.organization,default=session.organization_id,readable=False,writable=False),
@@ -150,12 +151,11 @@ db.pledge.organization.requires=IS_IN_DB(db,'organization.id','%(name)s')
 db.pledge.name.requires=IS_ALPHANUMERIC()
 
 db.define_table('message',
-    Field('person',db.person),
     Field('body','text'),
-    Field('organization',db.organization), # default=request.args(0),readable=False,writable=False 
+    Field('organization',db.organization,default=session.organization_id,readable=False,writable=False),
     Field('created_by',default=me,writable=False,readable=False),
     Field('created_on','datetime',default=request.now,writable=False,readable=False)
     )
-db.message.organization.requires=IS_IN_DB(db,'organization.id','%(name)s')
-db.message.person.requires=IS_IN_DB(db,'person.id','%(name)s')
 db.message.body.requires=IS_NOT_EMPTY()
+db.message.organization.requires=IS_IN_DB(db,'organization.id','%(name)s')
+

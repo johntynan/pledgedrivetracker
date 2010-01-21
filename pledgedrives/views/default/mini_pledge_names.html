@@ -1,0 +1,20 @@
+{{extend 'layout_plain.html'}}
+
+<META HTTP-EQUIV="Refresh" Content="10; URL=mini_pledge_names.html">
+
+<div id="content" style="background-color:white;">
+
+<h1>Thank You Names</h1>
+
+<table border="1">
+<tr>
+<th>Name</th><th>Amount</th><th>Comment</th>
+</tr>
+{{for i in pledges:}}
+<tr>
+<td>{{=i['name']}}</td><td>{{=i['amount']}}</td><td>{{=i['comment']}}</td>
+</tr>
+{{pass}}
+</table>
+
+</div>

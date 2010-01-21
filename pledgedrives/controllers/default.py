@@ -941,6 +941,21 @@ def mini_segment_navigation():
 
     return dict(form=form,segments=segments)
 
+@service.json
+def mini_pledge_names():
+    # segment_id=request.args(0)
+    segment_id=session.segment['id']
+    segment=db.segment[segment_id] or redirect(error_page)
+    # this could be breaking in GAE
+    # pledges=db(db.pledge.segment==segment_id).select(orderby=db.pledge.id)
+    pledges=db(db.pledge.segment==segment_id).select(orderby=~db.pledge.created_on)
+    return dict(pledges=pledges,segment_id=segment_id)
+
+@service.json
+def mini_pledge_names_nav():
+    check_session()
+    return dict()
+
 @auth.requires_login()
 def quick_setup_segment():
     check_session()
@@ -1015,9 +1030,13 @@ def service_pledgedrive_pledges(pledgedrive_id):
 
     return dict(pledgedrive_pledges=pledgedrive_pledges)
     
-def create_message():
+def mini_message_add():
     form = crud.create(db.message)
     return dict(form=form)
+
+def mini_message_list():
+    messages=db(db.message.organization==session.organization['id']).select(orderby=~db.message.created_on)
+    return dict(messages=messages)
 
 def user():
     """
