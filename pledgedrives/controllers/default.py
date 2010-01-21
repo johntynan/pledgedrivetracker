@@ -257,7 +257,7 @@ def edit_organization():
     check_session()
     organization_id=session.organization['id']
     organization=db.organization[organization_id] or redirect(error_page)
-    form=crud.update(db.organization,organization,next=url('index'))
+    form=crud.update(db.organization,organization,next=url('list_organizations'))
     return dict(form=form)
 
 @auth.requires_login()
@@ -299,7 +299,7 @@ def edit_person():
     person_id=request.args(0)
     person=db.person[person_id] or redirect(error_page)
     # form=crud.update(db.person,person,next=url('view_person',person_id))
-    form=crud.update(db.person,person,next=url('index'))
+    form=crud.update(db.person,person,next=url('list_persons_by_organization'))
     return dict(form=form)
 
 @auth.requires_login()    
@@ -354,7 +354,7 @@ def edit_program():
     program_id=request.args(0)
     program=db.program[program_id] or redirect(error_page)
     # form=crud.update(db.program,program,next=url('view_program',program_id))
-    form=crud.update(db.program,program,next=url('index'))
+    form=crud.update(db.program,program,next=url('list_programs_by_organization'))
     return dict(form=form)
 
 @auth.requires_login()
@@ -386,7 +386,8 @@ def view_pledgedrive():
     pledgedrive_id=request.args(0)
     # pledgedrive_id=session.pledgedrive['id']
     pledgedrive=db.pledgedrive[pledgedrive_id] or redirect(error_page)
-    return dict(pledgedrive=pledgedrive)
+    dollar_goal = pledgedrive.pledge_goal * pledgedrive.projected_average_pledge
+    return dict(pledgedrive=pledgedrive,dollar_goal=dollar_goal)
 
 @auth.requires_login()
 def list_pledgedrives():
@@ -399,7 +400,8 @@ def edit_pledgedrive():
     check_session()
     pledgedrive_id=session.pledgedrive['id']
     pledgedrive=db.pledgedrive[pledgedrive_id] or redirect(error_page)
-    form=crud.update(db.pledgedrive,pledgedrive,next=url('view_pledgedrive',pledgedrive_id))
+    # form=crud.update(db.pledgedrive,pledgedrive,next=url('view_pledgedrive',pledgedrive_id))
+    form=crud.update(db.pledgedrive,pledgedrive,next=url('list_pledgedrives_by_organization'))
     return dict(form=form)
 
 @auth.requires_login()
@@ -453,7 +455,8 @@ def list_challenges():
 def edit_challenge():
     challenge_id=request.args(0)
     challenge=db.challenge[challenge_id] or redirect(error_page)
-    form=crud.update(db.challenge,challenge,next=url('view_challenge',challenge_id))
+    # form=crud.update(db.challenge,challenge,next=url('view_challenge',challenge_id))
+    form=crud.update(db.challenge,challenge,next=url('list_challenges_by_pledgedrive'))
     return dict(form=form)
 
 @auth.requires_login()
@@ -509,7 +512,8 @@ def edit_segment():
     check_session()
     segment_id=request.args(0)
     segment=db.segment[segment_id] or redirect(error_page)
-    form=crud.update(db.segment,segment,next=url('view_segment',segment_id))
+    # form=crud.update(db.segment,segment,next=url('view_segment',segment_id))
+    form=crud.update(db.segment,segment,next=url('list_segments_by_pledgedrive'))
     return dict(form=form)
 
 @auth.requires_login()
@@ -572,7 +576,8 @@ def edit_pledge():
     check_session()
     pledge_id=request.args(0)
     pledge=db.pledge[pledge_id] or redirect(error_page)
-    form=crud.update(db.pledge,pledge,next=url('view_pledge',pledge_id))
+    # form=crud.update(db.pledge,pledge,next=url('view_pledge',pledge_id))
+    form=crud.update(db.pledge,pledge,next=url('list_pledges_by_pledgedrive'))
     return dict(form=form)
 
 @auth.requires_login()

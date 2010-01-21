@@ -36,6 +36,7 @@ $(document).ready(function() {
     <td>{{=segment.program}}</td>
     <td>{{=segment.challenge}}</td>    
     <td>
+    <a href="{{=URL(r=request,f='view_segment',args=segment.id)}}">View</a> | 
     <a href="{{=URL(r=request,f='edit_segment',args=segment.id)}}">Edit</a>
     </td>
 </tr>
