@@ -504,7 +504,7 @@ def list_segments_by_pledgedrive():
     check_session()
     pledgedrive_id=session.pledgedrive['id']
     pledgedrive=db.pledgedrive[pledgedrive_id] or redirect(error_page)
-    segments=db(db.segments.pledgedrive==pledgedrive.id).select(orderby=db.segments.start_time)
+    segments=db(db.segment.pledgedrive==pledgedrive.id).select(orderby=db.segment.start_time)
     return dict(pledgedrive=pledgedrive, segments=segments)
 
 @auth.requires_login()
@@ -515,14 +515,6 @@ def edit_segment():
     # form=crud.update(db.segment,segment,next=url('view_segment',segment_id))
     form=crud.update(db.segment,segment,next=url('list_segments_by_pledgedrive'))
     return dict(form=form)
-
-@auth.requires_login()
-def list_segments_by_pledgedrive():
-    check_session()
-    pledgedrive_id=session.pledgedrive['id']
-    pledgedrive=db.pledgedrive[pledgedrive_id] or redirect(error_page)
-    segments=db(db.segment.pledgedrive==pledgedrive.id).select(orderby=db.segment.start_time)
-    return dict(pledgedrive=pledgedrive, segments=segments)
 
 @auth.requires_login()
 def create_pledge():
@@ -613,6 +605,51 @@ def frame_pledge_entry():
     check_session()
     return dict()
 
+
+@auth.requires_login()
+def report_segments_by_pledgedrive():
+    check_session()
+    pledgedrive_id=session.pledgedrive['id']
+    pledgedrive=db.pledgedrive[pledgedrive_id] or redirect(error_page)
+    segments=db(db.segment.pledgedrive==pledgedrive.id).select(orderby=db.segment.start_time)
+
+    segment_dates = []
+    segment_titles = []
+    segment_goal_types = []
+    segment_goals = []
+    pledge_totals = []
+    dollar_totals = []
+    compiled_data = []
+
+    for o in segments:
+        segment_dates.append(o.start_time.strftime("%m/%d : %I:%m %p"))
+        segment_titles.append(o.title)
+        segment_goal_types.append(o.goal_type)
+        segment_goals.append(o.goal)
+        pledge_totals.append(len(db(db.pledge.segment==o.id).select()))
+
+        segment_pledges=db(db.pledge.segment==o.id).select().as_list()
+
+        segment_total_dollars = 0
+
+        for i in segment_pledges:
+            segment_total_dollars = segment_total_dollars + i['amount']
+
+        dollar_totals.append(segment_total_dollars)
+
+    compiled_list = [segment_dates,segment_titles,segment_goal_types,segment_goals,pledge_totals,dollar_totals]
+    converted_list=[]
+ 
+    x = len(segment_dates)
+
+    while x:
+        x = x-1
+        new_row = [compiled_list[0][x],compiled_list[1][x],compiled_list[2][x],compiled_list[3][x],compiled_list[4][x],compiled_list[5][x]]
+        converted_list.append(new_row)
+
+    return dict(pledgedrive=pledgedrive,segments=segments,compiled_list=compiled_list,converted_list=converted_list)
+
+
 @service.json
 def report_pledgedrive_totals():
     check_session()
@@ -638,13 +675,60 @@ def report_pledgedrive_totals():
     pledgedrive_total_dollars = 0
      
     for o in all_pledges:
-        pledgedrive_total_dollars = pledgedrive_total_dollars + o['amount']
 
+        pledgedrive_total_dollars = pledgedrive_total_dollars + o['amount']
 
     return dict(pledgedrive_total_pledges=pledgedrive_total_pledges,pledgedrive_total_dollars=pledgedrive_total_dollars)
 
     # content = DIV('<h1>Drive Totals</h1>' + '<p><strong>Total Pledges</strong>: <strong>'+ str(pledgedrive_total_pledges) + '</strong>',  _id='content')
     # return dict(content=content)
+
+@service.json
+def report_pledgedrive_totals_detailed():
+    check_session()
+
+    pledgedrive_id=session.pledgedrive['id']
+    pledgedrive=db(db.pledgedrive.id==pledgedrive_id).select()
+    
+    # pledgedrive_pledges = db(db.pledge.pledgedrive==pledgedrive_id).select().as_list()[0]
+
+    pledgedrive_pledges = db(db.pledge.pledgedrive==pledgedrive_id).select().as_list()
+
+    pledgedrive_total_pledges = len(db(db.pledge.pledgedrive==pledgedrive_id).select())
+
+    # commented out, since these statments don't work with Google App Engine
+    '''
+    pledge_amounts_for_pledgdrive = db(db.pledge.pledgedrive==pledgedrive_id).select(db.pledge.amount.sum())
+
+    pledgedrive_total_dollars=pledge_amounts_for_pledgdrive[0]._extra[db.pledge.amount.sum()]
+    '''
+
+    all_pledges = db(db.pledge.pledgedrive==pledgedrive_id).select().as_list()
+
+    pledgedrive_total_dollars = 0
+     
+    for o in all_pledges:
+
+        pledgedrive_total_dollars = pledgedrive_total_dollars + o['amount']
+
+    pledge_goal = pledgedrive[0].pledge_goal
+
+    projected_average_pledge = pledgedrive[0].projected_average_pledge
+
+    dollar_goal = pledgedrive[0].pledge_goal * pledgedrive[0].projected_average_pledge
+
+    dollars_remaining = dollar_goal - pledgedrive_total_dollars
+
+    pledges_remaining = pledge_goal - pledgedrive_total_pledges
+
+    '''
+    pledgedrive_start_time=session.pledgedrive['start_time']
+    pledgedrive_end_time=session.pledgedrive['end_time']
+    time_difference = pledgedrive_end_time - pledgedrive_start_time
+    '''
+
+    return dict(pledgedrive_total_pledges=pledgedrive_total_pledges,pledgedrive_total_dollars=pledgedrive_total_dollars,dollar_goal=dollar_goal,pledge_goal=pledge_goal,projected_average_pledge=projected_average_pledge,dollars_remaining=dollars_remaining,pledges_remaining=pledges_remaining)
+
 
 def report_mini_segment_goal():
     check_session()

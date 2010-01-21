@@ -13,6 +13,7 @@ $(document).ready(function() {
 <table class="smarttable">
 <thead>
     <th>Title</th>
+    <th>Description</th>
     <th>Start</th>
     <th>End</th>
     <th>Pledge Goal</th>
@@ -23,13 +24,13 @@ $(document).ready(function() {
 <tbody>
 <tr>
     <td>{{=pledgedrive.title}}</td>    
+    <td>{{=pledgedrive.description}}</td>
     <td>{{=pledgedrive.start_time}}</td>
     <td>{{=pledgedrive.end_time}}</td>
     <td>{{=pledgedrive.pledge_goal}}</td>
     <td>{{=pledgedrive.projected_average_pledge}}</td>
     <td>{{=dollar_goal}}</td>
     <td>
-    <a href="{{=URL(r=request,f='view_pledgedrive',args=pledgedrive.id)}}">View</a> | 
     <a href="{{=URL(r=request,f='edit_pledgedrive',args=pledgedrive.id)}}">Edit</a>
     </td>
 </tr>

@@ -1,0 +1,30 @@
+{{extend 'layout.html'}}
+
+<div id="content" style="background-color:white;">
+
+<h1>Pledge Drive Totals (Detailed)</h1>
+
+<!--
+<table>
+<tr><th>Day</th><th>Total Dollars</th><th>Total Pledges</th></tr>
+</table>
+-->
+
+<h2>Grand Total in Pledges: {{=pledgedrive_total_pledges}}</h2>
+
+<h2>Grand Total in Dollars: ${{=pledgedrive_total_dollars}}</h2>
+
+
+<hr />
+
+<h3>Projected Average Pledge: ${{=projected_average_pledge}}</h3>
+
+<h3>Pledge Goal: {{=pledge_goal}}</h3>
+
+<h3>Pledges Remaining: {{=pledges_remaining}}</h3>
+
+<h3>Dollar Goal: ${{=dollar_goal}}</h3>
+
+<h3>Dollars Remaining: ${{=dollars_remaining}}</h3>
+
+</div>
