@@ -17,6 +17,10 @@ def url(f, args=[]): return URL(r=request,f=f,args=args)
 
 error_page=URL(r=request,f='error')
 
+response.title = T('Pledge Drive Tracker')
+response.subtitle = T('Making Public Broadcasting Fund Drives More Efficient')
+response.author = 'John Tynan'
+
 @auth.requires_login()
 def check_session_organization():
     organizations=db(db.organization.created_by==auth.user.id).select().as_list()
@@ -99,8 +103,6 @@ def index():
     rendered by views/default/index.html or views/generic.html
     """
 
-    response.flash = T('Welcome to the Pledge Drive Tracker')
-
     organization = session.organization
     pledgedrive=session.pledgedrive
     program=session.program
@@ -108,7 +110,7 @@ def index():
     challenge=session.challenge
     segment=session.segment
  
-    return dict(message=T('Pledge Drive Tracker'),organization=organization,pledgedrive=pledgedrive,person=person,challenge=challenge,segment=segment)
+    return dict(pledgedrive=pledgedrive,person=person,challenge=challenge,segment=segment)
 
 
 @auth.requires_login()

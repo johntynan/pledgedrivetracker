@@ -9,7 +9,9 @@ $(document).ready(function(){
 
 </script>
 
+<!--
 {{try:}}{{=H2(message)}}{{except:}}{{=BEAUTIFY(response._vars)}}{{pass}}
+-->
 
 <div>
 {{=button('On-air Screen','frame_wrapper_onair.html')}}
@@ -71,23 +73,5 @@ Selected Segment: {{=session.segment['title']}}
 </div>
 </div>
 
-<!--
-{{=session.pledgedrive}}
-{{=session.pledgedrive['id']}}
-
-<div>
-Just in case we need to use these :)<br />
-{{=session.organization}}<br />
-{{=session.organization['id']}}<br />
-{{=session.organization['name']}}<br />
-{{=session.organization['address']}}<br />
-{{=session.organization['phone']}}<br />
-{{=session.organization['url']}}
-</div>
-
-{{=BEAUTIFY(response._vars)}}
 
 
-{{=BEAUTIFY(session)}}
-
--->

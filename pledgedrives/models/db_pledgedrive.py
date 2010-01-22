@@ -148,7 +148,8 @@ db.define_table('pledge',
 db.pledge.segment.requires=IS_IN_DB(db,'segment.id','%(title)s')
 db.pledge.pledgedrive.requires=IS_IN_DB(db,'pledgedrive.id','%(title)s')
 db.pledge.organization.requires=IS_IN_DB(db,'organization.id','%(name)s')
-db.pledge.name.requires=IS_ALPHANUMERIC()
+# db.pledge.name.requires=IS_ALPHANUMERIC()
+db.pledge.amount.requires=IS_NOT_EMPTY()
 
 db.define_table('message',
     Field('body','text'),

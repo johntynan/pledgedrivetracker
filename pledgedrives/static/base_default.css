@@ -121,8 +121,7 @@ html {
     font-size: 10pt;
     font-family: Arial,Helvetica;
     color: #333333;
-    // background: url('background.gif') repeat-x #3A3A3A;
-    background: #3A3A3A;
+    background: url('background.gif') repeat-x #3A3A3A;
 }
 
 a {
@@ -192,8 +191,7 @@ div.error {
 }
 
 .header {
-    // background: url('header.gif');
-    background: #3E3735;
+    background: url('header.gif');
     color: white;
     border-bottom: 1px #99f solid;
 }
@@ -204,8 +202,7 @@ div.error {
 }
 
 .footer {
-    // background: url('header.gif');
-    background: #3E3735;
+    background: url('header.gif');
     color: white;
     border-top: 1px #99f solid;
 }
@@ -412,8 +409,7 @@ ul.web2py-menu li:hover a:active
 
 ul.web2py-menu li
 {
-    // background: url('menu.gif');
-    background: #D6D6D6;
+    background: url('menu.gif');
 }
 
 ul.web2py-menu li:hover,
