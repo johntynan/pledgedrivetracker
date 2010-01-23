@@ -85,6 +85,7 @@ db.pledgedrive.end_time.default=request.now
 db.pledgedrive.organization.requires=IS_IN_DB(db,'organization.id','%(name)s')
 db.pledgedrive.start_time.requires=IS_DATETIME('%Y-%m-%d %H:%M:%S')
 db.pledgedrive.end_time.requires=IS_DATETIME('%Y-%m-%d %H:%M:%S')
+db.pledgedrive.pledge_goal.requires=IS_NOT_EMPTY()
 
 db.define_table('challenge',
     Field('title'),
@@ -106,6 +107,7 @@ db.challenge.organization.requires=IS_IN_DB(db,'organization.id','%(name)s')
 # db.challenge.type.requires=IS_IN_SET(CHALLENGE_TYPES)
 db.challenge.condition.requires=IS_IN_SET(CHALLENGE_CONDITIONS)
 db.challenge.state.requires=IS_IN_SET(CHALLENGE_STATES)
+db.challenge.amount.requires=IS_NOT_EMPTY()
 
 db.define_table('segment',
     Field('title'),
@@ -135,6 +137,7 @@ db.segment.challenge.requires=IS_IN_DB(db,'challenge.id','%(title)s')
 db.segment.goal_type.requires=IS_IN_SET(GOAL_TYPES)
 db.segment.start_time.requires=IS_DATETIME('%Y-%m-%d %H:%M:%S')
 db.segment.end_time.requires=IS_DATETIME('%Y-%m-%d %H:%M:%S')
+db.segment.goal.requires=IS_NOT_EMPTY()
 
 db.define_table('pledge',
     Field('amount','integer'),
