@@ -2,13 +2,13 @@
 
 <META HTTP-EQUIV="Refresh" Content="10; URL=mini_message_list.html">
 
-<div id="content" style="background-color:white;">
+<div class="frame_content">
 
 <h2>Producer Messages</h2>
 
 <div style="width:100%;">
-{{for i in messages:}}
-<div>{{=i['body']}}</div>
+{{for h,i in enumerate(messages):}}
+<div class="{{='odd' if h%2 else 'even'}}">{{=i['body']}}</div>
 {{pass}}
 </div>
 

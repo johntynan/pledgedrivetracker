@@ -950,6 +950,16 @@ def mini_pledge_names():
     return dict(pledges=pledges,segment_id=segment_id)
 
 @service.json
+def mini_pledge_names_no_reload():
+    # segment_id=request.args(0)
+    segment_id=session.segment['id']
+    segment=db.segment[segment_id] or redirect(error_page)
+    # this could be breaking in GAE
+    # pledges=db(db.pledge.segment==segment_id).select(orderby=db.pledge.id)
+    pledges=db(db.pledge.segment==segment_id).select(orderby=~db.pledge.created_on)
+    return dict(pledges=pledges,segment_id=segment_id)
+
+@service.json
 def mini_pledge_names_nav():
     check_session()
     return dict()
@@ -1027,6 +1037,20 @@ def service_pledgedrive_pledges(pledgedrive_id):
     pledgedrive_pledges = db(db.pledge.pledgedrive==pledgedrive_id).select().as_list()[0]
 
     return dict(pledgedrive_pledges=pledgedrive_pledges)
+
+def message_add():
+    form = crud.create(db.message,next=url('message_list'))
+    return dict(form=form)
+
+def message_edit():
+    message_id=request.args(0)
+    message=db.message[message_id] or redirect(error_page)
+    form = crud.update(db.message,message,next=url('message_list'))
+    return dict(form=form)
+
+def message_list():
+    messages=db(db.message.organization==session.organization['id']).select(orderby=~db.message.created_on)
+    return dict(messages=messages)
     
 def mini_message_add():
     form = crud.create(db.message)
@@ -1035,6 +1059,7 @@ def mini_message_add():
 def mini_message_list():
     messages=db(db.message.organization==session.organization['id']).select(orderby=~db.message.created_on)
     return dict(messages=messages)
+
 
 def user():
     """

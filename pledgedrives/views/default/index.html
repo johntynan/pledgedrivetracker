@@ -49,7 +49,11 @@ $(document).ready(function(){
     <a href="{{=URL(r=request,f='list_pledges_by_pledgedrive',args=session.pledgedrive['id'])}}">List Pledges for Current Pledge Drive</a> <br />
     <a href="{{=URL(r=request,f='list_pledges_by_segment',args=session.segment['id'])}}">List Pledges for Current Segment</a> |
     <a href="{{=URL(r=request,f='create_pledge',args=session.segment['id'])}}">Add Pledge to Current Segment</a><br />
+    <a href="{{=URL(r=request,f='message_list',args=session.organization['id'])}}">List Messages</a> | 
+    <a href="{{=URL(r=request,f='message_add',args=session.organization['id'])}}">Add Message</a><br />
+<p>
 {{=button('Quick Setup: Segments','quick_setup_segment')}}
+</p>
 </div>
 
 <div>

@@ -3,12 +3,12 @@
  <title>Pledge Drive Manager</title>
 
     <frameset  rows="45%,*" cols="35%,30%,*">
-        <frame name="producer" src="mini_message_add.html" marginwidth="10" marginheight="10" scrolling="auto" frameborder="1">
-        <frame name="rightframe" src="mini_segment_goal.html" marginwidth="10" marginheight="10" scrolling="auto" frameborder="1">
-        <frame name="rightframe" src="mini_segment_totals.html" marginwidth="10" marginheight="10" scrolling="auto" frameborder="1">
-        <frame name="producer" src="mini_message_list.html" marginwidth="10" marginheight="10" scrolling="auto" frameborder="1">
-        <frame name="thankyou" src="mini_pledge_names.html" marginwidth="10" marginheight="10" scrolling="auto" frameborder="1">
-        <frame name="rightframe" src="{{=URL(r=request,f='mini_create_pledge',args=session.segment['id'])}}" marginwidth="10" marginheight="10" scrolling="auto" frameborder="1">
+        <frame name="message_add" src="mini_message_add.html" marginwidth="10" marginheight="10" scrolling="auto" frameborder="1">
+        <frame name="segment_goal" src="mini_segment_goal.html" marginwidth="10" marginheight="10" scrolling="auto" frameborder="1">
+        <frame name="segment_totals" src="mini_segment_totals.html" marginwidth="10" marginheight="10" scrolling="auto" frameborder="1">
+        <frame name="message_list" src="mini_message_list.html" marginwidth="10" marginheight="10" scrolling="auto" frameborder="1">
+        <frame name="pledge_names" src="mini_pledge_names.html" marginwidth="10" marginheight="10" scrolling="auto" frameborder="1">
+        <frame name="create_pledge" src="{{=URL(r=request,f='mini_create_pledge',args=session.segment['id'])}}" marginwidth="10" marginheight="10" scrolling="auto" frameborder="1">
     </frameset>
 
 <noframes>
