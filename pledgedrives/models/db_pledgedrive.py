@@ -83,6 +83,8 @@ db.pledgedrive.title.requires=IS_NOT_EMPTY()
 db.pledgedrive.start_time.default=request.now
 db.pledgedrive.end_time.default=request.now
 db.pledgedrive.organization.requires=IS_IN_DB(db,'organization.id','%(name)s')
+db.pledgedrive.start_time.requires=IS_DATETIME('%Y-%m-%d %H:%M:%S')
+db.pledgedrive.end_time.requires=IS_DATETIME('%Y-%m-%d %H:%M:%S')
 
 db.define_table('challenge',
     Field('title'),
@@ -131,7 +133,8 @@ db.segment.program.requires=IS_IN_DB(db,'program.id','%(title)s')
 db.segment.pledgedrive.requires=IS_IN_DB(db,'pledgedrive.id','%(title)s')
 db.segment.challenge.requires=IS_IN_DB(db,'challenge.id','%(title)s')
 db.segment.goal_type.requires=IS_IN_SET(GOAL_TYPES)
-
+db.segment.start_time.requires=IS_DATETIME('%Y-%m-%d %H:%M:%S')
+db.segment.end_time.requires=IS_DATETIME('%Y-%m-%d %H:%M:%S')
 
 db.define_table('pledge',
     Field('amount','integer'),

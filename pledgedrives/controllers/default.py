@@ -17,10 +17,6 @@ def url(f, args=[]): return URL(r=request,f=f,args=args)
 
 error_page=URL(r=request,f='error')
 
-response.title = T('Pledge Drive Tracker')
-response.subtitle = T('Making Public Broadcasting Fund Drives More Efficient')
-response.author = 'John Tynan'
-
 @auth.requires_login()
 def check_session_organization():
     organizations=db(db.organization.created_by==auth.user.id).select().as_list()
@@ -977,9 +973,9 @@ def quick_setup_segment():
         segment_id=session.segment['id']
         segment_start_time=session.segment['start_time']
         segment_end_time=session.segment['end_time']
-        # time_format = "%Y-%m-%d %H:%M:%S"
-        # segment_start_time = datetime.datetime.fromtimestamp(time.mktime(time.strptime(segment_start_time, time_format)))
-        # segment_end_time = datetime.datetime.fromtimestamp(time.mktime(time.strptime(segment_end_time, time_format)))
+        time_format = "%Y-%m-%d %H:%M:%S"
+        segment_start_time = datetime.datetime.fromtimestamp(time.mktime(time.strptime(segment_start_time, time_format)))
+        segment_end_time = datetime.datetime.fromtimestamp(time.mktime(time.strptime(segment_end_time, time_format)))
 
         units = int(units)
         a = 1

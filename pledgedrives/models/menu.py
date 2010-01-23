@@ -4,8 +4,10 @@
 ## Customize your APP title, subtitle and menus here
 #########################################################################
 
-response.title = request.application
-response.subtitle = T('customize me!')
+# response.title = request.application
+response.title = T('Pledge Drive Tracker')
+response.subtitle = T('Making Public Broadcasting Fund Drives More Efficient')
+response.author = 'John Tynan'
 
 ##########################################
 ## this is the authentication menu
@@ -51,7 +53,7 @@ response.menu = [
 ## this is here to provide shortcuts
 ## during development. remove in production 
 ##########################################
-
+'''
 response.menu_edit=[
   [T('Edit'), False, URL('admin', 'default', 'design/%s' % request.application),
    [
@@ -78,3 +80,4 @@ response.menu_edit=[
             ]
    ],
   ]
+'''
