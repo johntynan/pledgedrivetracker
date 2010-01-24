@@ -52,7 +52,9 @@ db.define_table('person',
     # for some reason, organization['id'] does not work here.  Have to save the organization_id in the session as a separate variable.
     # Field('organization',db.organization,default=session.organization['id'],readable=False,writable=False),
     Field('organization',db.organization,default=session.organization_id,readable=False,writable=False),
-    Field('role')
+    Field('role'),
+    Field('created_by',default=me,writable=False,readable=False),
+    Field('created_on','datetime',default=request.now,writable=False,readable=False)
     )
 # it may be possible to have a single donor contribute to multiple organizations.  Removing IS_NOT_IN_DB until this is ironed out.
 # db.person.name.requires=[IS_NOT_EMPTY(),IS_NOT_IN_DB(db,'person.name')]
@@ -101,7 +103,13 @@ db.define_table('challenge',
     Field('created_by',default=me,writable=False,readable=False),
     Field('created_on','datetime',default=request.now,writable=False,readable=False)    
 )
-db.challenge.person.requires=IS_IN_DB(db,'person.id','%(name)s')
+# db.challenge.person.requires=IS_IN_DB(db,'person.id','%(name)s')
+# surprisingly, this didn't work on GAE
+# db.challenge.person.requires=IS_IN_DB(db(db.person.created_by==auth.user.id),db.person.id,'%(name)s')
+# surprisingly, this didn't work on GAE as well
+# db.challenge.person.requires=IS_IN_DB(db(db.person.created_by==me),db.person.id,'%(name)s')
+# much better:
+db.challenge.person.requires=IS_IN_DB(db(db.person.organization==session.organization_id),db.person.id,'%(name)s')
 db.challenge.pledgedrive.requires=IS_IN_DB(db,'pledgedrive.id','%(title)s')
 db.challenge.organization.requires=IS_IN_DB(db,'organization.id','%(name)s')
 # db.challenge.type.requires=IS_IN_SET(CHALLENGE_TYPES)
