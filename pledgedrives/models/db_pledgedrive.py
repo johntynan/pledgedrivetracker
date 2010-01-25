@@ -104,11 +104,11 @@ db.define_table('challenge',
     Field('created_on','datetime',default=request.now,writable=False,readable=False)    
 )
 # db.challenge.person.requires=IS_IN_DB(db,'person.id','%(name)s')
-# surprisingly, this didn't work on GAE
-# db.challenge.person.requires=IS_IN_DB(db(db.person.created_by==auth.user.id),db.person.id,'%(name)s')
-# surprisingly, this didn't work on GAE as well
+# this should work... but it turns out I need to upgrade my version of web2py.  In the end, I needed the relationship to be based on organization.id after all:
+# db.challenge.person.requires=IS_IN_DB(db(db.person.created_by==auth.user_id),db.person.id,'%(name)s')
+# surprisingly, this didn't work on GAE as well.  I think this is another version specific issue.
 # db.challenge.person.requires=IS_IN_DB(db(db.person.created_by==me),db.person.id,'%(name)s')
-# much better:
+# I think this is what I really wanted after all:
 db.challenge.person.requires=IS_IN_DB(db(db.person.organization==session.organization_id),db.person.id,'%(name)s')
 db.challenge.pledgedrive.requires=IS_IN_DB(db,'pledgedrive.id','%(title)s')
 db.challenge.organization.requires=IS_IN_DB(db,'organization.id','%(name)s')

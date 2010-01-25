@@ -621,15 +621,14 @@ div.frame_content {
 }
 
 .odd {
-    background-color: white;
+    background-color: #D8D8D8;
 }
 .even {
-    background-color: gray;
+    background-color: white;
 } 
 
 .text {
     width: 300px;
     height: 70px;
 } 
-
 
