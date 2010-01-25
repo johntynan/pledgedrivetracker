@@ -6,10 +6,8 @@
 
 <h2>Producer Messages</h2>
 
-<div style="width:100%;">
 {{for h,i in enumerate(messages):}}
 <div class="{{='odd' if h%2 else 'even'}}">{{=i['body']}}</div>
 {{pass}}
-</div>
 
 </div>

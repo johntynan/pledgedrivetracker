@@ -615,9 +615,7 @@ html:not([lang*=""])  div.web2py-menu-center ul.web2py-menu li a:hover {
 }
 
 div.frame_content {
-    /* height:2000px;
-    width:430px;
-    background-color:white; */
+    width:400px;
 }
 
 .odd {
