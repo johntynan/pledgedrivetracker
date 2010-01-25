@@ -801,26 +801,32 @@ def mini_pledgedrive_totals():
     pledgedrive_id=session.pledgedrive['id']
     pledgedrive=db(db.pledgedrive.id==pledgedrive_id).select()
     
-    pledgedrive_pledges = db(db.pledge.pledgedrive==pledgedrive_id).select().as_list()[0]
+    try:
+        pledgedrive_pledges = db(db.pledge.pledgedrive==pledgedrive_id).select().as_list()[0]
 
-    pledgedrive_total_pledges = len(db(db.pledge.pledgedrive==pledgedrive_id).select())
+        pledgedrive_total_pledges = len(db(db.pledge.pledgedrive==pledgedrive_id).select())
 
-    # commented out, since these statments don't work with Google App Engine
-    '''
-    pledge_amounts_for_pledgdrive = db(db.pledge.pledgedrive==pledgedrive_id).select(db.pledge.amount.sum())
+        # commented out, since these statments don't work with Google App Engine
+        '''
+        pledge_amounts_for_pledgdrive = db(db.pledge.pledgedrive==pledgedrive_id).select(db.pledge.amount.sum())
 
-    pledgedrive_total_dollars=pledge_amounts_for_pledgdrive[0]._extra[db.pledge.amount.sum()]
-    '''
+        pledgedrive_total_dollars=pledge_amounts_for_pledgdrive[0]._extra[db.pledge.amount.sum()]
+        '''
 
-    all_pledges = db(db.pledge.pledgedrive==pledgedrive_id).select().as_list()
+        all_pledges = db(db.pledge.pledgedrive==pledgedrive_id).select().as_list()
 
-    pledgedrive_total_dollars = 0
-     
-    for o in all_pledges:
-        pledgedrive_total_dollars = pledgedrive_total_dollars + o['amount']
+        pledgedrive_total_dollars = 0
+         
+        for o in all_pledges:
+            pledgedrive_total_dollars = pledgedrive_total_dollars + o['amount']
 
+        pledgedrive_average_pledge = pledgedrive_total_dollars / pledgedrive_total_pledges
+    except:
+        pledgedrive_total_pledges = 0
+        pledgedrive_total_dollars = 0
+        pledgedrive_average_pledge = 0
 
-    return dict(pledgedrive_total_pledges=pledgedrive_total_pledges,pledgedrive_total_dollars=pledgedrive_total_dollars)
+    return dict(pledgedrive_total_pledges=pledgedrive_total_pledges,pledgedrive_total_dollars=pledgedrive_total_dollars,pledgedrive_average_pledge=pledgedrive_average_pledge)
 
     # content = DIV('<h1>Drive Totals</h1>' + '<p><strong>Total Pledges</strong>: <strong>'+ str(pledgedrive_total_pledges) + '</strong>',  _id='content')
     # return dict(content=content)
@@ -859,6 +865,47 @@ def mini_segment_goal():
 
     return dict(segment_total_pledges=segment_total_pledges,segment_total_dollars=segment_total_dollars,goal=goal,progress=progress)    
 
+
+@service.json
+def mini_segment_goal_and_totals():
+    check_session()
+
+    segment_id=session.segment['id']
+    segment=db(db.segment.id==segment_id).select()
+    
+    segment_total_pledges = len(db(db.pledge.segment==segment_id).select())
+
+    # commented out, since these statments don't work with Google App Engine
+    '''
+    pledge_amounts_for_segment = db(db.pledge.segment==segment_id).select(db.pledge.amount.sum())
+
+    segment_total_dollars=pledge_amounts_for_segment[0]._extra[db.pledge.amount.sum()]
+    '''
+
+    try:
+        all_pledges_for_segment = db(db.pledge.segment==segment_id).select().as_list()
+
+        segment_total_dollars = 0
+         
+        for o in all_pledges_for_segment:
+            segment_total_dollars = segment_total_dollars + o['amount']
+
+        segment_average_pledge = segment_total_dollars / segment_total_pledges
+
+    except:
+        segment_total_pledges = 0
+        segment_total_dollars = 0
+        segment_average_pledge = 0
+
+    if segment[0].goal_type == 'Pledge':
+        goal = 'Pledge Goal:' + str(segment[0].goal)
+        progress = segment[0].goal - segment_total_pledges 
+    else:
+        goal = 'Dollar Goal:'+  str(segment[0].goal)
+        progress = segment[0].goal - segment_total_dollars
+
+    return dict(segment_total_pledges=segment_total_pledges,segment_total_dollars=segment_total_dollars,goal=goal,progress=progress,segment_average_pledge=segment_average_pledge)    
+
 @service.json
 def mini_segment_totals():
     check_session()
@@ -875,14 +922,22 @@ def mini_segment_totals():
     segment_total_dollars=pledge_amounts_for_segment[0]._extra[db.pledge.amount.sum()]
     '''
 
-    all_pledges_for_segment = db(db.pledge.segment==segment_id).select().as_list()
+    try:
+        all_pledges_for_segment = db(db.pledge.segment==segment_id).select().as_list()
 
-    segment_total_dollars = 0
-     
-    for o in all_pledges_for_segment:
-        segment_total_dollars = segment_total_dollars + o['amount']
+        segment_total_dollars = 0
+         
+        for o in all_pledges_for_segment:
+            segment_total_dollars = segment_total_dollars + o['amount']
+
+        segment_average_pledge = segment_total_dollars / segment_total_pledges
+
+    except:
+        segment_total_pledges = 0
+        segment_total_dollars = 0
+        segment_average_pledge = 0
         
-    return dict(segment_total_pledges=segment_total_pledges,segment_total_dollars=segment_total_dollars)    
+    return dict(segment_total_pledges=segment_total_pledges,segment_total_dollars=segment_total_dollars,segment_average_pledge=segment_average_pledge)    
     
 @service.json
 def mini_segment_challenge():
