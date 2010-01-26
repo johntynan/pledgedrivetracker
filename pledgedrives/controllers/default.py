@@ -620,7 +620,7 @@ def report_segments_by_pledgedrive():
     compiled_data = []
 
     for o in segments:
-        segment_dates.append(o.start_time.strftime("%m/%d : %I:%m %p"))
+        segment_dates.append(o.start_time.strftime("%m/%d : %I:%M %p"))
         segment_titles.append(o.title)
         segment_goal_types.append(o.goal_type)
         segment_goals.append(o.goal)
@@ -744,7 +744,7 @@ def report_mini_segment_select():
     segments=db(db.segment.organization==session.organization_id).select(orderby=db.segment.start_time)    
     ids=[o.id for o in segments]
     # titles=[o.title for o in segments]
-    labels=[(str(o.start_time.strftime("%m/%d : %I:%m %p")) + ' - ' + o.title) for o in segments]
+    labels=[(str(o.start_time.strftime("%m/%d : %I:%M %p")) + ' - ' + o.title) for o in segments]
 
     form=SQLFORM.factory(Field('segment_id',requires=IS_IN_SET(ids,labels))) 
     
@@ -776,7 +776,7 @@ def mini_create_pledge():
     segments=db(db.segment.organization==session.organization_id).select(orderby=db.segment.start_time)    
     ids=[o.id for o in segments]
     # titles=[o.title for o in segments]
-    labels=[(str(o.start_time.strftime("%m/%d : %I:%m %p")) + ' - ' + o.title) for o in segments]
+    labels=[(str(o.start_time.strftime("%m/%d : %I:%M %p")) + ' - ' + o.title) for o in segments]
 
     form2=SQLFORM.factory(Field('segment_id',requires=IS_IN_SET(ids,labels))) 
     
@@ -960,7 +960,7 @@ def mini_segment_select():
     segments=db(db.segment.organization==session.organization_id).select(orderby=db.segment.start_time)    
     ids=[o.id for o in segments]
     # titles=[o.title for o in segments]
-    labels=[(str(o.start_time.strftime("%m/%d : %I:%m %p")) + ' - ' + o.title) for o in segments]
+    labels=[(str(o.start_time.strftime("%m/%d : %I:%M %p")) + ' - ' + o.title) for o in segments]
 
     form=SQLFORM.factory(Field('segment_id',requires=IS_IN_SET(ids,labels))) 
     
@@ -981,7 +981,7 @@ def mini_segment_navigation():
     segments=db(db.segment.organization==session.organization_id).select(orderby=db.segment.start_time)    
     ids=[o.id for o in segments]
     # titles=[o.title for o in segments]
-    labels=[(str(o.start_time.strftime("%m/%d : %I:%m %p")) + ' - ' + o.title) for o in segments]
+    labels=[(str(o.start_time.strftime("%m/%d : %I:%M %p")) + ' - ' + o.title) for o in segments]
 
     form=SQLFORM.factory(Field('segment_id',requires=IS_IN_SET(ids,labels))) 
     
