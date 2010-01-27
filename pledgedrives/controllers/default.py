@@ -560,6 +560,20 @@ def list_pledges_by_segment():
     # pledges=db(db.pledge.segment==segment_id).select(orderby=db.pledge.id)
     pledges=db(db.pledge.segment==segment_id).select()
     return dict(pledges=pledges,segment_id=segment_id)
+
+@auth.requires_login()
+def delete_pledges_by_segment():
+    # segment_id=request.args(0)
+    segment_id=session.segment['id']
+    segment=db.segment[segment_id] or redirect(error_page)
+    # this could be breaking in GAE
+    # pledges=db(db.pledge.segment==segment_id).select(orderby=db.pledge.id)
+    # pledges=db(db.pledge.segment==segment_id).select()
+    pledges=db.pledge.segment==segment_id
+
+    db(pledges).delete()
+    response.flash='Deleted'
+    return dict()
         
 @auth.requires_login()
 def edit_pledge():
