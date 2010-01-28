@@ -562,7 +562,7 @@ def list_pledges_by_segment():
     return dict(pledges=pledges,segment_id=segment_id)
 
 @auth.requires_login()
-def list_pledges_by_pledgedrive():
+def delete_pledges_by_pledgedrive():
     check_session()
     pledgedrive_id=session.pledgedrive['id']
     pledgedrive=db.pledgedrive[pledgedrive_id] or redirect(error_page)
