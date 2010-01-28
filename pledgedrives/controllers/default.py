@@ -797,7 +797,15 @@ def mini_create_pledge():
     check_session()
     segment_id=session.segment['id']
     segment=db.segment[segment_id] or redirect(error_page)
-    form=crud.create(db.pledge)
+    # form=crud.create()
+
+    form=SQLFORM(db.pledge) 
+    if form.accepts(request.vars, session):
+        flash_amount = form.vars.amount
+        flash_name = form.vars.name
+        response.flash='pledge inserted:' + flash_amount + ' : ' + flash_name
+    elif form.errors:
+        response.flash='there are errors'
 
     segments=db(db.segment.organization==session.organization_id).select(orderby=db.segment.start_time)    
     ids=[o.id for o in segments]
