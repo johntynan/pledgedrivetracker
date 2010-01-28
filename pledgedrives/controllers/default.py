@@ -562,6 +562,18 @@ def list_pledges_by_segment():
     return dict(pledges=pledges,segment_id=segment_id)
 
 @auth.requires_login()
+def list_pledges_by_pledgedrive():
+    check_session()
+    pledgedrive_id=session.pledgedrive['id']
+    pledgedrive=db.pledgedrive[pledgedrive_id] or redirect(error_page)
+    # pledges=db(db.pledge.pledgedrive==pledgedrive.id).select(orderby=db.pledge.id)\
+    pledges = db.pledge.pledgedrive==pledgedrive.id
+
+    db(pledges).delete()
+    response.flash='Deleted'
+    return dict()
+
+@auth.requires_login()
 def delete_pledges_by_segment():
     # segment_id=request.args(0)
     segment_id=session.segment['id']
