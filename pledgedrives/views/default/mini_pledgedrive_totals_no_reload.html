@@ -1,0 +1,16 @@
+{{extend 'layout_plain.html'}}
+
+
+<div class="frame_content">
+
+<h2>Pledge Drive Totals</h2>
+
+<h3>Total Pledges: {{=pledgedrive_total_pledges}}</h3>
+
+<h3>Total Dollars: ${{=pledgedrive_total_dollars}}</h3>
+
+<h3>Average Pledge: ${{=pledgedrive_average_pledge}}</h3>
+
+<button onclick="parent.pledgedrive_totals.location.href='mini_pledgedrive_totals_no_reload.html'">Refresh Totals</button>
+
+</div>

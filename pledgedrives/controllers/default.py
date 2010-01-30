@@ -865,6 +865,43 @@ def mini_pledgedrive_totals():
     # content = DIV('<h1>Drive Totals</h1>' + '<p><strong>Total Pledges</strong>: <strong>'+ str(pledgedrive_total_pledges) + '</strong>',  _id='content')
     # return dict(content=content)
 
+@service.json
+def mini_pledgedrive_totals_no_reload():
+    check_session()
+
+    pledgedrive_id=session.pledgedrive['id']
+    pledgedrive=db(db.pledgedrive.id==pledgedrive_id).select()
+    
+    try:
+        pledgedrive_pledges = db(db.pledge.pledgedrive==pledgedrive_id).select().as_list()[0]
+
+        pledgedrive_total_pledges = len(db(db.pledge.pledgedrive==pledgedrive_id).select())
+
+        # commented out, since these statments don't work with Google App Engine
+        '''
+        pledge_amounts_for_pledgdrive = db(db.pledge.pledgedrive==pledgedrive_id).select(db.pledge.amount.sum())
+
+        pledgedrive_total_dollars=pledge_amounts_for_pledgdrive[0]._extra[db.pledge.amount.sum()]
+        '''
+
+        all_pledges = db(db.pledge.pledgedrive==pledgedrive_id).select().as_list()
+
+        pledgedrive_total_dollars = 0
+         
+        for o in all_pledges:
+            pledgedrive_total_dollars = pledgedrive_total_dollars + o['amount']
+
+        pledgedrive_average_pledge = pledgedrive_total_dollars / pledgedrive_total_pledges
+    except:
+        pledgedrive_total_pledges = 0
+        pledgedrive_total_dollars = 0
+        pledgedrive_average_pledge = 0
+
+    return dict(pledgedrive_total_pledges=pledgedrive_total_pledges,pledgedrive_total_dollars=pledgedrive_total_dollars,pledgedrive_average_pledge=pledgedrive_average_pledge)
+
+    # content = DIV('<h1>Drive Totals</h1>' + '<p><strong>Total Pledges</strong>: <strong>'+ str(pledgedrive_total_pledges) + '</strong>',  _id='content')
+    # return dict(content=content)
+
     
 @service.json
 def mini_segment_goal():
@@ -1151,6 +1188,14 @@ def service_pledgedrive_pledges(pledgedrive_id):
 
 def message_add():
     form = crud.create(db.message,next=url('message_list'))
+    '''
+    form = SQLFORM(db.message,next=url('message_list'))
+    if form.accepts(request.vars, session): 
+        response.flash='message updated'
+        session.message=dict(form.vars)
+        redirect(URL(r=request, f='message_list'))
+    elif form.errors: response.flash='form errors'
+    '''
     return dict(form=form)
 
 def message_edit():
@@ -1165,6 +1210,14 @@ def message_list():
     
 def mini_message_add():
     form = crud.create(db.message)
+    '''
+    form = SQLFORM(db.message,next=url('mini_message_add'))
+    if form.accepts(request.vars, session): 
+        response.flash='message updated'
+        session.message=dict(form.vars)
+        redirect(URL(r=request, f='mini_message_add'))
+    elif form.errors: response.flash='form errors'
+    '''
     return dict(form=form)
 
 def mini_message_list():
