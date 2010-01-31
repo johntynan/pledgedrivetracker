@@ -7,5 +7,8 @@
 <div style="width:200px;">
 {{=form}}
 </div>
+{{if response.flash:}}
+<div class="flash" style="position:relative;top:-35px;">{{=response.flash}}</div>
+{{pass}}
 
 </div>
