@@ -1087,6 +1087,54 @@ def mini_segment_navigation():
 
     return dict(form=form,segments=segments)
 
+@auth.requires_login()
+def post_add():
+    # form = crud.create(db.post)
+    form = SQLFORM(db.post)
+
+    if form.accepts(request.vars, session): 
+        session.flash='post updated'
+        redirect(URL(r=request, f='post_list'))
+    elif form.errors: response.flash='form errors'
+
+    return dict(form=form)
+
+@auth.requires_login()
+def post_edit():
+    post_id=request.args(0)
+    post=db.post[post_id] or redirect(error_page)
+    # form = crud.update(db.post,post,next=url('post_list'))
+    form = SQLFORM(db.post,post,deletable=True)
+
+    if form.accepts(request.vars, session): 
+        session.flash='record deleted'
+        redirect(URL(r=request, f='post_list'))
+    elif form.errors: response.flash='form errors'
+
+    return dict(form=form)
+
+@auth.requires_login()
+def post_list():
+    posts=db(db.post.organization==session.organization['id']).select(orderby=~db.post.created_on)
+    return dict(posts=posts)
+
+@auth.requires_login()
+def mini_post_add():
+    # form = crud.create(db.post)    
+    form = SQLFORM(db.post)
+
+    if form.accepts(request.vars, session): 
+        response.flash='post updated'
+    elif form.errors: response.flash='form errors'
+    
+    return dict(form=form)
+
+@auth.requires_login()
+def mini_post_list():
+    posts=db(db.post.organization==session.organization['id']).select(orderby=~db.post.created_on)
+    return dict(posts=posts)
+
+
 @service.json
 def mini_pledge_names():
     # segment_id=request.args(0)
@@ -1185,43 +1233,6 @@ def service_pledgedrive_pledges(pledgedrive_id):
     pledgedrive_pledges = db(db.pledge.pledgedrive==pledgedrive_id).select().as_list()[0]
 
     return dict(pledgedrive_pledges=pledgedrive_pledges)
-
-def message_add():
-    # form = crud.create(db.message)
-    
-    form = SQLFORM(db.message)
-    if form.accepts(request.vars, session): 
-        response.flash='message updated'
-        session.message=dict(form.vars)
-    elif form.errors: response.flash='form errors'
-
-    return dict(form=form)
-
-def message_edit():
-    message_id=request.args(0)
-    message=db.message[message_id] or redirect(error_page)
-    form = crud.update(db.message,message,next=url('message_list'))
-    return dict(form=form)
-
-def message_list():
-    messages=db(db.message.organization==session.organization['id']).select(orderby=~db.message.created_on)
-    return dict(messages=messages)
-    
-def mini_message_add():
-    # form = crud.create(db.message)
-    
-    form = SQLFORM(db.message)
-    if form.accepts(request.vars, session): 
-        response.flash='message updated'
-        session.message=dict(form.vars)
-    elif form.errors: response.flash='form errors'
-    
-    return dict(form=form)
-
-def mini_message_list():
-    messages=db(db.message.organization==session.organization['id']).select(orderby=~db.message.created_on)
-    return dict(messages=messages)
-
 
 def user():
     """

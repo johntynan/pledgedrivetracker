@@ -1,0 +1,29 @@
+{{response.files.append(URL(r=request,c='static',f='jquery.dataTables.min.js'))}}
+{{response.files.append(URL(r=request,c='static',f='demo_table.css'))}}
+{{extend 'layout.html'}}
+
+<script type="text/javascript" charset="utf-8">
+$(document).ready(function() {
+    jQuery('.smarttable').dataTable();
+} );
+</script>
+
+<h1>Producer Messages</h1>
+
+<button onclick="document.location='{{=URL(r=request,f='post_add')}}'">Create a New Message</button>
+
+<table class="smarttable">
+<thead>
+    <th>Body</th>
+</thead>
+<tbody>
+{{for post in posts:}}
+<tr>
+    <td>{{=post.body}}</td>    
+    <td>
+    <a href="{{=URL(r=request,f='post_edit',args=post.id)}}">Edit</a>
+    </td>
+</tr>
+{{pass}}
+</tbody>
+</table>

@@ -166,12 +166,12 @@ db.pledge.organization.requires=IS_IN_DB(db,'organization.id','%(name)s')
 # db.pledge.name.requires=IS_ALPHANUMERIC()
 db.pledge.amount.requires=IS_NOT_EMPTY()
 
-db.define_table('message',
+db.define_table('post',
     Field('body','text'),
     Field('organization',db.organization,default=session.organization_id,readable=False,writable=False),
     Field('created_by',default=me,writable=False,readable=False),
     Field('created_on','datetime',default=request.now,writable=False,readable=False)
     )
-db.message.body.requires=IS_NOT_EMPTY()
-db.message.organization.requires=IS_IN_DB(db,'organization.id','%(name)s')
+db.post.body.requires=IS_NOT_EMPTY()
+db.post.organization.requires=IS_IN_DB(db,'organization.id','%(name)s')
 

@@ -1,0 +1,13 @@
+{{extend 'layout_plain.html'}}
+
+<META HTTP-EQUIV="Refresh" Content="10; URL=mini_post_list.html">
+
+<div class="frame_content">
+
+<h2>Producer Messages</h2>
+
+{{for h,i in enumerate(posts):}}
+<div class="{{='odd' if h%2 else 'even'}}">{{=i['body']}}</div>
+{{pass}}
+
+</div>
