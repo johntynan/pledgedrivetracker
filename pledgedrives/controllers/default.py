@@ -1187,14 +1187,14 @@ def service_pledgedrive_pledges(pledgedrive_id):
     return dict(pledgedrive_pledges=pledgedrive_pledges)
 
 def message_add():
-    form = crud.create(db.message)
-    '''
+    # form = crud.create(db.message)
+    
     form = SQLFORM(db.message)
     if form.accepts(request.vars, session): 
         response.flash='message updated'
         session.message=dict(form.vars)
     elif form.errors: response.flash='form errors'
-    '''
+
     return dict(form=form)
 
 def message_edit():
@@ -1208,14 +1208,14 @@ def message_list():
     return dict(messages=messages)
     
 def mini_message_add():
-    form = crud.create(db.message)
-    '''
+    # form = crud.create(db.message)
+    
     form = SQLFORM(db.message)
     if form.accepts(request.vars, session): 
         response.flash='message updated'
         session.message=dict(form.vars)
     elif form.errors: response.flash='form errors'
-    '''
+    
     return dict(form=form)
 
 def mini_message_list():
