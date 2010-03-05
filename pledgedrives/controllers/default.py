@@ -73,7 +73,8 @@ def check_program():
 
 @auth.requires_login()
 def check_challenge():
-    challenges=db(db.challenge.organization==session.organization_id).select().as_list()
+    # challenges=db(db.challenge.organization==session.organization_id).select().as_list()
+    challenges=db(db.challenge.pledgedrive==session.pledgedrive_id).select().as_list()
     if len(challenges) < 1:
         redirect(URL(r=request, f='create_challenge'))
 
