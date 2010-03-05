@@ -19,6 +19,12 @@ error_page=URL(r=request,f='error')
 
 @auth.requires_login()
 def check_session_organization():
+    '''
+    Checks for any organizations created by the current user; if none, redirect to create organization form.
+    >>> organizations=db(db.organization.created_by=="1").select().as_list()
+    >>> organizations
+    [{'phone': '480-834-5627', 'address': '2323 W. 14th Street Tempe, AZ 85281', 'id': 1, 'name': 'KUNC', 'url': 'http://kunc.org', 'created_on': '2010-01-24 23:28:15', 'created_by': '1', 'phone_long_distance': '1-800-888-8888'}]
+    '''
     organizations=db(db.organization.created_by==auth.user.id).select().as_list()
     if len(organizations) < 1:
         redirect(URL(r=request, f='create_organization'))
