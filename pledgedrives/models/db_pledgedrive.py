@@ -139,7 +139,8 @@ db.segment.goal.requires=IS_NOT_EMPTY()
 db.segment.start_time.default=request.now
 db.segment.end_time.default=request.now
 db.segment.organization.requires=IS_IN_DB(db,'organization.id','%(name)s')
-db.segment.program.requires=IS_IN_DB(db,'program.id','%(title)s')
+# db.segment.program.requires=IS_IN_DB(db,'program.id','%(title)s')
+db.segment.program.requires=IS_IN_DB(db(db.program.organization==session.organization_id),db.program.id,'%(title)s')
 db.segment.pledgedrive.requires=IS_IN_DB(db,'pledgedrive.id','%(title)s')
 # db.segment.challenge.requires=IS_IN_DB(db,'challenge.id','%(title)s')
 db.segment.challenge.requires=IS_IN_DB(db(db.challenge.pledgedrive==session.pledgedrive_id),db.challenge.id,'%(title)s')
