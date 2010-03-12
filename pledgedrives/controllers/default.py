@@ -233,13 +233,21 @@ def session_challenge_id_form():
 def create_organization():
     # check_session()
     # form=crud.create(db.organization,next=url('index'))
-    form = SQLFORM(db.organization,next=url('index'))
+    # form = SQLFORM(db.organization,next=url('index'))
+
+    form = SQLFORM(db.organization)
+
     if form.accepts(request.vars, session): 
         response.flash='record inserted'
-        # session.organization=form.vars
-        session.organization=dict(form.vars)
-        session.organization_id = dict(form.vars)['id']
+
+        organization_id = dict(form.vars)['id']
+        organization = db(db.organization.id==organization_id).select()
+
+        session.organization = organization.as_list()[0]
+        session.organization_id = organization.as_list()[0]['id']
+
         redirect(URL(r=request, f='index'))
+
     elif form.errors: response.flash='form errors'
     return dict(form=form)
 
@@ -375,14 +383,21 @@ def create_pledgedrive():
     check_session_organization()
     # form=crud.create(db.pledgedrive,next=url('list_pledgedrives'))
     # form=crud.create(db.pledgedrive,next=url('index'))
-    form = SQLFORM(db.pledgedrive,next=url('index'))
+    # form = SQLFORM(db.pledgedrive,next=url('index'))
+
+    form = SQLFORM(db.pledgedrive)
+
     if form.accepts(request.vars, session): 
         response.flash='record inserted'
-        session.pledgedrive=dict(form.vars)
-        session.pledgedrive_id = dict(form.vars)['id']
-        redirect(URL(r=request, f='index'))
-    elif form.errors: response.flash='form errors'
 
+        pledgedrive_id = dict(form.vars)['id']
+        pledgedrive = db(db.pledgedrive.id==pledgedrive_id).select()
+        session.pledgedrive = pledgedrive.as_list()[0]
+        session.pledgedrive_id = pledgedrive.as_list()[0]['id']
+
+        redirect(URL(r=request, f='index'))
+
+    elif form.errors: response.flash='form errors'
     return dict(form=form)
 
 @auth.requires_login()
@@ -422,25 +437,25 @@ def list_pledgedrives_by_organization():
 def create_challenge():
     check_session_organization()
     check_session_pledgedrive()
-    # check_session_person()
+
     check_person()
+
     organization=session.organization['id']
     pledgedrive_id=session.pledgedrive['id']
-    # person_id=session.person['id']
     pledgedrive=db.pledgedrive[pledgedrive_id] or redirect(error_page)
-    # person=db.person[person_id] or redirect(error_page)
-    # form=crud.create(db.challenge,next=url('index'))
-    form=crud.create(db.challenge,next=url('create_segment'))
-    '''
-    form = SQLFORM(db.challenge,next=url('index'))
+
+    form = SQLFORM(db.challenge)
+
     if form.accepts(request.vars, session): 
         response.flash='record inserted'
-        session.challenge=dict(form.vars)
-        session.challenge_id = dict(form.vars)['id']
+
+        challenge_id = dict(form.vars)['id']
+        challenge = db(db.challenge.id==challenge_id).select()
+        session.challenge = challenge.as_list()[0]
+        session.challenge_id = challenge.as_list()[0]['id']
+
         redirect(URL(r=request, f='index'))
-    elif form.errors: response.flash='form errors'
-    '''
-    # return dict(form=form,pledgedrive=pledgedrive,organization=organization,person=person)
+
     return dict(form=form,pledgedrive=pledgedrive,organization=organization)
 
 @auth.requires_login()
@@ -477,17 +492,20 @@ def create_segment():
     check_session_organization()
     check_session_pledgedrive()
     check_program()
-    # check_person()
     check_challenge()
-    
-    # form=crud.create(db.segment,next=url('list_segments'))
-    # form=crud.create(db.segment,next=url('index'))
-    form = SQLFORM(db.segment,next=url('index'))
+   
+    form = SQLFORM(db.segment)
+
     if form.accepts(request.vars, session): 
         response.flash='record inserted'
-        session.segment=dict(form.vars)
-        session.segment_id = dict(form.vars)['id']
+
+        segment_id = dict(form.vars)['id']
+        segment = db(db.segment.id==segment_id).select()
+        session.segment = segment.as_list()[0]
+        session.segment_id = segment.as_list()[0]['id']
+
         redirect(URL(r=request, f='index'))
+
     elif form.errors: response.flash='form errors'
 
     return dict(form=form)
