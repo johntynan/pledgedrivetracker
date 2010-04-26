@@ -158,7 +158,7 @@ def session_pledgedrive_id_form():
 def session_segment_id_form():
 
     # segments=db(db.segment.organization==session.organization['id']).select(orderby=db.segment.title)    
-    segments=db(db.segment.organization==session.organization_id).select(orderby=db.segment.start_time)    
+    segments=db(db.segment.pledgedrive==session.pledgedrive_id).select(orderby=db.segment.start_time)    
     ids=[o.id for o in segments]
     titles=[o.title for o in segments]
 
@@ -792,7 +792,7 @@ def report_mini_segment_select():
     check_session()
 
     # segments=db(db.segment.organization==session.organization['id']).select(orderby=db.segment.title)    
-    segments=db(db.segment.organization==session.organization_id).select(orderby=db.segment.start_time)    
+    segments=db(db.segment.pledgedrive==session.pledgedrive_id).select(orderby=db.segment.start_time)    
     ids=[o.id for o in segments]
     # titles=[o.title for o in segments]
     labels=[(str(o.start_time.strftime("%m/%d : %I:%M %p")) + ' - ' + o.title) for o in segments]
@@ -832,7 +832,7 @@ def mini_create_pledge():
     elif form.errors:
         response.flash='there are errors'
 
-    segments=db(db.segment.organization==session.organization_id).select(orderby=db.segment.start_time)    
+    segments=db(db.segment.pledgedrive==session.pledgedrive_id).select(orderby=db.segment.start_time)    
     ids=[o.id for o in segments]
     # titles=[o.title for o in segments]
     labels=[(str(o.start_time.strftime("%m/%d : %I:%M %p")) + ' - ' + o.title) for o in segments]
@@ -1053,7 +1053,7 @@ def mini_segment_select():
     check_session()
 
     # segments=db(db.segment.organization==session.organization['id']).select(orderby=db.segment.title)    
-    segments=db(db.segment.organization==session.organization_id).select(orderby=db.segment.start_time)    
+    segments=db(db.segment.pledgedrive==session.pledgedrive_id).select(orderby=db.segment.start_time)    
     ids=[o.id for o in segments]
     # titles=[o.title for o in segments]
     labels=[(str(o.start_time.strftime("%m/%d : %I:%M %p")) + ' - ' + o.title) for o in segments]
@@ -1075,7 +1075,7 @@ def mini_segment_select_pledge():
     check_session()
 
     # segments=db(db.segment.organization==session.organization['id']).select(orderby=db.segment.title)    
-    segments=db(db.segment.organization==session.organization_id).select(orderby=db.segment.start_time)    
+    segments=db(db.segment.pledgedrive==session.pledgedrive_id).select(orderby=db.segment.start_time)    
     ids=[o.id for o in segments]
     # titles=[o.title for o in segments]
     labels=[(str(o.start_time.strftime("%m/%d : %I:%M %p")) + ' - ' + o.title) for o in segments]
@@ -1096,7 +1096,7 @@ def mini_segment_navigation():
     check_session()
 
     # segments=db(db.segment.organization==session.organization['id']).select(orderby=db.segment.title)    
-    segments=db(db.segment.organization==session.organization_id).select(orderby=db.segment.start_time)    
+    segments=db(db.segment.pledgedrive==session.pledgedrive_id).select(orderby=db.segment.start_time)    
     ids=[o.id for o in segments]
     # titles=[o.title for o in segments]
     labels=[(str(o.start_time.strftime("%m/%d : %I:%M %p")) + ' - ' + o.title) for o in segments]
@@ -1189,7 +1189,7 @@ def mini_pledge_names_nav():
 def quick_setup_segment():
     check_session()
 
-    segments=db(db.segment.organization==session.organization_id).select(orderby=db.segment.start_time)
+    segments=db(db.segment.pledgedrive==session.pledgedrive_id).select(orderby=db.segment.start_time)
 
     units=[1,2,3,4,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100]    
     ids=[o for o in units]
