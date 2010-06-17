@@ -41,6 +41,9 @@ def check_session_pledgedrive():
     if not request.function=='session_pledgedrive_id_form' and not session.pledgedrive:
         redirect(URL(r=request, f='session_pledgedrive_id_form'))
 
+    if not session.pledgedrive['organization'] == session.organization_id: 
+        redirect(URL(r=request, f='session_pledgedrive_id_form'))
+
 @auth.requires_login()
 def check_session_segment():
     segments=db(db.segment.pledgedrive==session.pledgedrive_id).select().as_list()
@@ -49,6 +52,10 @@ def check_session_segment():
 
     if not request.function=='session_segment_id_form' and not session.segment:
         redirect(URL(r=request, f='session_segment_id_form'))
+
+    if not session.segment['pledgedrive'] == session.pledgedrive_id: 
+        redirect(URL(r=request, f='session_segment_id_form'))
+
 
 @auth.requires_login()
 def check_session_program():
