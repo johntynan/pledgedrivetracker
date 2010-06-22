@@ -37,7 +37,8 @@ $(document).ready(function(){
     <a href="{{=URL(r=request,f='view_organization',args=session.organization['id'])}}">View Currently Selected Organization</a> |
     <a href="{{=URL(r=request,f='edit_organization',args=session.organization['id'])}}">Edit Selected Organization</a> |<br />
     <a href="{{=URL(r=request,f='list_programs_by_organization',args=session.organization['id'])}}">List Programs</a> |
-    <a href="{{=URL(r=request,f='create_program',args=session.organization['id'])}}">Add a New Program</a> |<br />
+    <a href="{{=URL(r=request,f='create_program',args=session.organization['id'])}}">Add a New Program</a> |
+    <a href="{{=URL(r=request,f='create_program_import',args=session.organization['id'])}}">Import Program List</a> |<br />
     <a href="{{=URL(r=request,f='list_persons_by_organization',args=session.organization['id'])}}">List Persons</a> |
     <a href="{{=URL(r=request,f='create_person',args=session.organization['id'])}}">Add a New Person</a> |<br />
     <a href="{{=URL(r=request,f='list_pledgedrives_by_organization',args=session.organization['id'])}}">List Pledge Drives</a> |

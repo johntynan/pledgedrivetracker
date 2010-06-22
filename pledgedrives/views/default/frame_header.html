@@ -1,3 +1,4 @@
+{{include 'web2py_ajax.html'}}
 <HTML>
 <HEAD>
 <TITLE></TITLE>
@@ -19,10 +20,13 @@ remote.location.href = url
 <body>
 <div style="font-size: 1.5em;" align="center">
 {{for organization in organizations:}}
-<a href="/pledgedrives/" target="_top">Home</a>  | 
+<a href={{="/"+request.application+"/"}} target="_top">Home</a>  | 
 {{=organization.name}}
 {{pass}}
 : <span style="color: red">{{=organization.phone}} / {{=organization.phone_long_distance}}</span> or on the web at <span style="color: blue">{{=organization.url}}</span> <!-- | <span style="font-size: 0.8em;"><a HREF="#" onClick="openConsole('reports/selectbreak.asp');">Pledges for Break</a></span> -->
+{{if response.helpurl:}}
+| <A HREF={{=response.helpurl}} OnClick="return popup('{{=response.helpurl}}')">Help</A>
+{{pass}}
 </div>
 </body>
 </html>

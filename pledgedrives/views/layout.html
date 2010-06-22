@@ -33,6 +33,9 @@
             <h2>{{=T('Main Menu')}}</h2>
             {{=MENU(response.menu)}}
             {{pass}}
+            {{if response.helpurl:}}
+<ul class="web2py-menu web2py-menu-vertical"><li><A HREF={{=response.helpurl}} OnClick="return popup('{{=response.helpurl}}')">Help</A></li></ul>
+            {{pass}}
             {{if response.menu_edit:}}
             <h2>{{=T('Edit This App')}}</h2>
             {{=MENU(response.menu_edit)}}

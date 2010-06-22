@@ -9,6 +9,12 @@ response.title = T('Pledge Drive Tracker')
 response.subtitle = T('Making Public Broadcasting Fund Drives More Efficient')
 response.author = 'John Tynan'
 
+
+helphome = "http://opensourcebroadcasting.appspot.com/pledgedrives/static/documentation/_build/html/"
+helpdefault = "index.html"
+urls = {"frame_header_onair":"on_air_screen.html","frame_header_pledge_entry":"pledge_entry.html","create_program":"setup.html#program-s"}
+
+
 ##########################################
 ## this is the authentication menu
 ## remove if not necessary
@@ -42,6 +48,9 @@ if 'auth' in globals():
 ## this is the main application menu
 ## add/remove items as required
 ##########################################
+response.helpurl = helphome + helpdefault
+if urls.has_key(str(request.function)):
+    response.helpurl = helphome + urls[str(request.function)] 
 
 response.menu = [
     [T('Index'), False, 

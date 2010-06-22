@@ -21,56 +21,63 @@ error_page=URL(r=request,f='error')
 def check_session_organization():
     '''
     Checks for any organizations created by the current user; if none, redirect to create organization form.
+    Checks for valid organization in session, else prompts to reselect
     >>> organizations=db(db.organization.created_by=="1").select().as_list()
     >>> organizations
     [{'phone': '480-834-5627', 'address': '2323 W. 14th Street Tempe, AZ 85281', 'id': 1, 'name': 'KUNC', 'url': 'http://kunc.org', 'created_on': '2010-01-24 23:28:15', 'created_by': '1', 'phone_long_distance': '1-800-888-8888'}]
     '''
-    organizations=db(db.organization.created_by==auth.user.id).select().as_list()
+    organizations = db(db.organization.created_by==auth.user.id).select().as_list()
+    valid = False
     if len(organizations) < 1:
         redirect(URL(r=request, f='create_organization'))
-
-    if not request.function=='session_organization_id_form' and not session.organization:
+    elif (not request.function=='session_organization_id_form' and not session.organization):
         redirect(URL(r=request, f='session_organization_id_form'))
+    elif not request.function=='session_organization_id_form':
+        for rec in organizations:
+            if rec['id'] == session.organization_id:
+                valid = True
+        if not valid:
+            redirect(URL(r=request, f='session_organization_id_form'))
 
 @auth.requires_login()
 def check_session_pledgedrive():
+    #function assumes that the session.organization_id item is valid for the user
+    #run after check_session_organization in sequence.
     pledgedrives=db(db.pledgedrive.organization==session.organization_id).select().as_list()
+    valid = False
     if len(pledgedrives) < 1:
         redirect(URL(r=request, f='create_pledgedrive'))
-
-    if not request.function=='session_pledgedrive_id_form' and not session.pledgedrive:
+    elif not request.function=='session_pledgedrive_id_form' and not session.pledgedrive:
         redirect(URL(r=request, f='session_pledgedrive_id_form'))
-
-    if not session.pledgedrive['organization'] == session.organization_id: 
-        redirect(URL(r=request, f='session_pledgedrive_id_form'))
+    elif not request.function=='session_pledgedrive_id_form':
+        for rec in pledgedrives:
+            if rec['id'] == session.pledgedrive_id:
+                valid = True
+        if not valid:
+            redirect(URL(r=request, f='session_pledgedrive_id_form'))
 
 @auth.requires_login()
 def check_session_segment():
+    #function assumes that the session.pledgedrive_id item is valid for the user/organization
+    #run after check_session_pledgedrive in sequence.
     segments=db(db.segment.pledgedrive==session.pledgedrive_id).select().as_list()
+    valid = False
     if len(segments) < 1:
         redirect(URL(r=request, f='create_segment'))
-
-    if not request.function=='session_segment_id_form' and not session.segment:
+    elif not request.function=='session_segment_id_form' and not session.segment:
         redirect(URL(r=request, f='session_segment_id_form'))
-
-    if not session.segment['pledgedrive'] == session.pledgedrive_id: 
-        redirect(URL(r=request, f='session_segment_id_form'))
-
-
+    elif not request.function=='session_segment_id_form':
+        for rec in segments:
+            if rec['id'] == session.segment_id:
+                valid = True
+        if not valid:
+            redirect(URL(r=request, f='session_segment_id_form'))
+            
 @auth.requires_login()
-def check_session_program():
-    if not request.function=='session_program_id_form' and not session.program:
-        redirect(URL(r=request, f='session_program_id_form'))
-
-@auth.requires_login()
-def check_session_person():
-    if not request.function=='session_person_id_form' and not session.person:
-        redirect(URL(r=request, f='session_person_id_form'))
-
-@auth.requires_login()
-def check_session_challenge():
-    if not request.function=='session_challenge_id_form' and not session.challenge:
-        redirect(URL(r=request, f='session_challenge_id_form'))
+def check_session():
+    check_session_organization()
+    check_session_pledgedrive()
+    check_session_segment()
 
 @auth.requires_login()
 def check_program():
@@ -91,23 +98,22 @@ def check_person():
     if len(persons) < 1:
         redirect(URL(r=request, f='create_person'))
 
-def check_session():
-    check_session_organization()
-    check_session_pledgedrive()
-    # segments are not required for challenges or programs, we'll check for them anyway
-    check_session_segment()
-    # create check_session classes for programs and challenges when adding a segment
-    # check for persons when adding a challenge
-                
 def error():
     return dict(message='something is wrong')
+
+def get_valid_id(item_id, table):
+    try:
+        onerec = db(table.id == item_id).select()[0]
+        if onerec['organization']==session.organization_id:
+            return item_id
+        else:
+            redirect(error_page)
+    except:
+            redirect(error_page)
 
 @auth.requires_login()
 def index():
     check_session()
-    # check_session_program()
-    # check_session_person()
-    # check_session_challenge()
     """
     example action using the internationalization operator T and flash
     rendered by views/default/index.html or views/generic.html
@@ -261,11 +267,15 @@ def create_organization():
 @auth.requires_login()
 def view_organization():
     check_session()
-    organization_id=request.args(0)
+    organization_id=request.args(0)#only without call to get_valid_id(request.args(0),db.table), since validated below 
     # organization_id=session.organization['id']
+    organizations=db(db.organization.created_by==auth.user.id).select(orderby=db.organization.name)
     organization=db.organization[organization_id] or redirect(error_page)
-    return dict(organization=organization)
-
+    if organization in organizations:
+        return dict(organization=organization)
+    else:
+        redirect(error_page)
+        
 @auth.requires_login()
 def list_organizations():
     # check_session()
@@ -303,7 +313,7 @@ def create_person():
 @auth.requires_login()
 def view_person():
     check_session()
-    person_id=request.args(0)
+    person_id=get_valid_id(request.args(0),db.person)
     person=db.person[person_id] or redirect(error_page)
     return dict(person=person)
 
@@ -316,7 +326,7 @@ def list_persons():
 @auth.requires_login()
 def edit_person():
     check_session()
-    person_id=request.args(0)
+    person_id=get_valid_id(request.args(0),db.person)
     person=db.person[person_id] or redirect(error_page)
     # form=crud.update(db.person,person,next=url('view_person',person_id))
     form=crud.update(db.person,person,next=url('list_persons_by_organization'))
@@ -356,9 +366,26 @@ def create_program():
     return dict(form=form,organization=organization,programs=programs)
 
 @auth.requires_login()
+def create_program_import():
+#    form = FORM(str(T('or import from csv file'))+" ",INPUT(_type='file',_name='csvfile'),INPUT(_type='submit',_value='import'))
+    form = FORM(str(T('List of Programs'))+" ", INPUT(_type='text',_name='progs',requires=IS_LENGTH(100000)),INPUT(_type='submit',_value='import'))
+    if form.accepts(request.vars, session):
+        if request.vars.progs != None:
+            try:
+                prog_list=[]
+    #           db.program.import_from_csv_file(request.vars.csvfile.file)       
+                for l in str(request.vars.progs).splitlines():
+                    for p in l.split(','):
+                        db.program.insert(title=p)
+                response.flash = T('data uploaded')
+            except:
+                response.flash = T('unable to parse comma separated list')     
+    return dict(form=form)
+
+@auth.requires_login()
 def view_program():
     check_session()
-    program_id=request.args(0)
+    program_id=get_valid_id(request.args(0),db.program)
     program=db.program[program_id] or redirect(error_page)
     return dict(program=program)
 
@@ -371,7 +398,7 @@ def list_programs():
 @auth.requires_login()
 def edit_program():
     check_session()
-    program_id=request.args(0)
+    program_id=get_valid_id(request.args(0),db.program)
     program=db.program[program_id] or redirect(error_page)
     # form=crud.update(db.program,program,next=url('view_program',program_id))
     form=crud.update(db.program,program,next=url('list_programs_by_organization'))
@@ -410,7 +437,7 @@ def create_pledgedrive():
 @auth.requires_login()
 def view_pledgedrive():
     check_session()
-    pledgedrive_id=request.args(0)
+    pledgedrive_id=get_valid_id(request.args(0),db.pledgedrive)
     # pledgedrive_id=session.pledgedrive['id']
     pledgedrive=db.pledgedrive[pledgedrive_id] or redirect(error_page)
     dollar_goal = pledgedrive.pledge_goal * pledgedrive.projected_average_pledge
@@ -444,7 +471,6 @@ def list_pledgedrives_by_organization():
 def create_challenge():
     check_session_organization()
     check_session_pledgedrive()
-
     check_person()
 
     organization=session.organization['id']
@@ -467,7 +493,7 @@ def create_challenge():
 
 @auth.requires_login()
 def view_challenge():
-    challenge_id=request.args(0)
+    challenge_id=get_valid_id(request.args(0),db.challenge)
     # challenge_id=session.challenge['id']
     challenge=db.challenge[challenge_id] or redirect(error_page)
     return dict(challenge=challenge)
@@ -480,7 +506,7 @@ def list_challenges():
 
 @auth.requires_login()
 def edit_challenge():
-    challenge_id=request.args(0)
+    challenge_id=get_valid_id(request.args(0),db.challenge)
     challenge=db.challenge[challenge_id] or redirect(error_page)
     # form=crud.update(db.challenge,challenge,next=url('view_challenge',challenge_id))
     form=crud.update(db.challenge,challenge,next=url('list_challenges_by_pledgedrive'))
@@ -499,7 +525,7 @@ def create_segment():
     check_session_organization()
     check_session_pledgedrive()
     check_program()
-    check_challenge()
+    #check_challenge()
    
     form = SQLFORM(db.segment)
 
@@ -520,7 +546,7 @@ def create_segment():
 @auth.requires_login()
 def view_segment():
     check_session()
-    segment_id=request.args(0)
+    segment_id=get_valid_id(request.args(0),db.segment)
     segment=db.segment[segment_id] or redirect(error_page)
     return dict(segment=segment)
 
@@ -540,7 +566,7 @@ def list_segments_by_pledgedrive():
 @auth.requires_login()
 def edit_segment():
     check_session()
-    segment_id=request.args(0)
+    segment_id=get_valid_id(request.args(0),db.segment)
     segment=db.segment[segment_id] or redirect(error_page)
     # form=crud.update(db.segment,segment,next=url('view_segment',segment_id))
     form=crud.update(db.segment,segment,next=url('list_segments_by_pledgedrive'))
@@ -564,7 +590,7 @@ def create_pledge():
 @auth.requires_login()
 def view_pledge():
     check_session()
-    pledge_id=request.args(0)
+    pledge_id=get_valid_id(request.args(0),db.pledge)
     pledge=db.pledge[pledge_id] or redirect(error_page)
     return dict(pledge=pledge)
 
@@ -577,7 +603,7 @@ def list_pledges():
 @auth.requires_login()
 def list_pledges_by_pledgedrive():
     check_session()
-    pledgedrive_id=request.args(0)
+    pledgedrive_id=get_valid_id(request.args(0),db.pledgedrive)
     pledgedrive=db.pledgedrive[pledgedrive_id] or redirect(error_page)
     pledges=db(db.pledge.pledgedrive==pledgedrive.id).select(orderby=db.pledge.id)
     return dict(pledges=pledges)
@@ -622,7 +648,7 @@ def delete_pledges_by_segment():
 @auth.requires_login()
 def edit_pledge():
     check_session()
-    pledge_id=request.args(0)
+    pledge_id=get_valid_id(request.args(0),db.pledge)
     pledge=db.pledge[pledge_id] or redirect(error_page)
     # form=crud.update(db.pledge,pledge,next=url('view_pledge',pledge_id))
     form=crud.update(db.pledge,pledge,next=url('list_pledges_by_pledgedrive'))
@@ -644,6 +670,13 @@ def frame_header():
     organization_id = session.organization['id']
     organizations=db(db.organization.id==organization_id).select()
     return dict(message=T('Pledge Drive Tracker'),organizations=organizations,organization_id=organization_id)
+
+def frame_header_onair():
+    return frame_header()
+    
+def frame_header_pledge_entry():
+    return frame_header()
+
 
 def frame_wrapper_onair():
     check_session()
@@ -1045,15 +1078,9 @@ def mini_segment_totals():
 @service.json
 def mini_segment_challenge():
     check_session()
-
     segment_id=session.segment['id']
-    segment=db(db.segment.id==segment_id).select()
-    challenge_id = segment[0].challenge
-    
-    segment_challenge = db(db.challenge.id==challenge_id).select()
-
-    return dict(challenge_id=challenge_id,segment_challenge=segment_challenge)
-
+    challenge_desc = db(db.challenge.segment == segment_id).select().as_list()
+    return dict(segment_challenges=challenge_desc)
 
 @auth.requires_login()
 def mini_segment_select():
@@ -1133,7 +1160,7 @@ def post_add():
 
 @auth.requires_login()
 def post_edit():
-    post_id=request.args(0)
+    post_id=get_valid_id(request.args(0),db.post)
     post=db.post[post_id] or redirect(error_page)
     # form = crud.update(db.post,post,next=url('post_list'))
     form = SQLFORM(db.post,post,deletable=True)

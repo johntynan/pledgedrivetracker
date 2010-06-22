@@ -27,37 +27,37 @@ auth.define_tables()
 """
 
 ROLE_TYPES = ('Donor','Listener')
-GOAL_TYPES = ('Matching','Pledge')
+GOAL_TYPES = ('Dollar','Pledge')
 CHALLENGE_TYPES = ('Matching','Pledge')
 CHALLENGE_CONDITIONS = ('Refundable','Non-refundable')
 CHALLENGE_STATES = ('Pending','Achieved','Missed','Recycled')
-
+#CHALLENGE_OPTIONS = ('Never', 'Optional', 'Mandatory')
 
 db.define_table('organization',
-    Field('name'),
-    Field('url'),
+    Field('name', unique=True),
+    Field('url', unique=True),
     Field('address'),
     Field('phone'),
     Field('phone_long_distance'),
     Field('created_by',default=me,writable=False,readable=False),
     Field('created_on','datetime',default=request.now,writable=False,readable=False)
     )
-# db.organization.name.requires=[IS_NOT_EMPTY(),IS_NOT_IN_DB(db,'organization.name')]
+
 db.organization.name.requires=[IS_NOT_EMPTY()]
 db.organization.url.requires=IS_URL()
 db.organization.phone.requires=is_phone
 
 db.define_table('person',
     Field('name'),
-    # for some reason, organization['id'] does not work here.  Have to save the organization_id in the session as a separate variable.
-    # Field('organization',db.organization,default=session.organization['id'],readable=False,writable=False),
     Field('organization',db.organization,default=session.organization_id,readable=False,writable=False),
     Field('role'),
     Field('created_by',default=me,writable=False,readable=False),
     Field('created_on','datetime',default=request.now,writable=False,readable=False)
     )
-# it may be possible to have a single donor contribute to multiple organizations.  Removing IS_NOT_IN_DB until this is ironed out.
-# db.person.name.requires=[IS_NOT_EMPTY(),IS_NOT_IN_DB(db,'person.name')]
+#Validate:
+#On Insert: Select person name and if organizations are the same, do not insert; validate that user is in group for organization, else deny.
+#On Read: Validate that user is in group for organization, else deny.
+
 db.person.name.requires=[IS_NOT_EMPTY()]
 db.person.role.requires=IS_IN_SET(ROLE_TYPES)
 db.person.organization.requires=IS_IN_DB(db,'organization.id','%(name)s')
@@ -68,6 +68,10 @@ db.define_table('program',
     Field('created_by',default=me,writable=False,readable=False),
     Field('created_on','datetime',default=request.now,writable=False,readable=False)
     )
+#Validate:
+#On Insert: Select program name and if organizations are the same, do not insert; validate that user is in group for organization, else deny.
+#On Read: Validate that user is in group for organization, else deny.
+
 db.program.organization.requires=IS_IN_DB(db,'organization.id','%(name)s')
 
 db.define_table('pledgedrive',
@@ -81,6 +85,10 @@ db.define_table('pledgedrive',
     Field('created_by',default=me,writable=False,readable=False),
     Field('created_on','datetime',default=request.now,writable=False,readable=False)
     )
+#Validate:
+#On Insert: Select on pledgedrive title and if organizations are the same, do not insert; validate that user is in group for organization, else deny.
+#On Read: Validate that user is in group for organization, else deny.
+    
 db.pledgedrive.title.requires=IS_NOT_EMPTY()
 db.pledgedrive.start_time.default=request.now
 db.pledgedrive.end_time.default=request.now
@@ -88,34 +96,6 @@ db.pledgedrive.organization.requires=IS_IN_DB(db,'organization.id','%(name)s')
 db.pledgedrive.start_time.requires=IS_DATETIME('%Y-%m-%d %H:%M:%S')
 db.pledgedrive.end_time.requires=IS_DATETIME('%Y-%m-%d %H:%M:%S')
 db.pledgedrive.pledge_goal.requires=IS_NOT_EMPTY()
-
-db.define_table('challenge',
-    Field('title'),
-    # Field('person',db.person,default=session.person_id,readable=False,writable=False),
-    Field('person',db.person,'%(name)s'),
-    Field('pledgedrive',db.pledgedrive,default=session.pledgedrive_id,readable=False,writable=False),
-    Field('amount','integer'),
-    Field('description','text'),
-    # Field('type'),
-    Field('condition'),
-    Field('state'),
-    Field('organization',db.organization,default=session.organization_id,readable=False,writable=False),
-    Field('created_by',default=me,writable=False,readable=False),
-    Field('created_on','datetime',default=request.now,writable=False,readable=False)    
-)
-# db.challenge.person.requires=IS_IN_DB(db,'person.id','%(name)s')
-# this should work... but it turns out I need to upgrade my version of web2py.  In the end, I needed the relationship to be based on organization.id after all:
-# db.challenge.person.requires=IS_IN_DB(db(db.person.created_by==auth.user_id),db.person.id,'%(name)s')
-# surprisingly, this didn't work on GAE as well.  I think this is another version specific issue.
-# db.challenge.person.requires=IS_IN_DB(db(db.person.created_by==me),db.person.id,'%(name)s')
-# I think this is what I really wanted after all:
-db.challenge.person.requires=IS_IN_DB(db(db.person.organization==session.organization_id),db.person.id,'%(name)s')
-db.challenge.pledgedrive.requires=IS_IN_DB(db,'pledgedrive.id','%(title)s')
-db.challenge.organization.requires=IS_IN_DB(db,'organization.id','%(name)s')
-# db.challenge.type.requires=IS_IN_SET(CHALLENGE_TYPES)
-db.challenge.condition.requires=IS_IN_SET(CHALLENGE_CONDITIONS)
-db.challenge.state.requires=IS_IN_SET(CHALLENGE_STATES)
-db.challenge.amount.requires=IS_NOT_EMPTY()
 
 db.define_table('segment',
     Field('title'),
@@ -126,32 +106,59 @@ db.define_table('segment',
     Field('goal','integer'),
     Field('goal_type'),
     Field('program',db.program,'%(title)s'),
-    # Field('program',db.program,default=session.program_id,readable=False,writable=False),
-    Field('challenge',db.challenge,'%(title)s'),
-    # Field('challenge',db.challenge,default=session.challenge_id,readable=False,writable=False),
     Field('pledgedrive',db.pledgedrive,default=session.pledgedrive_id,readable=False,writable=False),
     Field('organization',db.organization,default=session.organization_id,readable=False,writable=False),
     Field('created_by',default=me,writable=False,readable=False),
     Field('created_on','datetime',default=request.now,writable=False,readable=False)
     )
+#Validate:
+#On Insert: Select on title/program/pledgedrive and if organizations are the same, do not insert; validate program and pledgedrive are connected to org; validate that user is in group for organization, else deny;      
+#On Read: Validate that user is in group for organization, else deny.
+
 db.segment.title.requires=IS_NOT_EMPTY()
 db.segment.goal.requires=IS_NOT_EMPTY()
 db.segment.start_time.default=request.now
 db.segment.end_time.default=request.now
 db.segment.organization.requires=IS_IN_DB(db,'organization.id','%(name)s')
-# db.segment.program.requires=IS_IN_DB(db,'program.id','%(title)s')
 db.segment.program.requires=IS_IN_DB(db(db.program.organization==session.organization_id),db.program.id,'%(title)s')
 db.segment.pledgedrive.requires=IS_IN_DB(db,'pledgedrive.id','%(title)s')
-# db.segment.challenge.requires=IS_IN_DB(db,'challenge.id','%(title)s')
-db.segment.challenge.requires=IS_IN_DB(db(db.challenge.pledgedrive==session.pledgedrive_id),db.challenge.id,'%(title)s')
-db.segment.goal_type.requires=IS_IN_SET(GOAL_TYPES)
 db.segment.start_time.requires=IS_DATETIME('%Y-%m-%d %H:%M:%S')
 db.segment.end_time.requires=IS_DATETIME('%Y-%m-%d %H:%M:%S')
 db.segment.goal.requires=IS_NOT_EMPTY()
+db.segment.goal_type.requires=IS_IN_SET(GOAL_TYPES)
+
+
+db.define_table('challenge',
+    Field('title'),
+    Field('person',db.person,'%(name)s'),
+    Field('pledgedrive',db.pledgedrive,default=session.pledgedrive_id,readable=False,writable=False),
+    Field('segment',db.segment,default=session.segment_id),
+    Field('amount','integer'),
+    Field('description','text'),
+    Field('type'),
+    Field('condition'),
+    Field('state'),
+    Field('organization',db.organization,default=session.organization_id,readable=False,writable=False),
+    Field('created_by',default=me,writable=False,readable=False),
+    Field('created_on','datetime',default=request.now,writable=False,readable=False)    
+)
+#Validate:
+#On Insert: Select on title/person/pledgedrive/segment and if organizations are the same, do not insert; validate person and pledgedrive are connected to org; validate that user is in group for organization, else deny;      
+#On Read: Validate that user is in group for organization, else deny.
+
+db.challenge.person.requires=IS_IN_DB(db(db.person.organization==session.organization_id),db.person.id,'%(name)s')
+db.challenge.pledgedrive.requires=IS_IN_DB(db,'pledgedrive.id','%(title)s')
+db.challenge.segment.requires=IS_NULL_OR(IS_IN_DB(db(db.segment.pledgedrive==session.pledgedrive_id),db.segment.id,'%(title)s'))
+db.challenge.organization.requires=IS_IN_DB(db,'organization.id','%(name)s')
+db.challenge.type.requires=IS_IN_SET(CHALLENGE_TYPES)
+db.challenge.condition.requires=IS_IN_SET(CHALLENGE_CONDITIONS)
+db.challenge.state.requires=IS_IN_SET(CHALLENGE_STATES)
+db.challenge.amount.requires=IS_NOT_EMPTY()
+
 
 db.define_table('pledge',
     Field('amount','integer'),
-    Field('name'),
+    Field('name'),#should likely reference the person table...
     Field('comment'),
     Field('segment',db.segment,default=session.segment_id,readable=False,writable=False), 
     Field('pledgedrive',db.pledgedrive,default=session.pledgedrive_id,readable=False,writable=False),
@@ -159,6 +166,10 @@ db.define_table('pledge',
     Field('created_by',default=me,writable=False,readable=False),
     Field('created_on','datetime',default=request.now,writable=False,readable=False)
 )
+#Validate:
+#On Insert: that segment has this pledgedrive; that pledgedrive shares this organization; validate that user is in group for organization, else deny;
+#On Read: Validate that user is in group for organization, else deny.
+
 # db.pledge.person.requires=IS_IN_DB(db,'person.id','%(name)s')
 # db.pledge.program.requires=IS_IN_DB(db,'program.id','%(title)s')
 db.pledge.segment.requires=IS_IN_DB(db,'segment.id','%(title)s')
@@ -172,7 +183,12 @@ db.define_table('post',
     Field('organization',db.organization,default=session.organization_id,readable=False,writable=False),
     Field('created_by',default=me,writable=False,readable=False),
     Field('created_on','datetime',default=request.now,writable=False,readable=False)
+    #should this also have an item for pledgedrive?
     )
+#Validate:
+#On Insert: validate that user is in group for organization, else deny;
+#On Read: Validate that user is in group for organization, else deny;
+
 db.post.body.requires=IS_NOT_EMPTY()
 db.post.organization.requires=IS_IN_DB(db,'organization.id','%(name)s')
 
