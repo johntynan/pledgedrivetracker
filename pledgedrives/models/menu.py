@@ -10,7 +10,7 @@ response.subtitle = T('Making Public Broadcasting Fund Drives More Efficient')
 response.author = 'John Tynan'
 
 
-helphome = "http://opensourcebroadcasting.appspot.com/pledgedrives/static/documentation/_build/html/"
+helphome = "http://pledgedrivetrackerdemo.appspot.com/pledgedrives/static/documentation/_build/html/"
 helpdefault = "index.html"
 urls = {"frame_header_onair":"on_air_screen.html","frame_header_pledge_entry":"pledge_entry.html","create_program":"setup.html#program-s"}
 
@@ -21,6 +21,8 @@ urls = {"frame_header_onair":"on_air_screen.html","frame_header_pledge_entry":"p
 ##########################################
 
 if 'auth' in globals():
+    # comment out for the following block of code if you are using the subscription app
+    '''
     if not auth.is_logged_in():
        response.menu_auth = [
            [T('Login'), False, auth.settings.login_url,
@@ -32,7 +34,10 @@ if 'auth' in globals():
             ],
            ]
     else:
-        response.menu_auth = [
+    '''
+    # UN-comment the following line if you are using the demo app
+    if auth.is_logged_in():
+       response.menu_auth = [
             ['User: '+auth.user.first_name,False,None,
              [
                     [T('Logout'), False, 
