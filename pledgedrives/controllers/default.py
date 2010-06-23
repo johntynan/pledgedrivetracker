@@ -1249,7 +1249,6 @@ def quick_setup_segment():
         goal=session.segment['goal']
         goal_type=session.segment['goal_type']
         program=session.segment['program']
-        challenge=session.segment['challenge']
 
         while a <= units:
 
@@ -1265,7 +1264,7 @@ def quick_setup_segment():
             # print time_difference
             # print segment_end_time
 
-            db.segment.insert(title=title,description=description,goal=goal,goal_type=goal_type,program=program,challenge=challenge,start_time=segment_start_time,end_time=segment_end_time)
+            db.segment.insert(title=title,description=description,goal=goal,goal_type=goal_type,program=program,start_time=segment_start_time,end_time=segment_end_time)
 
             # print a
             a += 1
