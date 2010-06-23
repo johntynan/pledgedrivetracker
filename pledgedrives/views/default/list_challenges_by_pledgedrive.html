@@ -16,6 +16,7 @@ $(document).ready(function() {
 <thead>
     <th>Title</th>
     <th>Amount</th>
+    <th>Segment</th>
     <th>Description</th>
     <th>Condition</th>
     <th>State</th>
@@ -25,7 +26,8 @@ $(document).ready(function() {
 {{for challenge in challenges:}}
 <tr>
     <td>{{=challenge.title}}</td>    
-    <td>{{=challenge.amount}}</td>    
+    <td>{{=challenge.amount}}</td>
+    <td>{{=challenge.segment.title}}</td>
     <td>{{=challenge.description}}</td>    
     <td>{{=challenge.condition}}</td>    
     <td>{{=challenge.state}}</td> 

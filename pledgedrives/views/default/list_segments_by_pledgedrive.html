@@ -21,7 +21,6 @@ $(document).ready(function() {
     <th>goal</th>
     <th>goal_type</th>
     <th>program</th>
-    <th>challenge</th>
     <th>Actions</th>
 </thead>
 <tbody>
@@ -34,7 +33,6 @@ $(document).ready(function() {
     <td>{{=segment.goal}}</td>
     <td>{{=segment.goal_type}}</td> 
     <td>{{=segment.program}}</td>
-    <td>{{=segment.challenge}}</td>    
     <td>
     <a href="{{=URL(r=request,f='view_segment',args=segment.id)}}">View</a> | 
     <a href="{{=URL(r=request,f='edit_segment',args=segment.id)}}">Edit</a>
