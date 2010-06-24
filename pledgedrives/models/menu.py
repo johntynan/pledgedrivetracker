@@ -35,7 +35,7 @@ if 'auth' in globals():
            ]
     else:
     '''
-    # UN-comment the following line if you are using the demo app
+    # comment out the following line if you are using the demo app
     if auth.is_logged_in():
        response.menu_auth = [
             ['User: '+auth.user.first_name,False,None,
