@@ -696,6 +696,100 @@ def frame_pledge_entry():
 
 
 @auth.requires_login()
+def report_pledge_level():
+    check_session()
+    pledgedrive_id=session.pledgedrive_id
+    pledgedrive=db.pledgedrive[pledgedrive_id] or redirect(error_page)
+    segs = db(db.segment.pledgedrive == pledgedrive_id).select()
+    segs = segs.sort(lambda row:row.start_time)
+    seg_dicts = []
+    total_pledges = 0
+    buckets = [500,200,100,36,35,0]
+    bucket_counter = [0,0,0,0,0,0]
+    for s in segs:
+	pledge_list = db(db.pledge.segment == s.id).select().as_list()
+    	segment_total_pledges = len(pledge_list)
+	total_pledges = total_pledges + segment_total_pledges
+	seg_bucket_counter = [0,0,0,0,0,0]
+    	for i in pledge_list:
+		j = 0
+		while i['amount']<buckets[j]:
+			j = j+1
+		seg_bucket_counter[j] = seg_bucket_counter[j] + 1
+		bucket_counter[j] = bucket_counter[j] + 1
+	d = dict(program=db.program[s.program].title, total_pledges=segment_total_pledges, bucket_counter=seg_bucket_counter)
+	seg_dicts.append(d)
+    return dict(seg_dicts=seg_dicts,total_pledges=total_pledges,buckets=buckets,bucket_counter=bucket_counter)
+
+
+@auth.requires_login()
+def report_day_total_summary():
+    check_session()
+    pledgedrive_id=session.pledgedrive_id
+    pledgedrive=db.pledgedrive[pledgedrive_id] or redirect(error_page)
+    dt_str = request.vars.date or str(datetime.date.today())
+    dt_lst = dt_str.split('-')
+    date = datetime.date(int(dt_lst[0]),int(dt_lst[1]),int(dt_lst[2]))
+    form = SQLFORM.factory(\
+                      Field('date','date',default=date),_action=URL(r=request))
+    form.accepts(request.vars,session)
+    if not form.errors:
+	dt_str = request.vars.date or str(datetime.date.today())
+	dt_lst = dt_str.split('-')
+	date = datetime.date(int(dt_lst[0]),int(dt_lst[1]),int(dt_lst[2]))
+    else:
+	redirect(error_page)
+	return
+	#dt_str = str(datetime.date.today())
+	#dt_lst = dt_str.split('-')
+	#date = datetime.date(int(dt_lst[0]),int(dt_lst[1]),int(dt_lst[2]))
+    segs = db(db.segment.pledgedrive == pledgedrive_id).select().find(lambda row:(row.start_time.year==int(dt_lst[0]) and row.start_time.month==int(dt_lst[1]) and row.start_time.day==int(dt_lst[2])))
+#    segs = segs.find(lambda row:row.start_time.month==dt_lst[1])
+#    segs = segs.find(lambda row:row.start_time.day==dt_lst[2])
+    segs = segs.sort(lambda row:row.start_time)
+    seg_dicts = []
+    total_dollars = 0
+    total_pledges = 0
+    for s in segs:
+	pledge_list = db(db.pledge.segment == s.id).select().as_list()
+    	segment_total_pledges = len(pledge_list)
+	total_pledges = total_pledges + segment_total_pledges
+    	segment_total_dollars = 0
+    	for i in pledge_list:
+        	segment_total_dollars = segment_total_dollars + i['amount']
+	total_dollars = total_dollars + segment_total_dollars
+	d = dict(start_time = s.start_time, end_time=s.end_time,goal=s.goal, goal_type=s.goal_type, program=db.program[s.program].title, \
+		total_pledges=segment_total_pledges, total_dollars = segment_total_dollars)
+	seg_dicts.append(d)
+    return dict(form=form,seg_dicts=seg_dicts,total_dollars=total_dollars,total_pledges=total_pledges)
+
+
+@auth.requires_login()
+def report_single_segment():
+    check_session()
+    pledgedrive_id=session.pledgedrive_id
+    pledgedrive=db.pledgedrive[pledgedrive_id] or redirect(error_page)
+    request.vars.segment = request.vars.segment or session.segment_id
+    form = SQLFORM.factory(\
+         Field('segment',default=request.vars.segment, requires=IS_IN_DB(db(db.segment.pledgedrive==pledgedrive_id),'segment.id','%(title)s'),unique=True),\
+                      _action=URL(r=request))
+    form.accepts(request.vars,session)
+    if not form.errors:
+    	segment_id=request.vars.segment
+    else:
+	segment_id=session.segment_id
+    segment = db.segment[segment_id] or redirect(error_page)
+    program = db.program[segment.program]
+    pledge_list = db(db.pledge.segment == segment_id).select().as_list()
+    segment_total_pledges = len(pledge_list)
+    segment_total_dollars = 0
+    for i in pledge_list:
+        segment_total_dollars = segment_total_dollars + i['amount']
+    return dict(segment=segment,pledge_list=pledge_list,segment_total_pledges=segment_total_pledges,segment_total_dollars=segment_total_dollars,program_title=program.title,form=form)
+
+
+
+@auth.requires_login()
 def report_segments_by_pledgedrive():
     check_session()
     pledgedrive_id=session.pledgedrive['id']

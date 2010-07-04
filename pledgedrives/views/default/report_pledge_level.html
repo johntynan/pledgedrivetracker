@@ -1,0 +1,68 @@
+{{extend 'layout.html'}}
+
+<div id="content" style="background-color:white;">
+
+<h2>Report For: {{=session.pledgedrive['title']}}</h2>
+</br>
+<table border="1">
+<tr>
+<th>Break Number</th><th>Program Name</th>
+{{colors = ['#0000FF','#DF0101','#01DF01','#FE9A2E','#8000FF','#8A0808']}}
+{{rg = range(len(buckets))}}
+{{rg.reverse()}}
+{{for i, b in enumerate(rg):}}
+	{{if b != 0:}}
+		<th><span style="color:{{=colors[i]}}">#({{=buckets[b]}} - {{=buckets[b-1]-1}})</span></th>
+		<th><span style="color:{{=colors[i]}}">%({{=buckets[b]}} - {{=buckets[b-1]-1}})</span></th>
+	{{else:}}
+		<th><span style="color:{{=colors[i]}}">#{{=buckets[b]}}+</span></th>
+		<th><span style="color:{{=colors[i]}}">%{{=buckets[b]}}+</span></th>
+	{{pass}}
+	</span>
+{{pass}}
+<th>Total Pledges</th>
+</tr>
+{{for i, s in enumerate(seg_dicts):}}
+	<tr>
+	<td>{{=i}}</td><td>{{=s['program']}}</td>
+	{{s['bucket_counter'].reverse()}}
+	{{for j, segcount in enumerate(s['bucket_counter']):}}
+		<td><span style="color:{{=colors[j]}}">{{=segcount}}</span></td>
+		{{if s['total_pledges']>0:}}
+			<td><span style="color:{{=colors[j]}}">{{="%.2f" % (100*(segcount/float(s['total_pledges'])))}}%</span></td>
+		{{else:}}
+			<td><span style="color:{{=colors[j]}}">0</span></td>
+		{{pass}}
+	{{pass}}
+	<td>{{=s['total_pledges']}}</td>
+	</tr>
+{{pass}}
+<tr>
+<td>Pledge Levels:</td><td>Grand Totals and Percents for Drive</td>
+{{for i, b in enumerate(rg):}}
+	{{if b != 0:}}
+		<th>#({{=buckets[b]}} - {{=buckets[b-1]-1}})</th>
+		<th>%({{=buckets[b]}} - {{=buckets[b-1]-1}})</th>
+	{{else:}}
+		<th>#{{=buckets[b]}}+</th>
+		<th>%{{=buckets[b]}}+</th>
+	{{pass}}
+{{pass}}
+<th>Grand Total Pledges</th>
+</tr>
+<tr>
+<td/>
+<td/>
+{{bucket_counter.reverse()}}
+{{for b in bucket_counter:}}
+	<td>{{=b}}</td>
+	{{if total_pledges>0:}}
+		<td>{{="%.2f" % (100*(b/float(total_pledges)))}}%</span></td>
+	{{else:}}
+		<td>0</td>
+	{{pass}}
+{{pass}}
+<td>{{=total_pledges}}</td>
+</tr>
+</table>
+

@@ -23,12 +23,11 @@ $(document).ready(function(){
 <div class="reports">
 <ul>
 <li><a href="{{=URL(r=request,f='report_segments_by_pledgedrive',args=session.pledgedrive['id'])}}">Segment Report</a></li>
-<!-- <li><a href="{{=URL(r=request,f='report_select_segment',args=session.pledgedrive['id'])}}">Single Segment Report</a></li>
-<li><a href="{{=URL(r=request,f='report_select_totals_by_day_detail',args=session.pledgedrive['id'])}}">Day Totals (detailed)</a></li>
-<li><a href="{{=URL(r=request,f='report_select_totals_by_day_summary',args=session.pledgedrive['id'])}}">Day Totals (summary)</a></li>
-<li><a href="{{=URL(r=request,f='report_pledge_levels_by_pledgedrive',args=session.pledgedrive['id'])}}">Pledge Levels</a></li> -->
+<li><a href="{{=URL(r=request,f='report_single_segment',args=session.pledgedrive['id'])}}">Single Segment Report</a></li>
+<li><a href="{{=URL(r=request,f='report_day_total_summary',args=session.pledgedrive['id'])}}">Day Totals Report</a></li>
 <li><a href="{{=URL(r=request,f='report_pledgedrive_totals_detailed',args=session.pledgedrive['id'])}}">Drive Totals (detailed)</a></li>
 <li><a href="{{=URL(r=request,f='report_pledgedrive_totals',args=session.pledgedrive['id'])}}">Drive Totals (summary)</a></li>
+<li><a href="{{=URL(r=request,f='report_pledge_level',args=session.pledgedrive['id'])}}">Pledge Level Report</a></li>
 </ul>
 </div>
 
@@ -77,6 +76,3 @@ Selected Segment: {{=session.segment['title']}}
 {{pass}}{{=button('Select a new segment','session_segment_id_form')}}
 </div>
 </div>
-
-
-
