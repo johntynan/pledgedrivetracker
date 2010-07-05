@@ -7,11 +7,12 @@
 </br>
 <table border="1">
 <tr>
-<th>Break Number</th><th>Program Name</th><th>Start Time</th><th>Pledge Goal</th><th>Dollar Goal</th><th>Pledges Over/Under Goal</th><th>Dollars Over/Under Goal</th><th>Average Pledge</th><th>Total Pledges</th><th>Total Dollars</th>
+<th>Date</th><th>Segment</th><th>Start Time</th><th>Pledge Goal</th><th>Dollar Goal</th><th>Pledges Over/Under Goal</th><th>Dollars Over/Under Goal</th><th>Average Pledge</th><th>Total Pledges</th><th>Total Dollars</th>
 </tr>
 {{for ct, s in enumerate(seg_dicts):}}
+	{{dtime=str(s['start_time']).split()}}
 	<tr>
-	<td>{{=ct+1}}</td><td>{{=s['program']}}</td><td>{{=s['start_time']}}</td>
+	<td>{{=dtime[0]}}</td><td>{{=s['title']}}</td><td>{{=dtime[1]}}</td>
 	{{if s['goal_type'] == 'Pledge':}}
 		{{pledgediff = (s['total_pledges']-s['goal'])}}
 		<td>{{=s['goal']}}</td>

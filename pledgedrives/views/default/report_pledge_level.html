@@ -6,7 +6,7 @@
 </br>
 <table border="1">
 <tr>
-<th>Break Number</th><th>Program Name</th>
+<th>Date</th><th>Segment</th>
 {{colors = ['#0000FF','#DF0101','#01DF01','#FE9A2E','#8000FF','#8A0808']}}
 {{rg = range(len(buckets))}}
 {{rg.reverse()}}
@@ -24,7 +24,7 @@
 </tr>
 {{for i, s in enumerate(seg_dicts):}}
 	<tr>
-	<td>{{=i}}</td><td>{{=s['program']}}</td>
+	<td>{{=str(s['dt']).split()[0]}}</td><td>{{=s['title']}}</td>
 	{{s['bucket_counter'].reverse()}}
 	{{for j, segcount in enumerate(s['bucket_counter']):}}
 		<td><span style="color:{{=colors[j]}}">{{=segcount}}</span></td>

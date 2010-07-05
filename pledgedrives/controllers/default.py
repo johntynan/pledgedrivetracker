@@ -716,7 +716,7 @@ def report_pledge_level():
 			j = j+1
 		seg_bucket_counter[j] = seg_bucket_counter[j] + 1
 		bucket_counter[j] = bucket_counter[j] + 1
-	d = dict(program=db.program[s.program].title, total_pledges=segment_total_pledges, bucket_counter=seg_bucket_counter)
+	d = dict(title=s.title, total_pledges=segment_total_pledges, bucket_counter=seg_bucket_counter, dt=s.start_time)
 	seg_dicts.append(d)
     return dict(seg_dicts=seg_dicts,total_pledges=total_pledges,buckets=buckets,bucket_counter=bucket_counter)
 
@@ -757,8 +757,7 @@ def report_day_total_summary():
     	for i in pledge_list:
         	segment_total_dollars = segment_total_dollars + i['amount']
 	total_dollars = total_dollars + segment_total_dollars
-	d = dict(start_time = s.start_time, end_time=s.end_time,goal=s.goal, goal_type=s.goal_type, program=db.program[s.program].title, \
-		total_pledges=segment_total_pledges, total_dollars = segment_total_dollars)
+	d = dict(start_time = s.start_time, end_time=s.end_time,goal=s.goal, goal_type=s.goal_type, title=s.title, total_pledges=segment_total_pledges, total_dollars = segment_total_dollars)
 	seg_dicts.append(d)
     return dict(form=form,seg_dicts=seg_dicts,total_dollars=total_dollars,total_pledges=total_pledges)
 

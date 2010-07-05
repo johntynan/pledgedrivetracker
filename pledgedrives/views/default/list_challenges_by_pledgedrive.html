@@ -27,7 +27,11 @@ $(document).ready(function() {
 <tr>
     <td>{{=challenge.title}}</td>    
     <td>{{=challenge.amount}}</td>
+{{if challenge.segment != None:}}
     <td>{{=challenge.segment.title}}</td>
+{{else:}}
+    <td></td>
+{{pass}}
     <td>{{=challenge.description}}</td>    
     <td>{{=challenge.condition}}</td>    
     <td>{{=challenge.state}}</td> 
