@@ -3,11 +3,15 @@
 <META HTTP-EQUIV="Refresh" Content="10; URL=mini_segment_challenge.html">
 
 <div class="frame_content">
+{{if len(segment_challenges) > 0:}}
 <h2>Challenges</h2>
 {{for descript in segment_challenges:}}
 {{if (descript != None) and (descript['description'] != ''):}}
 <div>{{=descript['description']}}</div>
 {{pass}}
 {{pass}}
-
+{{else:}}
+<h2>Description</h2>
+{{=seg_descript}}
+{{pass}}
 </div>
