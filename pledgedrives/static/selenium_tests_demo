@@ -4,12 +4,12 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://localhost:8088/pledgedrives/" />
-<title>selenium_tests</title>
+<title>selenium_tests_demo</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">selenium_tests</td></tr>
+<tr><td rowspan="1" colspan="3">selenium_tests_demo</td></tr>
 </thead><tbody>
 <tr>
 	<td>click</td>
@@ -28,7 +28,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=Pledge Drive Tracker</td>
+	<td>link=Pledge Drive Tracker Demo</td>
 	<td></td>
 </tr>
 <tr>
@@ -43,7 +43,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=Pledge Drive Tracker</td>
+	<td>link=Pledge Drive Tracker Demo</td>
 	<td></td>
 </tr>
 <tr>
@@ -58,7 +58,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=Pledge Drive Tracker</td>
+	<td>link=Pledge Drive Tracker Demo</td>
 	<td></td>
 </tr>
 <tr>
@@ -73,7 +73,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=Pledge Drive Tracker</td>
+	<td>link=Pledge Drive Tracker Demo</td>
 	<td></td>
 </tr>
 <tr>
@@ -88,7 +88,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=Pledge Drive Tracker</td>
+	<td>link=Pledge Drive Tracker Demo</td>
 	<td></td>
 </tr>
 <tr>
@@ -103,7 +103,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=Pledge Drive Tracker</td>
+	<td>link=Pledge Drive Tracker Demo</td>
 	<td></td>
 </tr>
 <tr>
@@ -293,7 +293,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=Pledge Drive Tracker</td>
+	<td>link=Pledge Drive Tracker Demo</td>
 	<td></td>
 </tr>
 <tr>
@@ -303,7 +303,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=Pledge Drive Tracker</td>
+	<td>link=Pledge Drive Tracker Demo</td>
 	<td></td>
 </tr>
 <tr>
@@ -318,7 +318,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=Pledge Drive Tracker</td>
+	<td>link=Pledge Drive Tracker Demo</td>
 	<td></td>
 </tr>
 <tr>
@@ -333,7 +333,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=Pledge Drive Tracker</td>
+	<td>link=Pledge Drive Tracker Demo</td>
 	<td></td>
 </tr>
 <tr>
@@ -343,7 +343,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=Pledge Drive Tracker</td>
+	<td>link=Pledge Drive Tracker Demo</td>
 	<td></td>
 </tr>
 <tr>
@@ -353,7 +353,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=Pledge Drive Tracker</td>
+	<td>link=Pledge Drive Tracker Demo</td>
 	<td></td>
 </tr>
 <tr>
@@ -368,7 +368,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=Pledge Drive Tracker</td>
+	<td>link=Pledge Drive Tracker Demo</td>
 	<td></td>
 </tr>
 <tr>
@@ -378,7 +378,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=Pledge Drive Tracker</td>
+	<td>link=Pledge Drive Tracker Demo</td>
 	<td></td>
 </tr>
 <tr>
@@ -388,7 +388,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=Pledge Drive Tracker</td>
+	<td>link=Pledge Drive Tracker Demo</td>
 	<td></td>
 </tr>
 <tr>
@@ -403,7 +403,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=Pledge Drive Tracker</td>
+	<td>link=Pledge Drive Tracker Demo</td>
 	<td></td>
 </tr>
 <tr>

@@ -1153,7 +1153,7 @@ def mini_segment_challenge():
     check_session()
     segment_id=session.segment_id
     challenge_desc = db(db.challenge.segment == segment_id).select().as_list()
-    return dict(segment_challenges=challenge_desc, seg_descript=db.segment[segment_id].description)
+    return dict(segment_challenges=challenge_desc, seg_talkingpoints=db.segment[segment_id].talkingpoints)
 
 @auth.requires_login()
 def mini_segment_select():
