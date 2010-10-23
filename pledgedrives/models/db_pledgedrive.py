@@ -96,6 +96,7 @@ db.pledgedrive.organization.requires=IS_IN_DB(db,'organization.id','%(name)s')
 db.pledgedrive.start_time.requires=IS_DATETIME('%Y-%m-%d %H:%M:%S')
 db.pledgedrive.end_time.requires=IS_DATETIME('%Y-%m-%d %H:%M:%S')
 db.pledgedrive.pledge_goal.requires=IS_NOT_EMPTY()
+db.pledgedrive.projected_average_pledge.requires=IS_NOT_EMPTY()
 
 db.define_table('segment',
     Field('title'),

@@ -651,7 +651,7 @@ def edit_pledge():
     pledge_id=get_valid_id(request.args(0),db.pledge)
     pledge=db.pledge[pledge_id] or redirect(error_page)
     # form=crud.update(db.pledge,pledge,next=url('view_pledge',pledge_id))
-    form=crud.update(db.pledge,pledge,next=url('list_pledges_by_pledgedrive'))
+    form=crud.update(db.pledge,pledge,next=url('list_pledges_by_segment'))
     return dict(form=form)
 
 @auth.requires_login()
