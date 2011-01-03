@@ -287,7 +287,7 @@ def edit_organization():
     check_session()
     organization_id=session.organization['id']
     organization=db.organization[organization_id] or redirect(error_page)
-    form=crud.update(db.organization,organization,next=url('list_organizations'))
+    form=crud.update(db.organization,organization,next=url('list_organizations'),deletable=False)
     return dict(form=form)
 
 @auth.requires_login()
@@ -455,7 +455,7 @@ def edit_pledgedrive():
     pledgedrive_id=session.pledgedrive['id']
     pledgedrive=db.pledgedrive[pledgedrive_id] or redirect(error_page)
     # form=crud.update(db.pledgedrive,pledgedrive,next=url('view_pledgedrive',pledgedrive_id))
-    form=crud.update(db.pledgedrive,pledgedrive,next=url('list_pledgedrives_by_organization'))
+    form=crud.update(db.pledgedrive,pledgedrive,next=url('list_pledgedrives_by_organization'),deletable=False)
     return dict(form=form)
 
 @auth.requires_login()
