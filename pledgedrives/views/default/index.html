@@ -9,10 +9,6 @@ $(document).ready(function(){
 
 </script>
 
-<!--
-{{try:}}{{=H2(message)}}{{except:}}{{=BEAUTIFY(response._vars)}}{{pass}}
--->
-
 <div>
 {{=button('On-air Screen','frame_wrapper_onair.html')}}
 {{=button('Pledge Entry','frame_wrapper_pledge_entry.html')}}
@@ -76,3 +72,8 @@ Selected Segment: {{=session.segment['title']}}
 {{pass}}{{=button('Select a new segment','session_segment_id_form')}}
 </div>
 </div>
+
+
+<!--
+{{try:}}{{=H2(message)}}{{except:}}{{=BEAUTIFY(response._vars)}}{{pass}}
+-->
