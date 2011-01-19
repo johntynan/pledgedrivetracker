@@ -25,7 +25,7 @@ urls = {"frame_header_onair":"on_air_screen.html","frame_header_pledge_entry":"p
 
 if 'auth' in globals():
     # comment out for the following block of code if you are using the subscription app
-    '''
+
     if not auth.is_logged_in():
        response.menu_auth = [
            [T('Login'), False, auth.settings.login_url,
@@ -37,9 +37,9 @@ if 'auth' in globals():
             ],
            ]
     else:
-    '''
+
     # comment out the following line if you are using the demo app
-    if auth.is_logged_in():
+    # if auth.is_logged_in():
        response.menu_auth = [
             ['User: '+auth.user.first_name,False,None,
              [
