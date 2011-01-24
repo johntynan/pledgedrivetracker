@@ -19,13 +19,14 @@ error_page=URL(r=request,f='error')
 
 @auth.requires_login()
 def check_session_organization():
-    '''
+    """    
+    Makes sure an organization for the current user is selected
     Checks for any organizations created by the current user; if none, redirect to create organization form.
     Checks for valid organization in session, else prompts to reselect
     >>> organizations=db(db.organization.created_by=="1").select().as_list()
     >>> organizations
     [{'phone': '480-834-5627', 'address': '2323 W. 14th Street Tempe, AZ 85281', 'id': 1, 'name': 'KUNC', 'url': 'http://kunc.org', 'created_on': '2010-01-24 23:28:15', 'created_by': '1', 'phone_long_distance': '1-800-888-8888'}]
-    '''
+    """
     organizations = db(db.organization.created_by==auth.user.id).select().as_list()
     valid = False
     if len(organizations) < 1:
@@ -41,6 +42,11 @@ def check_session_organization():
 
 @auth.requires_login()
 def check_session_pledgedrive():
+    """
+    Makes sure a pledgedrive for the current user is selected
+    Checks for any pledgedrive created by the current user; if none, redirect to create organization form.
+    Checks for valid organization in session, else prompts to reselect
+    """
     #function assumes that the session.organization_id item is valid for the user
     #run after check_session_organization in sequence.
     pledgedrives=db(db.pledgedrive.organization==session.organization_id).select().as_list()
@@ -58,6 +64,9 @@ def check_session_pledgedrive():
 
 @auth.requires_login()
 def check_session_segment():
+    """
+    Makes sure a segment for the current user is selected
+    """
     #function assumes that the session.pledgedrive_id item is valid for the user/organization
     #run after check_session_pledgedrive in sequence.
     segments=db(db.segment.pledgedrive==session.pledgedrive_id).select().as_list()
@@ -75,33 +84,50 @@ def check_session_segment():
             
 @auth.requires_login()
 def check_session():
+    """
+    Sets an order for checking that certain defaults for the program are set and stored in the session
+    """
     check_session_organization()
     check_session_pledgedrive()
     check_session_segment()
 
 @auth.requires_login()
 def check_program():
+    """
+    Makes sure a program for the current user is selected
+    """
     programs=db(db.program.organization==session.organization_id).select().as_list()
     if len(programs) < 1:
         redirect(URL(r=request, f='create_program'))
 
 @auth.requires_login()
 def check_challenge():
-    # challenges=db(db.challenge.organization==session.organization_id).select().as_list()
+    """
+    Makes sure a challenge for the current user is selected
+    """
     challenges=db(db.challenge.pledgedrive==session.pledgedrive_id).select().as_list()
     if len(challenges) < 1:
         redirect(URL(r=request, f='create_challenge'))
 
 @auth.requires_login()
 def check_person():
+    """
+    Makes sure a person for the current user is selected
+    """
     persons=db(db.person.organization==session.organization_id).select().as_list()
     if len(persons) < 1:
         redirect(URL(r=request, f='create_person'))
 
 def error():
+    """
+    Display error message.
+    """
     return dict(message='something is wrong')
 
 def get_valid_id(item_id, table):
+    """
+    Makes sure a record belongs to the organization before it is selected
+    """
     try:
         onerec = db(table.id == item_id).select()[0]
         if onerec['organization']==session.organization_id:
@@ -113,11 +139,10 @@ def get_valid_id(item_id, table):
 
 @auth.requires_login()
 def index():
+    """
+    Loads the initial page for the app.  Sets the defaults.
+    """
     check_session()
-    """
-    example action using the internationalization operator T and flash
-    rendered by views/default/index.html or views/generic.html
-    """
 
     organization = session.organization
     pledgedrive=session.pledgedrive
@@ -131,6 +156,9 @@ def index():
 
 @auth.requires_login()
 def session_organization_id_form():
+    """
+    Prompts the user to select an organization or create a new one.
+    """
     organizations=db(db.organization.created_by==auth.user.id).select(orderby=db.organization.name)    
     ids=[o.id for o in organizations]
     names=[o.name for o in organizations]
@@ -149,9 +177,9 @@ def session_organization_id_form():
 
 @auth.requires_login()
 def session_pledgedrive_id_form():
-
-    # for some reason, session.organization['id'].select() does not work here.  Have to save the organization_id in the session as a separate variable.
-    # pledgedrives=db(db.pledgedrive.organization==session.organization['id']).select(orderby=db.pledgedrive.title)    
+    """
+    Prompts the user to select an pledgedrive or create a new one.
+    """
     pledgedrives=db(db.pledgedrive.organization==session.organization_id).select(orderby=db.pledgedrive.title)
     ids=[o.id for o in pledgedrives]
     titles=[o.title for o in pledgedrives]
@@ -169,8 +197,9 @@ def session_pledgedrive_id_form():
 
 @auth.requires_login()
 def session_segment_id_form():
-
-    # segments=db(db.segment.organization==session.organization['id']).select(orderby=db.segment.title)    
+    """
+    Prompts the user to select a segment or create a new one.
+    """
     segments=db(db.segment.pledgedrive==session.pledgedrive_id).select(orderby=db.segment.start_time)    
     ids=[o.id for o in segments]
     titles=[o.title for o in segments]
@@ -187,8 +216,9 @@ def session_segment_id_form():
     return dict(form=form,segments=segments)
 
 def session_program_id_form():
-
-    # programs=db(db.program.organization==session.organization['id']).select(orderby=db.program.title)    
+    """
+    Prompts the user to select a program or create a new one.
+    """
     programs=db(db.program.organization==session.organization_id).select(orderby=db.program.title)    
     ids=[o.id for o in programs]
     titles=[o.title for o in programs]
@@ -206,8 +236,9 @@ def session_program_id_form():
 
 @auth.requires_login()
 def session_person_id_form():
-
-    # persons=db(db.person.organization==session.organization['id']).select(orderby=db.person.name)    
+    """
+    Prompts the user to select a person or create a new one.
+    """
     persons=db(db.person.organization==session.organization_id).select(orderby=db.person.name)    
     ids=[o.id for o in persons]
     names=[o.name for o in persons]
@@ -225,8 +256,9 @@ def session_person_id_form():
 
 @auth.requires_login()
 def session_challenge_id_form():
-
-    # challenges=db(db.challenge.pledgedrive==session.pledgedrive['id']).select(orderby=db.challenge.title)    
+    """
+    Prompts the user to select a challenge or create a new one.
+    """
     challenges=db(db.challenge.pledgedrive==session.pledgedrive_id).select(orderby=db.challenge.title)    
     ids=[o.id for o in challenges]
     titles=[o.title for o in challenges]
@@ -244,9 +276,9 @@ def session_challenge_id_form():
     
 @auth.requires_login()
 def create_organization():
-    # check_session()
-    # form=crud.create(db.organization,next=url('index'))
-    # form = SQLFORM(db.organization,next=url('index'))
+    """
+    Form to create a new organizations.
+    """
 
     form = SQLFORM(db.organization)
 
@@ -266,6 +298,10 @@ def create_organization():
 
 @auth.requires_login()
 def view_organization():
+    """
+    Display details about an organization
+    """
+
     check_session()
     organization_id=request.args(0)#only without call to get_valid_id(request.args(0),db.table), since validated below 
     # organization_id=session.organization['id']
@@ -278,12 +314,17 @@ def view_organization():
         
 @auth.requires_login()
 def list_organizations():
-    # check_session()
+    """
+    List organizations created by the current user.
+    """
     organizations=db(db.organization.created_by==auth.user.id).select(orderby=db.organization.name)
     return dict(organizations=organizations)
 
 @auth.requires_login()
 def edit_organization():
+    """
+    Docstring here.
+    """
     check_session()
     organization_id=session.organization['id']
     organization=db.organization[organization_id] or redirect(error_page)
@@ -292,26 +333,20 @@ def edit_organization():
 
 @auth.requires_login()
 def create_person():
+    """
+    Docstring here.
+    """
     check_session_organization()
     organization_id=session.organization['id']
     organization=db.organization[organization_id] or redirect(error_page)
-    # form=crud.create(db.person,next=url('list_persons_by_organization',organization_id))
-    # form=crud.create(db.person,next=url('index'))
     form=crud.create(db.person,next=url('create_challenge'))
-    '''
-    form = SQLFORM(db.person,next=url('index'))
-    if form.accepts(request.vars, session): 
-        response.flash='record inserted'
-        session.person=dict(form.vars)
-        session.person_id = dict(form.vars)['id']
-        # redirect(URL(r=request, f='index'))
-        redirect(URL(r=request, f='create_challenge'))
-    elif form.errors: response.flash='form errors'
-    '''
     return dict(form=form,organization=organization)
 
 @auth.requires_login()
 def view_person():
+    """
+    Docstring here.
+    """
     check_session()
     person_id=get_valid_id(request.args(0),db.person)
     person=db.person[person_id] or redirect(error_page)
@@ -319,21 +354,29 @@ def view_person():
 
 @auth.requires_login()
 def list_persons():
+    """
+    Docstring here.
+    """
     check_session()
     persons=db(db.person.organization==session.organization['id']).select(orderby=db.person.name)
     return dict(persons=persons)
 
 @auth.requires_login()
 def edit_person():
+    """
+    Docstring here.
+    """
     check_session()
     person_id=get_valid_id(request.args(0),db.person)
     person=db.person[person_id] or redirect(error_page)
-    # form=crud.update(db.person,person,next=url('view_person',person_id))
     form=crud.update(db.person,person,next=url('list_persons_by_organization'))
     return dict(form=form)
 
 @auth.requires_login()    
 def list_persons_by_organization():
+    """
+    Docstring here.
+    """
     check_session()
     organization_id=session.organization['id']
     organization=db.organization[organization_id] or redirect(error_page)
@@ -342,6 +385,9 @@ def list_persons_by_organization():
 
 @auth.requires_login()
 def create_program():
+    """
+    Docstring here.
+    """
     check_session_organization()
     organization_id=session.organization['id']
     organization=db.organization[organization_id] or redirect(error_page)
@@ -349,24 +395,14 @@ def create_program():
     # (not to the db) but to this particular organization?
     programs=db(db.program.organization==organization_id).select().as_list()
 
-    # form=crud.create(db.program,next=url('index'))
     form=crud.create(db.program,next=url('create_segment'))
-    '''
-    form = SQLFORM(db.program,next=url('index'))
-    if form.accepts(request.vars, session): 
-        response.flash='record inserted'
-        session.program=dict(form.vars)
-        session.program_id = dict(form.vars)['id']
-        # redirect(URL(r=request, f='index'))
-        # how to specify a "next" parameter for this class so that we can specify where the form will submit to?
-        # In this case, either index or create_segment
-        redirect(URL(r=request, f='create_segment'))
-    elif form.errors: response.flash='form errors'
-    '''
     return dict(form=form,organization=organization,programs=programs)
 
 @auth.requires_login()
 def create_program_import():
+    """
+    Docstring here.
+    """
 #    form = FORM(str(T('or import from csv file'))+" ",INPUT(_type='file',_name='csvfile'),INPUT(_type='submit',_value='import'))
     form = FORM(str(T('List of Programs'))+" ", INPUT(_type='text',_name='progs',requires=IS_LENGTH(100000)),INPUT(_type='submit',_value='import'))
     if form.accepts(request.vars, session):
@@ -384,6 +420,9 @@ def create_program_import():
 
 @auth.requires_login()
 def view_program():
+    """
+    Docstring here.
+    """
     check_session()
     program_id=get_valid_id(request.args(0),db.program)
     program=db.program[program_id] or redirect(error_page)
@@ -391,21 +430,29 @@ def view_program():
 
 @auth.requires_login()
 def list_programs():
+    """
+    Docstring here.
+    """
     check_session()
     programs=db(db.program.organization==session.organization['id']).select(orderby=db.program.title)
     return dict(programs=programs)
 
 @auth.requires_login()
 def edit_program():
+    """
+    Docstring here.
+    """
     check_session()
     program_id=get_valid_id(request.args(0),db.program)
     program=db.program[program_id] or redirect(error_page)
-    # form=crud.update(db.program,program,next=url('view_program',program_id))
     form=crud.update(db.program,program,next=url('list_programs_by_organization'))
     return dict(form=form)
 
 @auth.requires_login()
 def list_programs_by_organization():
+    """
+    Docstring here.
+    """
     check_session()
     organization_id=session.organization['id']
     organization=db.organization[organization_id] or redirect(error_page)
@@ -414,10 +461,10 @@ def list_programs_by_organization():
 
 @auth.requires_login()
 def create_pledgedrive():
+    """
+    Docstring here.
+    """
     check_session_organization()
-    # form=crud.create(db.pledgedrive,next=url('list_pledgedrives'))
-    # form=crud.create(db.pledgedrive,next=url('index'))
-    # form = SQLFORM(db.pledgedrive,next=url('index'))
 
     form = SQLFORM(db.pledgedrive)
 
@@ -436,30 +483,39 @@ def create_pledgedrive():
 
 @auth.requires_login()
 def view_pledgedrive():
+    """
+    Docstring here.
+    """
     check_session()
     pledgedrive_id=get_valid_id(request.args(0),db.pledgedrive)
-    # pledgedrive_id=session.pledgedrive['id']
     pledgedrive=db.pledgedrive[pledgedrive_id] or redirect(error_page)
     dollar_goal = pledgedrive.pledge_goal * pledgedrive.projected_average_pledge
     return dict(pledgedrive=pledgedrive,dollar_goal=dollar_goal)
 
 @auth.requires_login()
 def list_pledgedrives():
-    # check_session()
+    """
+    Docstring here.
+    """
     pledgedrives=db(db.pledgedrive.organization==session.organization['id']).select(orderby=db.pledgedrive.title)
     return dict(pledgedrives=pledgedrives)
 
 @auth.requires_login()
 def edit_pledgedrive():
+    """
+    Docstring here.
+    """
     check_session()
     pledgedrive_id=session.pledgedrive['id']
     pledgedrive=db.pledgedrive[pledgedrive_id] or redirect(error_page)
-    # form=crud.update(db.pledgedrive,pledgedrive,next=url('view_pledgedrive',pledgedrive_id))
     form=crud.update(db.pledgedrive,pledgedrive,next=url('list_pledgedrives_by_organization'),deletable=False)
     return dict(form=form)
 
 @auth.requires_login()
 def list_pledgedrives_by_organization():
+    """
+    Docstring here.
+    """
     check_session_organization()
     organization_id=session.organization['id']
     organization=db.organization[organization_id] or redirect(error_page)
@@ -469,6 +525,9 @@ def list_pledgedrives_by_organization():
 
 @auth.requires_login()
 def create_challenge():
+    """
+    Docstring here.
+    """
     check_session_organization()
     check_session_pledgedrive()
     check_person()
@@ -493,27 +552,37 @@ def create_challenge():
 
 @auth.requires_login()
 def view_challenge():
+    """
+    Docstring here.
+    """
     challenge_id=get_valid_id(request.args(0),db.challenge)
-    # challenge_id=session.challenge['id']
     challenge=db.challenge[challenge_id] or redirect(error_page)
     return dict(challenge=challenge)
 
 @auth.requires_login()
 def list_challenges():
+    """
+    Docstring here.
+    """
     check_session()
     challenges=db(db.challenge.organization==session.organization['id']).select(orderby=db.challenge.title)
     return dict(challenges=challenges)
 
 @auth.requires_login()
 def edit_challenge():
+    """
+    Docstring here.
+    """
     challenge_id=get_valid_id(request.args(0),db.challenge)
     challenge=db.challenge[challenge_id] or redirect(error_page)
-    # form=crud.update(db.challenge,challenge,next=url('view_challenge',challenge_id))
     form=crud.update(db.challenge,challenge,next=url('list_challenges_by_pledgedrive'))
     return dict(form=form)
 
 @auth.requires_login()
 def list_challenges_by_pledgedrive():
+    """
+    Docstring here.
+    """
     check_session()
     pledgedrive_id=session.pledgedrive['id']
     pledgedrive=db.pledgedrive[pledgedrive_id] or redirect(error_page)
@@ -522,10 +591,12 @@ def list_challenges_by_pledgedrive():
 
 @auth.requires_login()
 def create_segment():
+    """
+    Docstring here.
+    """
     check_session_organization()
     check_session_pledgedrive()
     check_program()
-    #check_challenge()
    
     form = SQLFORM(db.segment)
 
@@ -545,6 +616,9 @@ def create_segment():
 
 @auth.requires_login()
 def view_segment():
+    """
+    Docstring here.
+    """
     check_session()
     segment_id=get_valid_id(request.args(0),db.segment)
     segment=db.segment[segment_id] or redirect(error_page)
@@ -552,11 +626,17 @@ def view_segment():
 
 @auth.requires_login()
 def list_segments():
+    """
+    Docstring here.
+    """
     segments=db(db.segment.organization==session.organization['id']).select(orderby=db.segment.start_time)
     return dict(segments=segments)
 
 @auth.requires_login()
 def list_segments_by_pledgedrive():
+    """
+    Docstring here.
+    """
     check_session()
     pledgedrive_id=session.pledgedrive['id']
     pledgedrive=db.pledgedrive[pledgedrive_id] or redirect(error_page)
@@ -565,20 +645,26 @@ def list_segments_by_pledgedrive():
 
 @auth.requires_login()
 def edit_segment():
+    """
+    Docstring here.
+    """
     check_session()
     segment_id=get_valid_id(request.args(0),db.segment)
     segment=db.segment[segment_id] or redirect(error_page)
-    # form=crud.update(db.segment,segment,next=url('view_segment',segment_id))
     form=crud.update(db.segment,segment,next=url('list_segments_by_pledgedrive'))
     return dict(form=form)
 
 @auth.requires_login()
 def create_pledge():
+    """
+    Docstring here.
+    """
     check_session()
     segment_id=session.segment['id']
     segment=db.segment[segment_id] or redirect(error_page)
-    # form=crud.create(db.pledge)
+
     form = SQLFORM(db.pledge,next=url('index'))
+
     if form.accepts(request.vars, session): 
         response.flash='record inserted'
         session.pledge=dict(form.vars)
@@ -589,6 +675,9 @@ def create_pledge():
 
 @auth.requires_login()
 def view_pledge():
+    """
+    Docstring here.
+    """
     check_session()
     pledge_id=get_valid_id(request.args(0),db.pledge)
     pledge=db.pledge[pledge_id] or redirect(error_page)
@@ -596,12 +685,18 @@ def view_pledge():
 
 @auth.requires_login()
 def list_pledges():
+    """
+    Docstring here.
+    """
     check_session()
     pledges=db(db.pledge.id>0).select(orderby=db.pledge.name)
     return dict(pledges=pledges)
 
 @auth.requires_login()
 def list_pledges_by_pledgedrive():
+    """
+    Docstring here.
+    """
     check_session()
     pledgedrive_id=get_valid_id(request.args(0),db.pledgedrive)
     pledgedrive=db.pledgedrive[pledgedrive_id] or redirect(error_page)
@@ -610,21 +705,23 @@ def list_pledges_by_pledgedrive():
 
 @auth.requires_login()
 def list_pledges_by_segment():
+    """
+    Docstring here.
+    """
     check_session()
-    # segment_id=request.args(0)
     segment_id=session.segment['id']
     segment=db.segment[segment_id] or redirect(error_page)
-    # this could be breaking in GAE
-    # pledges=db(db.pledge.segment==segment_id).select(orderby=db.pledge.id)
     pledges=db(db.pledge.segment==segment_id).select()
     return dict(pledges=pledges,segment_id=segment_id)
 
 @auth.requires_login()
 def delete_pledges_by_pledgedrive():
+    """
+    Docstring here.
+    """
     check_session()
     pledgedrive_id=session.pledgedrive['id']
     pledgedrive=db.pledgedrive[pledgedrive_id] or redirect(error_page)
-    # pledges=db(db.pledge.pledgedrive==pledgedrive.id).select(orderby=db.pledge.id)\
     pledges = db.pledge.pledgedrive==pledgedrive.id
 
     db(pledges).delete()
@@ -633,12 +730,11 @@ def delete_pledges_by_pledgedrive():
 
 @auth.requires_login()
 def delete_pledges_by_segment():
-    # segment_id=request.args(0)
+    """
+    Docstring here.
+    """
     segment_id=session.segment['id']
     segment=db.segment[segment_id] or redirect(error_page)
-    # this could be breaking in GAE
-    # pledges=db(db.pledge.segment==segment_id).select(orderby=db.pledge.id)
-    # pledges=db(db.pledge.segment==segment_id).select()
     pledges=db.pledge.segment==segment_id
 
     db(pledges).delete()
@@ -647,55 +743,81 @@ def delete_pledges_by_segment():
         
 @auth.requires_login()
 def edit_pledge():
+    """
+    Docstring here.
+    """
     check_session()
     pledge_id=get_valid_id(request.args(0),db.pledge)
     pledge=db.pledge[pledge_id] or redirect(error_page)
-    # form=crud.update(db.pledge,pledge,next=url('view_pledge',pledge_id))
     form=crud.update(db.pledge,pledge,next=url('list_pledges_by_segment'))
     return dict(form=form)
 
 @auth.requires_login()
 def list_pledges_by_pledgedrive():
+    """
+    Docstring here.
+    """
     check_session()
     pledgedrive_id=session.pledgedrive['id']
     pledgedrive=db.pledgedrive[pledgedrive_id] or redirect(error_page)
-    # this could be breaking in GAE
-    # pledges=db(db.pledge.pledgedrive==pledgedrive.id).select(orderby=db.pledge.id)
     pledges=db(db.pledge.pledgedrive==pledgedrive.id).select()
     return dict(pledgedrive=pledgedrive, pledges=pledges)
 
 def frame_header():
+    """
+    Docstring here.
+    """
     check_session()
-    # organization_id = request.cookies['organization_id'].value if 'organization_id' in request.cookies else 'unknown'
     organization_id = session.organization['id']
     organizations=db(db.organization.id==organization_id).select()
     return dict(message=T('Pledge Drive Tracker'),organizations=organizations,organization_id=organization_id)
 
 def frame_header_onair():
+    """
+    Docstring here.
+    """
     return frame_header()
     
 def frame_header_pledge_entry():
+    """
+    Docstring here.
+    """
     return frame_header()
 
 
 def frame_wrapper_onair():
+    """
+    Docstring here.
+    """
     check_session()
     return dict()
 
 def frame_onair():
+    """
+    Docstring here.
+    """
     check_session()
     return dict()
 
 def frame_wrapper_pledge_entry():
+    """
+    Docstring here.
+    """
     check_session()
     return dict()
 
 def frame_pledge_entry():
+    """
+    Docstring here.
+    """
     check_session()
     return dict()
 
 @auth.requires_login()
 def report_pledge_level():
+    """
+    Docstring here.
+    """
     check_session()
     pledgedrive_id=session.pledgedrive_id
     pledgedrive=db.pledgedrive[pledgedrive_id] or redirect(error_page)
@@ -723,6 +845,9 @@ def report_pledge_level():
 
 @auth.requires_login()
 def report_day_total_summary():
+    """
+    Docstring here.
+    """
     check_session()
     pledgedrive_id=session.pledgedrive_id
     pledgedrive=db.pledgedrive[pledgedrive_id] or redirect(error_page)
@@ -764,6 +889,9 @@ def report_day_total_summary():
 
 @auth.requires_login()
 def report_single_segment():
+    """
+    Docstring here.
+    """
     check_session()
     pledgedrive_id=session.pledgedrive_id
     pledgedrive=db.pledgedrive[pledgedrive_id] or redirect(error_page)
@@ -789,6 +917,9 @@ def report_single_segment():
 
 @auth.requires_login()
 def report_segments_by_pledgedrive():
+    """
+    Docstring here.
+    """
     check_session()
     pledgedrive_id=session.pledgedrive['id']
     pledgedrive=db.pledgedrive[pledgedrive_id] or redirect(error_page)
@@ -833,23 +964,17 @@ def report_segments_by_pledgedrive():
 
 @service.json
 def report_pledgedrive_totals():
+    """
+    Docstring here.
+    """
     check_session()
 
     pledgedrive_id=session.pledgedrive['id']
     pledgedrive=db(db.pledgedrive.id==pledgedrive_id).select()
     
-    # pledgedrive_pledges = db(db.pledge.pledgedrive==pledgedrive_id).select().as_list()[0]
-
     pledgedrive_pledges = db(db.pledge.pledgedrive==pledgedrive_id).select()
 
     pledgedrive_total_pledges = len(pledgedrive_pledges)
-
-    # commented out, since these statments don't work with Google App Engine
-    '''
-    pledge_amounts_for_pledgdrive = db(db.pledge.pledgedrive==pledgedrive_id).select(db.pledge.amount.sum())
-
-    pledgedrive_total_dollars=pledge_amounts_for_pledgdrive[0]._extra[db.pledge.amount.sum()]
-    '''
 
     all_pledges = pledgedrive_pledges.as_list()
 
@@ -864,23 +989,17 @@ def report_pledgedrive_totals():
 
 @service.json
 def report_pledgedrive_totals_detailed():
+    """
+    Docstring here.
+    """
     check_session()
 
     pledgedrive_id=session.pledgedrive['id']
     pledgedrive=db(db.pledgedrive.id==pledgedrive_id).select()
     
-    # pledgedrive_pledges = db(db.pledge.pledgedrive==pledgedrive_id).select().as_list()[0]
-
     pledgedrive_pledges = db(db.pledge.pledgedrive==pledgedrive_id).select()
 
     pledgedrive_total_pledges = len(pledgedrive_pledges)
-
-    # commented out, since these statments don't work with Google App Engine
-    '''
-    pledge_amounts_for_pledgdrive = db(db.pledge.pledgedrive==pledgedrive_id).select(db.pledge.amount.sum())
-
-    pledgedrive_total_dollars=pledge_amounts_for_pledgdrive[0]._extra[db.pledge.amount.sum()]
-    '''
 
     all_pledges = pledgedrive_pledges.as_list()
     pledgedrive_total_dollars = 0
@@ -908,21 +1027,28 @@ def report_pledgedrive_totals_detailed():
 
 
 def report_mini_segment_goal():
+    """
+    Docstring here.
+    """
     check_session()
     return dict()
 
 def report_mini_segment_challenge():
+    """
+    Docstring here.
+    """
     check_session()
     return dict()
 
 @auth.requires_login()
 def report_mini_segment_select():
+    """
+    Docstring here.
+    """
     check_session()
 
-    # segments=db(db.segment.organization==session.organization['id']).select(orderby=db.segment.title)    
     segments=db(db.segment.pledgedrive==session.pledgedrive_id).select(orderby=db.segment.start_time)    
     ids=[o.id for o in segments]
-    # titles=[o.title for o in segments]
     labels=[(str(o.start_time.strftime("%m/%d : %I:%M %p")) + ' - ' + o.title) for o in segments]
 
     form=SQLFORM.factory(Field('segment_id',requires=IS_IN_SET(ids,labels))) 
@@ -938,15 +1064,24 @@ def report_mini_segment_select():
 
 
 def report_mini_segment_overview():
+    """
+    Docstring here.
+    """
     check_session()
     return dict()
 
 def report_mini_pledgedrive_goal():
+    """
+    Docstring here.
+    """
     check_session()
     return dict()
     
 @auth.requires_login()
 def mini_create_pledge():
+    """
+    Docstring here.
+    """
     check_session()
     segment_id=session.segment['id']
     segment=db.segment[segment_id] or redirect(error_page)
@@ -962,7 +1097,6 @@ def mini_create_pledge():
 
     segments=db(db.segment.pledgedrive==session.pledgedrive_id).select(orderby=db.segment.start_time)    
     ids=[o.id for o in segments]
-    # titles=[o.title for o in segments]
     labels=[(str(o.start_time.strftime("%m/%d : %I:%M %p")) + ' - ' + o.title) for o in segments]
 
     form2=SQLFORM.factory(Field('segment_id',requires=IS_IN_SET(ids,labels))) 
@@ -978,23 +1112,23 @@ def mini_create_pledge():
 
 @service.json
 def mini_pledgedrive_goal():
+    """
+    Docstring here.
+    """
     check_session()
     return dict()
 
 @service.json
 def mini_pledgedrive_totals():
+    """
+    Docstring here.
+    """
     check_session()
     pledgedrive_id=session.pledgedrive_id
     
     try:
         pledgedrive_pledges = db(db.pledge.pledgedrive==pledgedrive_id).select()
         pledgedrive_total_pledges = len(pledgedrive_pledges)
-        # commented out, since these statments don't work with Google App Engine
-        '''
-        pledge_amounts_for_pledgdrive = db(db.pledge.pledgedrive==pledgedrive_id).select(db.pledge.amount.sum())
-
-        pledgedrive_total_dollars=pledge_amounts_for_pledgdrive[0]._extra[db.pledge.amount.sum()]
-        '''
 
         all_pledges = pledgedrive_pledges.as_list()
 
@@ -1011,24 +1145,16 @@ def mini_pledgedrive_totals():
 
     return dict(pledgedrive_total_pledges=pledgedrive_total_pledges,pledgedrive_total_dollars=pledgedrive_total_dollars,pledgedrive_average_pledge=pledgedrive_average_pledge)
 
-    # content = DIV('<h1>Drive Totals</h1>' + '<p><strong>Total Pledges</strong>: <strong>'+ str(pledgedrive_total_pledges) + '</strong>',  _id='content')
-    # return dict(content=content)
-
 @service.json
 def mini_pledgedrive_totals_no_reload():
+    """
+    Docstring here.
+    """
     check_session()
 
     pledgedrive_id=session.pledgedrive_id
-    # pledgedrive=db(db.pledgedrive.id==pledgedrive_id).select()
     
     try:
-        # commented out, since these statments don't work with Google App Engine
-        '''
-        pledge_amounts_for_pledgdrive = db(db.pledge.pledgedrive==pledgedrive_id).select(db.pledge.amount.sum())
-
-        pledgedrive_total_dollars=pledge_amounts_for_pledgdrive[0]._extra[db.pledge.amount.sum()]
-        '''
-
         pledges = db(db.pledge.pledgedrive==pledgedrive_id).select()
         pledgedrive_total_pledges = len(pledges)
         all_pledges = pledges.as_list()
@@ -1047,6 +1173,9 @@ def mini_pledgedrive_totals_no_reload():
     
 @service.json
 def mini_segment_goal():
+    """
+    Docstring here.
+    """
     check_session()
     segment_id=session.segment['id']
     segment=db(db.segment.id==segment_id).select()
@@ -1054,12 +1183,6 @@ def mini_segment_goal():
     segment_pledges = db(db.pledge.segment==segment_id).select()
     segment_total_pledges = len(segment_pledges)
 
-    # commented out, since these statments don't work with Google App Engine
-    '''
-    pledge_amounts_for_segment = db(db.pledge.segment==segment_id).select(db.pledge.amount.sum())
-
-    segment_total_dollars=pledge_amounts_for_segment[0]._extra[db.pledge.amount.sum()]
-    '''
     all_pledges_for_segment = segment_pledges.as_list()
     segment_total_dollars = 0
 
@@ -1079,19 +1202,15 @@ def mini_segment_goal():
 
 @service.json
 def mini_segment_goal_and_totals():
+    """
+    Docstring here.
+    """
     check_session()
 
     segment_id=session.segment['id']
     segment=db(db.segment.id==segment_id).select()
     segment_pledges = db(db.pledge.segment==segment_id).select()
     segment_total_pledges = len(segment_pledges)
-
-    # commented out, since these statments don't work with Google App Engine
-    '''
-    pledge_amounts_for_segment = db(db.pledge.segment==segment_id).select(db.pledge.amount.sum())
-
-    segment_total_dollars=pledge_amounts_for_segment[0]._extra[db.pledge.amount.sum()]
-    '''
 
     try:
         all_pledges_for_segment = segment_pledges.as_list()
@@ -1118,19 +1237,15 @@ def mini_segment_goal_and_totals():
 
 @service.json
 def mini_segment_totals():
+    """
+    Docstring here.
+    """
     check_session()
 
     segment_id=session.segment['id']
     segment=db(db.segment.id==segment_id).select()
     segment_pledges = db(db.pledge.segment==segment_id).select()
     segment_total_pledges = len(segment_pledges)
-
-    # commented out, since these statments don't work with Google App Engine
-    '''
-    pledge_amounts_for_segment = db(db.pledge.segment==segment_id).select(db.pledge.amount.sum())
-
-    segment_total_dollars=pledge_amounts_for_segment[0]._extra[db.pledge.amount.sum()]
-    '''
 
     try:
         all_pledges_for_segment = segment_pledges.as_list()
@@ -1150,6 +1265,9 @@ def mini_segment_totals():
     
 @service.json
 def mini_segment_challenge():
+    """
+    Docstring here.
+    """
     check_session()
     segment_id=session.segment_id
     challenge_desc = db(db.challenge.segment == segment_id).select().as_list()
@@ -1157,12 +1275,13 @@ def mini_segment_challenge():
 
 @auth.requires_login()
 def mini_segment_select():
+    """
+    Docstring here.
+    """
     check_session()
 
-    # segments=db(db.segment.organization==session.organization['id']).select(orderby=db.segment.title)    
     segments=db(db.segment.pledgedrive==session.pledgedrive_id).select(orderby=db.segment.start_time)    
     ids=[o.id for o in segments]
-    # titles=[o.title for o in segments]
     labels=[(str(o.start_time.strftime("%m/%d : %I:%M %p")) + ' - ' + o.title) for o in segments]
 
     form=SQLFORM.factory(Field('segment_id',requires=IS_IN_SET(ids,labels))) 
@@ -1179,12 +1298,13 @@ def mini_segment_select():
 
 @auth.requires_login()
 def mini_segment_select_pledge():
+    """
+    Docstring here.
+    """
     check_session()
 
-    # segments=db(db.segment.organization==session.organization['id']).select(orderby=db.segment.title)    
     segments=db(db.segment.pledgedrive==session.pledgedrive_id).select(orderby=db.segment.start_time)    
     ids=[o.id for o in segments]
-    # titles=[o.title for o in segments]
     labels=[(str(o.start_time.strftime("%m/%d : %I:%M %p")) + ' - ' + o.title) for o in segments]
 
     form=SQLFORM.factory(Field('segment_id',requires=IS_IN_SET(ids,labels))) 
@@ -1200,12 +1320,13 @@ def mini_segment_select_pledge():
 
 @auth.requires_login()
 def mini_segment_navigation():
+    """
+    Docstring here.
+    """
     check_session()
 
-    # segments=db(db.segment.organization==session.organization['id']).select(orderby=db.segment.title)    
     segments=db(db.segment.pledgedrive==session.pledgedrive_id).select(orderby=db.segment.start_time)    
     ids=[o.id for o in segments]
-    # titles=[o.title for o in segments]
     labels=[(str(o.start_time.strftime("%m/%d : %I:%M %p")) + ' - ' + o.title) for o in segments]
 
     form=SQLFORM.factory(Field('segment_id',requires=IS_IN_SET(ids,labels))) 
@@ -1221,7 +1342,9 @@ def mini_segment_navigation():
 
 @auth.requires_login()
 def post_add():
-    # form = crud.create(db.post)
+    """
+    Docstring here.
+    """
     form = SQLFORM(db.post)
 
     if form.accepts(request.vars, session): 
@@ -1233,9 +1356,11 @@ def post_add():
 
 @auth.requires_login()
 def post_edit():
+    """
+    Docstring here.
+    """
     post_id=get_valid_id(request.args(0),db.post)
     post=db.post[post_id] or redirect(error_page)
-    # form = crud.update(db.post,post,next=url('post_list'))
     form = SQLFORM(db.post,post,deletable=True)
 
     if form.accepts(request.vars, session): 
@@ -1247,12 +1372,17 @@ def post_edit():
 
 @auth.requires_login()
 def post_list():
+    """
+    Docstring here.
+    """
     posts=db(db.post.organization==session.organization['id']).select(orderby=~db.post.created_on)
     return dict(posts=posts)
 
 @auth.requires_login()
 def mini_post_add():
-    # form = crud.create(db.post)    
+    """
+    Docstring here.
+    """
     form = SQLFORM(db.post)
 
     if form.accepts(request.vars, session): 
@@ -1263,37 +1393,46 @@ def mini_post_add():
 
 @auth.requires_login()
 def mini_post_list():
+    """
+    Docstring here.
+    """
     posts=db(db.post.organization==session.organization['id']).select(orderby=~db.post.created_on)
     return dict(posts=posts)
 
 
 @service.json
 def mini_pledge_names():
-    # segment_id=request.args(0)
+    """
+    Docstring here.
+    """
     segment_id=session.segment['id']
     segment=db.segment[segment_id] or redirect(error_page)
-    # this could be breaking in GAE
-    # pledges=db(db.pledge.segment==segment_id).select(orderby=db.pledge.id)
     pledges=db(db.pledge.segment==segment_id).select(orderby=~db.pledge.created_on)
     return dict(pledges=pledges,segment_id=segment_id)
 
 @service.json
 def mini_pledge_names_no_reload():
-    # segment_id=request.args(0)
+    """
+    Docstring here.
+    """
     segment_id=session.segment['id']
     segment=db.segment[segment_id] or redirect(error_page)
-    # this could be breaking in GAE
-    # pledges=db(db.pledge.segment==segment_id).select(orderby=db.pledge.id)
     pledges=db(db.pledge.segment==segment_id).select(orderby=~db.pledge.created_on)
     return dict(pledges=pledges,segment_id=segment_id)
 
 @service.json
 def mini_pledge_names_nav():
+    """
+    Docstring here.
+    """
     check_session()
     return dict()
 
 @auth.requires_login()
 def quick_setup_segment():
+    """
+    Docstring here.
+    """
     check_session()
 
     segments=db(db.segment.pledgedrive==session.pledgedrive_id).select(orderby=db.segment.start_time)
@@ -1356,11 +1495,6 @@ def quick_setup_segment():
 @service.run
 def service_pledgedrive_pledges(pledgedrive_id):
     pledgedrive_id=pledgedrive_id
-    # pledgedrive_id=session.pledgedrive['id']
-    # pledgedrive_id=request.vars.pledgedrive_id
-
-    # pledgedrive_pledges = db(db.pledge.pledgedrive==pledgedrive_id).select()
-    # pledgedrive_pledges = db(db.pledge.pledgedrive==pledgedrive_id).select().as_list()
     pledgedrive_pledges = db(db.pledge.pledgedrive==pledgedrive_id).select().as_list()[0]
 
     return dict(pledgedrive_pledges=pledgedrive_pledges)
@@ -1381,14 +1515,12 @@ def user():
     """
     return dict(form=auth())
 
-
 def download():
     """
     allows downloading of uploaded files
     http://..../[app]/default/download/[filename]
     """
     return response.download(request,db)
-
 
 def call():
     """
