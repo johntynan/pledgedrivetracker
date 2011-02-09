@@ -3,6 +3,7 @@ import sys
 import unittest
 
 from gluon.globals import Request  # So we can reset the request for each test 
+from gluon.globals import Session, Storage, Response
 
 sys.arvg = sys.argv[5:]  # web2py.py passes the whole command line to this script.
 
@@ -15,35 +16,61 @@ db = test_db  # Rename the test database so that functions will use it instead o
 
 execfile("applications/pledgedrives/controllers/default.py", globals())  # Brings the controller's functions into this script's scope 
 
-session.organization == 1
-# organization = session.organization
+request = Request()  # Use a clean request
+session = Session()  # Use a clean session
 
-# print organization
+# def user():
+#     return dict(form = auth())
 
-# check_person()
 
 def test_create_user():
     """
     Add a new user to the test app.
     """
+    db.auth_user.insert(first_name='fff', last_name='lll', email='whatever@localhost', password='mmm', registration_key="")
+    user = db(db.auth_user.id=='1').select()
+    auth.environment.session.auth = Storage(user=user, last_visit=request.now, expiration=auth.settings.expiration)
+    # session.auth.user = Storage(user=user, last_visit=request.now, expiration=auth.settings.expiration)
 
-    print 'hello world'
+    print user
 
+    auth.login_bare('whatever@localhost', 'mmm')
+
+    print auth.is_logged_in()
+
+    # auth = auth.environment.session.auth
+
+    # auth.user.id = '1'
+
+    # session.auth.user.id = '1'
+
+    # print auth.user.id
+
+    # print auth.user
+
+    # print session.auth.user
+
+    # auth.impersonate(user_id='1')
+
+    # print auth.retrieve_username()
+
+    # check_session()
+
+    # print db
+
+    # print session
+
+@auth.requires_login()
 def test_create_organization():
     """
-    Add a new organization to the test app.
+    Form to create a new organizations.
     """
-    organization_id = 1
 
-    organization = db(db.organization.id==organization_id).select()
-
-    session.organization = organization.as_list()[0]
-    session.organization_id = organization.as_list()[0]['id']
-
-    print session.organization
 
 test_create_user()
+
 # test_create_organization()
+
 # test_create_pledgedrive
 # test_create_program
 # test_create_segment
