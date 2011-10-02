@@ -1379,6 +1379,23 @@ def post_list():
     return dict(posts=posts)
 
 @auth.requires_login()
+def delete_posts_by_organization():
+    """
+    Docstring here.
+    """
+    check_session()
+    organization_id=session.organization['id']
+    posts=db.post.organization==organization_id
+
+    db(posts).delete()
+
+    redirect(URL(r=request, f='post_list'))
+    response.flash='Producer Messages Deleted'
+
+    return dict(posts=posts)
+
+
+@auth.requires_login()
 def mini_post_add():
     """
     Docstring here.
