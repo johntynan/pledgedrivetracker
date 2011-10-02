@@ -46,6 +46,7 @@ $(document).ready(function(){
     <a href="{{=URL(r=request,f='list_pledges_by_segment',args=session.segment['id'])}}">List Pledges for Current Segment</a> |
     <a href="{{=URL(r=request,f='create_pledge',args=session.segment['id'])}}">Add Pledge to Current Segment</a><br />
     <a href="{{=URL(r=request,f='post_list',args=session.organization['id'])}}">List Producer Messages</a> | 
+    <a href="{{=URL(r=request,f='delete_posts_by_organization',args=session.organization['id'])}}">Delete Producer Messages</a> | 
     <a href="{{=URL(r=request,f='post_add',args=session.organization['id'])}}">Add Message</a><br />
 <p>
 {{=button('Quick Setup: Segments','quick_setup_segment')}}
