@@ -6,8 +6,10 @@
 
 <h2>Producer Messages</h2>
 
+<table style="width:100%">
 {{for h,i in enumerate(posts):}}
-<div class="{{='odd' if h%2 else 'even'}}">{{=i['body']}}</div>
+<tr class="{{='odd' if h%2 else 'even'}}"><td>{{=i['body']}}</td><td><span style="align:right"><small>{{=i['created_on']}}</small></span></td></tr>
 {{pass}}
+</table>
 
 </div>
