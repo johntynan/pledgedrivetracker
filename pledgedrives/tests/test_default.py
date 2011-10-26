@@ -30,13 +30,24 @@ def test_create_user():
     db.auth_user.insert(first_name='fff', last_name='lll', email='whatever@localhost', password='mmm', registration_key="")
     user = db(db.auth_user.id=='1').select()
     auth.environment.session.auth = Storage(user=user, last_visit=request.now, expiration=auth.settings.expiration)
-    # session.auth.user = Storage(user=user, last_visit=request.now, expiration=auth.settings.expiration)
 
-    print user
+    # print user
+
+    # auth.user = user
 
     auth.login_bare('whatever@localhost', 'mmm')
 
     print auth.is_logged_in()
+
+    print auth
+
+    print auth.user
+
+    # print auth.user.id
+
+    print auth.user[1]
+
+    # check_session_organization()
 
     # auth = auth.environment.session.auth
 

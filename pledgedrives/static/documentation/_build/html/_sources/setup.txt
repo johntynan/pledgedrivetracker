@@ -28,37 +28,20 @@ You also have the option to select an exisiting pledge drive (if one has already
 Once you have created (or selected) a pledge drive, this is marked as the "Current Pledge Drive".  All pledges entered, all reports, everything will refer back to this drive.
 
 
-Person(s) (Donors)
---------------------
-Prior to entering a Segment (see below), you need to have at least one person (Donor) entered into the Pledge Drive Tracker.  If you have already entered at least person into the database, when first logging into the program, this step will be skipped (although you can always come back and enter as may donors as you would like).
-
-A person is either a listener or a donor.  Donors are people who generously provide challenges to entice listeners to make pledges.  
-
-Entering the name of donors into the program will help you to manage a donation within a single drive, or track a donor's contributions over time.
-
-At the moment, the person/listener distinction is not associated with any kind of special function within the program, but is here as a placeholder for use in the future (for example, if the functionality is put in place to make a distinction between donor's challenges and collective dollars from a "listener challenge pool" or perhaps for listeners to informally create challenges via widgets on social networks, or other instances as people suggest).
-
-Challenge(s)
---------------
-
-Prior to entering a Segment (see below), you need to have at least one Challenge entered into the Pledge Drive Tracker.  If you have already entered at least challenge into the database, when first logging into the program, you will not be asked to complete this step (although you can always come back and enter as may challenges as you would like or are needed).
-
-When entering a challenge you will be asked to 
-    * identify the challenge with a Title, 
-    * associate this challenge with a Person, 
-    * enter the challenge Amount, briefly 
-    * Describe the challenge (or add any notes as needed), 
-    * specify the Condition under which the donor makes the challenge available to the station (Refundable, Non-refundable).  This will be important if a challenge "is not met", if the goal for the challenge falls short.
-    * Describe the State of the challenge (Pending, Achieved, Missed, Recycled).  This will be important in knowing if you have remaining challenges to be "recycled" associated with segments towards the end of a drive, in knowing if you need to contact a donor about a missed challenge, or knowing if you have remaining challenges to be assigned to a segment towards the end of a drive.
-
-Please note: challenges have not been tested fully.  There is plenty of room to refine the way these work depending on the needs of your station and on the collective needs of users of the Pledge Drive Tracker.
-
 Program(s)
 -----------
 
-Prior to entering a Segment (see below), you need to have at least one program entered into the Pledge Drive Tracker.  If you have already entered at least program into the database, when first logging into the program, you will not be asked to complete this step (although you can always come back and enter as may programs into the Pledge Drive Tracker as you would like or are needed).
-
 Programs are the titles of shows that you carry regularly on your station.  You may have entered your programs into the Pledge Drive Tracker from a previous drive.  Please know that this only has to be done once.  A program is different from a segment in that a program can have multiple segments on the same day or on different days, or have segments extending across pledge drives.  Each program should only be entered into the Pledge Drive Tracker once; but each program can have multiple segements associated with it (see below).
+
+Prior to entering a Segment (see below), the Pledge Drive Tracker will prompt you to enter at least one program into the Pledge Drive Tracker.  During this initial setup, I recommend entering a program that may not be on your official, on-air program schedule, something like "Pre-drive Announcements" or "Web Announcements" this way, if you choose to import your program list (see below) you will not inadvertently create duplicates of this initial program.
+
+Note: if you have already entered at least program into the database from a previous session, when first logging into the Pledge Drive Tracker, you will not be prompted to complete this initial step again.  Although, you can always come back and enter as may programs into the Pledge Drive Tracker as you would like or are needed; there also is an option to import programs (see below).
+
+
+Import Program List
+---------------------
+
+Importing your programs will save you one small, mundane and slightly time consuming task.  To do this, prepare a list of your programs as a simple comma delimited list (no single or double quotes or linebreaks are necessary.  Under the setup option, you will notice the option to Import Program List.  Simply go to this page, paste your list of programs into the textarea, then submit the form.  In the right hand side of the page, you will receive a notification that your programs have been imported.  Please note: you only have to do this once.  The programs you have entered will then persist across numberable drives.
 
 
 Segment(s)
@@ -88,6 +71,32 @@ When you first set up a segment, you'll be asked to enter the following informat
 
     * Challenge: Select the appropriate challenge for the segment.
 
+
+
+Person(s) (Donors)
+--------------------
+Prior to entering a Challenge (see below), you need to have at least one person (Donor) entered into the Pledge Drive Tracker.  If you have already entered at least person into the database, when first logging into the program, this step will be skipped (although you can always come back and enter as may donors as you would like).
+
+A person is either a listener or a donor.  Donors are people who generously provide challenges to entice listeners to make pledges.
+
+Entering the name of donors into the program will help you to manage a donation within a single drive, or track a donor's contributions over time.
+
+At the moment, the person/listener distinction is not associated with any kind of special function within the program, but is here as a placeholder for use in the future (for example, if the functionality is put in place to make a distinction between donor's challenges and collective dollars from a "listener challenge pool" or perhaps for listeners to informally create challenges via widgets on social networks, or other instances as people suggest).
+
+Challenge(s)
+--------------
+
+Prior to entering a Segment (see below), you need to have at least one Challenge entered into the Pledge Drive Tracker.  If you have already entered at least challenge into the database, when first logging into the program, you will not be asked to complete this step (although you can always come back and enter as may challenges as you would like or are needed).
+
+When entering a challenge you will be asked to 
+    * identify the challenge with a Title, 
+    * associate this challenge with a Person, 
+    * enter the challenge Amount, briefly 
+    * Describe the challenge (or add any notes as needed), 
+    * specify the Condition under which the donor makes the challenge available to the station (Refundable, Non-refundable).  This will be important if a challenge "is not met", if the goal for the challenge falls short.
+    * Describe the State of the challenge (Pending, Achieved, Missed, Recycled).  This will be important in knowing if you have remaining challenges to be "recycled" associated with segments towards the end of a drive, in knowing if you need to contact a donor about a missed challenge, or knowing if you have remaining challenges to be assigned to a segment towards the end of a drive.
+
+Please note: the functionality of challenges have not been defined.  There is ample room to refine the way these work depending on the needs of your station and on the collective needs of users of the Pledge Drive Tracker.
 
 Quick Setup: Segments
 -----------------------

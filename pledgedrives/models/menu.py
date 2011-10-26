@@ -11,9 +11,9 @@ response.subtitle = T('Making Public Broadcasting Fund Drives More Efficient')
 response.author = 'John Tynan'
 
 # subscription app help file:
-helphome = "http://pledgedrivetracker.appspot.com/pledgedrives/static/documentation/_build/html/"
+# helphome = "http://pledgedrivetracker.appspot.com/pledgedrives/static/documentation/_build/html/"
 # demo app help file:
-# helphome = "http://pledgedrivetrackerdemo.appspot.com/pledgedrives/static/documentation/_build/html/"
+helphome = "http://pledgedrivetrackerdemo.appspot.com/pledgedrives/static/documentation/_build/html/"
 helpdefault = "index.html"
 urls = {"frame_header_onair":"on_air_screen.html","frame_header_pledge_entry":"pledge_entry.html","create_program":"setup.html#program-s"}
 

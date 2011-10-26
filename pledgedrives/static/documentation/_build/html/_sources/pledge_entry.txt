@@ -19,5 +19,5 @@ Other parts of the screen include:
 
     * Bottom Center: Thank You Names. Information about the most recent pledges are displayed here.
 
-    * Bottom Left: Pledge Entry Form.  When entering a pledge, along with the dollar amount, there are optional fields for the pledger's name, along with comments.  Entering the pledgers name allows the on-air staff to thank listeners for their donations on the air.  Some people have found it useful to include the intials of the person entering the pledges (which helps if you have to go back and edit a pledge).
+    * Bottom Left: Pledge Entry Form.  When entering a pledge, along with the dollar amount, there are optional fields for the pledger's name, along with comments.  Entering the pledgers name allows the on-air staff to thank listeners for their donations on the air.  Some people have found it useful to include, as a comment for each pledge, the intials of the person entering the pledges (which helps if you have multiple people entering pledges into the system and you have to go back to edit a pledge).
 

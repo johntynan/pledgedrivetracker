@@ -196,10 +196,12 @@ db.post.organization.requires=IS_IN_DB(db,'organization.id','%(name)s')
 
 #########################################################################
 ## for use with the unit tests in the applications/yourapp/tests directory
-## 
+##
+'''
 import copy 
 test_db = DAL('sqlite://testing.sqlite')  # DB name and location 
 for tablename in db.tables:  # Copy tables! 
     table_copy = [copy.copy(f) for f in db[tablename]] 
     test_db.define_table(tablename, *table_copy) 
+'''
 #########################################################################
