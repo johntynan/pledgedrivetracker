@@ -4,7 +4,23 @@
 
 <h2>{{=session.segment['start_time']}} - {{=session.segment['title']}}</h2>
 
-<button onclick="document.location='mini_segment_select'">Select New Segment</a>
+
+{{if session.segments[0]['start_time'] < session.segment['start_time'] :}}
+    <button onclick="document.location='mini_segment_navigation_previous'"><< Previous Segment</button>
+{{else:}}
+    <!-- Already at the first segment -->
+{{pass}}
+
+{{if session.segments[-1]['start_time'] > session.segment['start_time'] :}}
+    <button onclick="document.location='mini_segment_navigation_next'">Next Segment >></button>
+{{else:}}
+    <!-- Already at the last segment -->
+{{pass}}
+
+<br />
+<button onclick="document.location='mini_segment_select'">Select a Different Segment</button>
+
+
 
 </div>
 
