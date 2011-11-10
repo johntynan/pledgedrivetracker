@@ -1381,6 +1381,47 @@ def mini_segment_navigation_next():
     
     return dict()
 
+def mini_segment_navigation_previous_pledge():
+    """
+    Docstring here.
+    """
+    segments=db(db.segment.pledgedrive==session.pledgedrive_id).select(orderby=db.segment.start_time)    
+    tests = [o.id for o in segments]
+    counter = 0
+    for i in tests:
+        if i == session.segment_id:
+            previous_test = int(tests[counter-1])
+            segment = db(db.segment.id==previous_test).select()
+            session.segment = segment.as_list()[0]
+            session.segment_id = segment.as_list()[0]['id']
+            break
+        counter = counter + 1
+
+    redirect(URL(r=request, f='mini_create_pledge'))
+    
+    return dict()
+
+def mini_segment_navigation_next_pledge():
+    """
+    Docstring here.
+    """
+    segments=db(db.segment.pledgedrive==session.pledgedrive_id).select(orderby=db.segment.start_time)    
+    tests = [o.id for o in segments]
+    counter = 0
+    for i in tests:
+        if i == session.segment_id:
+            next_test = int(tests[counter+1])
+            segment = db(db.segment.id==next_test).select()
+            session.segment = segment.as_list()[0]
+            session.segment_id = segment.as_list()[0]['id']
+            break
+        counter = counter + 1
+
+    redirect(URL(r=request, f='mini_create_pledge'))
+    
+    return dict()
+
+
 @auth.requires_login()
 def post_add():
     """

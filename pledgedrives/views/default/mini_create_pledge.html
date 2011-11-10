@@ -15,9 +15,19 @@
 <div style="height:25px;">
 &nbsp;
 </div>
-<a href="{{=URL(r=request,f='mini_segment_select_pledge')}}">Select New Segment</a>
-<!-- h3>Select Segment</h3 -->
 
-{{# =form2}}
+{{if session.segments[0]['start_time'] < session.segment['start_time'] :}}
+    <a href="{{=URL(r=request,f='mini_segment_navigation_previous_pledge')}}"><< Previous Segment</a> | 
+{{else:}}
+    <!-- Already at the first segment -->
+{{pass}}
+
+{{if session.segments[-1]['start_time'] > session.segment['start_time'] :}}
+    <a href="{{=URL(r=request,f='mini_segment_navigation_next_pledge')}}">Next Segment >></a>
+{{else:}}
+    <!-- Already at the last segment -->
+{{pass}}
+<br />
+<a href="{{=URL(r=request,f='mini_segment_select_pledge')}}">Select Different Segment</a>
 
 </div>
