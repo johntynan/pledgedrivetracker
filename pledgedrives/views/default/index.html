@@ -25,6 +25,9 @@ $(document).ready(function(){
 <li><a href="{{=URL(r=request,f='report_pledgedrive_totals_detailed',args=session.pledgedrive['id'])}}">Drive Totals (detailed)</a></li>
 <li><a href="{{=URL(r=request,f='report_pledgedrive_totals',args=session.pledgedrive['id'])}}">Drive Totals (summary)</a></li>
 </ul>
+<p>
+{{=button('Export XML for Flash Progress Meter','report_progress_meter_flash')}}
+</p>
 </div>
 
 <div class="setup">

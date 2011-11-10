@@ -1170,6 +1170,56 @@ def mini_pledgedrive_totals_no_reload():
 
     return dict(pledgedrive_total_pledges=pledgedrive_total_pledges,pledgedrive_total_dollars=pledgedrive_total_dollars,pledgedrive_average_pledge=pledgedrive_average_pledge)
 
+@service.json
+@service.xml
+def report_progress_meter_flash():
+    """
+    Docstring here.
+    """
+    check_session()
+
+    response.headers['Content-Type']='text/xml'
+
+    pledgedrive_id=session.pledgedrive['id']
+    pledgedrive=db(db.pledgedrive.id==pledgedrive_id).select()
+    
+    pledgedrive_pledges = db(db.pledge.pledgedrive==pledgedrive_id).select()
+
+    pledgedrive_total_pledges = len(pledgedrive_pledges)
+
+    all_pledges = pledgedrive_pledges.as_list()
+    pledgedrive_total_dollars = 0
+    
+    for o in all_pledges:
+        pledgedrive_total_dollars = pledgedrive_total_dollars + o['amount']
+
+    pledge_goal = pledgedrive[0].pledge_goal
+
+    projected_average_pledge = pledgedrive[0].projected_average_pledge
+
+    dollar_goal = pledgedrive[0].pledge_goal * pledgedrive[0].projected_average_pledge
+
+    dollars_remaining = dollar_goal - pledgedrive_total_dollars
+
+    pledges_remaining = pledge_goal - pledgedrive_total_pledges
+
+    if dollar_goal >= 10 and dollar_goal < 100:
+        factor_text = 'tens'
+        factor_value = 10
+    if dollar_goal >= 100 and dollar_goal < 1000:
+        factor_text = 'hundreds'
+        factor_value = 100
+    elif dollar_goal >= 1000 and dollar_goal < 1000000:
+        factor_text = 'thousands'
+        factor_value = 1000
+    elif dollar_goal >= 1000000:
+        factor_text = 'millions'
+        factor_value = 1000000
+
+    dollar_goal_adjusted = dollar_goal / factor_value
+
+
+    return dict(pledgedrive_total_dollars=pledgedrive_total_dollars,dollar_goal_adjusted=dollar_goal_adjusted,factor_text=factor_text)
     
 @service.json
 def mini_segment_goal():
