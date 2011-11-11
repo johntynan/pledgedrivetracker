@@ -12,12 +12,15 @@ $(document).ready(function() {
 
 <button onclick="document.location='{{=URL(r=request,f='create_pledge',args=segment_id)}}'">Create a New Pledge</button>
 
+<div>
 <table class="smarttable">
 <thead>
+<tr>
     <th>Amount</th>
     <th>Name</th>
     <th>Time Created</th>
     <th>Actions</th>
+</tr>
 </thead>
 <tbody>
 {{for pledge in pledges:}}
@@ -32,3 +35,4 @@ $(document).ready(function() {
 {{pass}}
 </tbody>
 </table>
+</div>

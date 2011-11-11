@@ -1,22 +1,28 @@
-{{response.files.append(URL(r=request,c='static',f='jquery.dataTables.min.js'))}}
-{{response.files.append(URL(r=request,c='static',f='demo_table.css'))}}
+{{response.files.append(URL(r=request,c='static',f='js/jquery.dataTables.min.js'))}}
+{{response.files.append(URL(r=request,c='static',f='css/demo_table.css'))}}
 {{extend 'layout.html'}}
 
 <script type="text/javascript" charset="utf-8">
 $(document).ready(function() {
-    jQuery('.smarttable').dataTable();
+    jQuery('.smarttable').dataTable({
+        "iDisplayLength": 100,
+        "aaSorting": []
+    });
 } );
 </script>
 
 <h1>Pledges by Pledge Drive</h1>
 
+<div>
 <table class="smarttable">
 <thead>
+<tr>
     <th>Amount</th>
     <th>Name</th>
     <th>Segment</th>
     <th>Time Created</th>
     <th>Actions</th>
+</tr>
 </thead>
 <tbody>
 {{for pledge in pledges:}}
@@ -32,3 +38,4 @@ $(document).ready(function() {
 {{pass}}
 </tbody>
 </table>
+</div>
