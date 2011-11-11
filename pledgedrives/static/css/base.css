@@ -735,3 +735,20 @@ a.button:hover {
 .web2py_paginator ul li.current a {
     font-weight: bold !important;
 }
+
+div.frame_content {
+    width:400px;
+    font-size: 12pt;
+}
+
+.odd {
+    background-color: #D8D8D8;
+}
+.even {
+    background-color: white;
+} 
+
+.text {
+    width: 300px;
+    height: 70px;
+}
