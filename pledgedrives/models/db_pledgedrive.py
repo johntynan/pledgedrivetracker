@@ -184,7 +184,7 @@ db.define_table('post',
     Field('organization',db.organization,default=session.organization_id,readable=False,writable=False),
     Field('created_by',default=me,writable=False,readable=False),
     Field('created_on','datetime',default=request.now,writable=False,readable=False)
-    #should this also have an item for pledgedrive?
+    #should this also have an item for pledgedrive? #If an organization will have more that one pledgedrive them most certainly yes.
     )
 #Validate:
 #On Insert: validate that user is in group for organization, else deny;

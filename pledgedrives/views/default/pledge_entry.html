@@ -1,0 +1,83 @@
+{{extend 'pledger_base.html'}}
+<div class="row">
+	<div class="widget shadow">
+		<h1>Producer Messages</h1>
+		{{for message in producer_messages:}}
+		<ul>
+			<li>{{=message.created_on}}:{{=message.body}} - <a class="delete" href="">DELETE</a></li>
+		</ul>
+		{{pass}}
+	</div>
+	<div class="widget shadow">
+		<h1>Totals</h1>
+		<h2>Drive</h2>
+		<ul>
+		{{for label in drive_totals:}}
+			<li>
+			{{=label}} : {{=drive_totals[label]}}
+			</li>
+		{{pass}}
+		</ul>
+		<h1>Segment</h1>
+		<ul>
+		{{for label in segment_goals:}}
+			<li>
+			{{=label}} : {{=segment_goals[label]}}
+			</li>
+		{{pass}}
+		</ul>
+	</div>
+</div>
+<div class="row">
+	<div class="widget shadow">
+		<h1>Create Pledge</h1>
+		{{=form_pledge}}
+		<h1>Thank you Messages</h1>
+		<table>
+			<tr>
+				<th>Name</th>
+				<th>Amount</th>
+				<th>Comment</th>
+			</tr>
+			<tr>
+				{{for item in thank_yous:}}
+				<td>{{=item.name}}</td>
+				<td>{{=item.amount}}</td>
+				<td>{{=item.comment}}</td>
+				{{pass}}
+			</tr>
+		</table>
+		<ul>
+			
+		</ul>
+	</div>
+	<div class="widget shadow">
+		<h1>Current Segment</h1>
+		{{=segment[0].title}}
+		{{=segment[0].description}}
+		{{#segment[0].talkingpoints}}
+		{{=segment[0].goal}}
+		{{=segment[0].challenge}}
+		{{=segment[0].goal_type}}
+		{{=segment[0].start_time}}
+		{{=segment[0].end_time}}
+		<h1>Change Segment</h1>
+		{{for item in segments:}}
+			{{=item.title}} :{{=item.goal}}
+		{{pass}}
+	</div>
+</div>
+	<div id="create_segment">
+		<h1>Create Segment</h1>
+		{{=form_segment}}
+	</div>
+	<div id="create_producer_message">
+	<h1>New Message</h1>
+		{{=form_producer_message}}
+	</div>
+}
+<script type="text/javascript">
+		jQuery(document).ready(function(){
+		//Our scripts for this page will go here...
+		});
+</script>

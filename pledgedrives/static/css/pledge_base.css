@@ -1,0 +1,52 @@
+@charset "UTF-8";
+* {
+	margin:0;
+	padding:0;
+}
+
+a {
+	color:#123600;
+}
+
+body {
+}
+
+.flash {
+	border:3px solid red;
+}
+
+#header {
+}
+
+#page {
+}
+
+#page .row{
+	overflow:auto;
+}
+
+#page .row .widget {
+	width:30%;
+	height:30%;
+	float:left;
+	border:2px solid black;
+	margin:7px;
+	padding:5px;
+	min-height:240px;
+	background-color:lightgrey;
+	border-radius: 10px;
+}
+
+#footer {
+}
+
+h1 {
+	text-align:center;
+	border-bottom:1px solid grey;
+}
+
+.shadow {
+  -moz-box-shadow: 5px 5px 5px #ccc;
+  -webkit-box-shadow: 5px 5px 5px #ccc;
+  box-shadow: 5px 5px 5px #ccc;
+}

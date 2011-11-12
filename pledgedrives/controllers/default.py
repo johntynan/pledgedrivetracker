@@ -150,7 +150,7 @@ def index():
     person=session.person
     challenge=session.challenge
     segment=session.segment
- 
+
     return dict(pledgedrive=pledgedrive,person=person,challenge=challenge,segment=segment)
 
 
@@ -597,7 +597,7 @@ def create_segment():
     check_session_organization()
     check_session_pledgedrive()
     check_program()
-   
+
     form = SQLFORM(db.segment)
 
     if form.accepts(request.vars, session): 
@@ -763,6 +763,110 @@ def list_pledges_by_pledgedrive():
     pledges=db(db.pledge.pledgedrive==pledgedrive.id).select()
     return dict(pledgedrive=pledgedrive, pledges=pledges)
 
+def pledge_entry():
+    """
+    This page takes the various views required by the person entering 
+    pledges and refreshes that data accordingly.
+    """
+    response.title="Pleage Entry Page"
+    #Check if everything is setup for the pladge (This could be a decorator)
+    check_session()
+    
+    #Load the organization id
+    organization_id = session.organization['id']
+    
+    #Load all the organization data.
+    organizations=db(db.organization.id==organization_id).select()
+    
+    #The form for letting the producer post a message.
+    form_producer_message = SQLFORM(db.post)
+    if form_producer_message.accepts(request.vars, session): 
+        response.flash="Message Posted"
+    elif form_producer_message.errors: response.flash='Message had errors... did not post...'
+    
+    #Get all the producers Posts
+    producer_messages=db(db.post.organization==session.organization['id']).select(orderby=~db.post.created_on)
+    
+    #The totals for the pledge drive...
+    pledgedrive_id=session.pledgedrive_id
+    try:
+        pledgedrive_pledges = db(db.pledge.pledgedrive==pledgedrive_id).select()
+        pledgedrive_total_pledges = len(pledgedrive_pledges)
+
+        all_pledges = pledgedrive_pledges.as_list()
+
+        pledgedrive_total_dollars = 0
+        
+        for o in all_pledges:
+            pledgedrive_total_dollars = pledgedrive_total_dollars + o['amount']
+
+        pledgedrive_average_pledge = pledgedrive_total_dollars / pledgedrive_total_pledges
+    except:
+        pledgedrive_total_pledges = 0
+        pledgedrive_total_dollars = 0
+        pledgedrive_average_pledge = 0
+    drive_totals = {"pledges":pledgedrive_total_pledges, "dollars": pledgedrive_total_dollars, "average":pledgedrive_average_pledge}
+    
+    #Segment Goals and totals
+    segment_id=session.segment['id']
+    segment=db(db.segment.id==segment_id).select()
+    segment_pledges = db(db.pledge.segment==segment_id).select()
+    segment_total_pledges = len(segment_pledges)
+    try:
+        all_pledges_for_segment = segment_pledges.as_list()
+        segment_total_dollars = 0
+
+        for o in all_pledges_for_segment:
+            segment_total_dollars = segment_total_dollars + o['amount']
+
+        segment_average_pledge = segment_total_dollars / segment_total_pledges
+
+    except:
+        segment_total_pledges = 0
+        segment_total_dollars = 0
+        segment_average_pledge = 0
+
+    if segment[0].goal_type == 'Pledge':
+        goal = 'Pledge Goal:' + str(segment[0].goal)
+        progress = segment[0].goal - segment_total_pledges 
+    else:
+        goal = 'Dollar Goal:'+  str(segment[0].goal)
+        progress = segment[0].goal - segment_total_dollars
+    segment_goals = {"pledges":segment_total_pledges,"dollors":segment_total_dollars, "average":segment_average_pledge}
+    
+    #Get the thank you list...
+    segment_id=session.segment['id']
+    segment=db.segment[segment_id] or redirect(error_page)
+    pledges=db(db.pledge.segment==segment_id).select(orderby=~db.pledge.created_on)
+    
+    #Pledge Form
+    form_pledge=SQLFORM(db.pledge)
+    if form_pledge.accepts(request.vars, session):
+        flash_amount = form_pledge.vars.amount
+        flash_name = form_pledge.vars.name
+        response.flash='New Pledge Created:' + flash_amount + ' : ' + flash_name
+    elif form_pledge.errors:
+        response.flash='There were errors in entering a pledge'
+    
+    form_segment = SQLFORM(db.segment)
+
+    #All Segments
+    segments=db(db.segment.pledgedrive==session.pledgedrive_id).select(orderby=db.segment.start_time)
+    
+    #The current Segment
+    segment = db(db.segment['id']).select()
+    return dict(organizations=organizations,
+                organization_id=organization_id,
+                form_producer_message = form_producer_message,
+                drive_totals = drive_totals,
+                segment_goals = segment_goals,
+                producer_messages=producer_messages,
+                thank_yous = pledges,
+                form_segment = form_segment,
+                segments = segments,
+                segment = segment,
+                form_pledge = form_pledge)
+
 def frame_header():
     """
     Docstring here.
@@ -778,7 +882,7 @@ def frame_header_onair():
     """
     return frame_header()
     
-def frame_header_pledge_entry():
+def  frame_header_pledge_entry():
     """
     Docstring here.
     """
@@ -828,18 +932,18 @@ def report_pledge_level():
     buckets = [500,200,100,36,35,0]
     bucket_counter = [0,0,0,0,0,0]
     for s in segs:
-	pledge_list = db(db.pledge.segment == s.id).select().as_list()
-    	segment_total_pledges = len(pledge_list)
-	total_pledges = total_pledges + segment_total_pledges
-	seg_bucket_counter = [0,0,0,0,0,0]
-    	for i in pledge_list:
-		j = 0
-		while i['amount']<buckets[j]:
-			j = j+1
-		seg_bucket_counter[j] = seg_bucket_counter[j] + 1
-		bucket_counter[j] = bucket_counter[j] + 1
-	d = dict(title=s.title, total_pledges=segment_total_pledges, bucket_counter=seg_bucket_counter, dt=s.start_time)
-	seg_dicts.append(d)
+        pledge_list = db(db.pledge.segment == s.id).select().as_list()
+        segment_total_pledges = len(pledge_list)
+    total_pledges = total_pledges + segment_total_pledges
+    seg_bucket_counter = [0,0,0,0,0,0]
+    for i in pledge_list:
+        j = 0
+        while i['amount']<buckets[j]:
+            j = j+1
+        seg_bucket_counter[j] = seg_bucket_counter[j] + 1
+        bucket_counter[j] = bucket_counter[j] + 1
+    d = dict(title=s.title, total_pledges=segment_total_pledges, bucket_counter=seg_bucket_counter, dt=s.start_time)
+    seg_dicts.append(d)
     return dict(seg_dicts=seg_dicts,total_pledges=total_pledges,buckets=buckets,bucket_counter=bucket_counter)
 
 
@@ -855,18 +959,18 @@ def report_day_total_summary():
     dt_lst = dt_str.split('-')
     date = datetime.date(int(dt_lst[0]),int(dt_lst[1]),int(dt_lst[2]))
     form = SQLFORM.factory(\
-                      Field('date','date',default=date),_action=URL(r=request))
+                    Field('date','date',default=date),_action=URL(r=request))
     form.accepts(request.vars,session)
     if not form.errors:
-	dt_str = request.vars.date or str(datetime.date.today())
-	dt_lst = dt_str.split('-')
-	date = datetime.date(int(dt_lst[0]),int(dt_lst[1]),int(dt_lst[2]))
+        dt_str = request.vars.date or str(datetime.date.today())
+        dt_lst = dt_str.split('-')
+        date = datetime.date(int(dt_lst[0]),int(dt_lst[1]),int(dt_lst[2]))
     else:
-	redirect(error_page)
-	return
-	#dt_str = str(datetime.date.today())
-	#dt_lst = dt_str.split('-')
-	#date = datetime.date(int(dt_lst[0]),int(dt_lst[1]),int(dt_lst[2]))
+        redirect(error_page)
+        return
+    #dt_str = str(datetime.date.today())
+    #dt_lst = dt_str.split('-')
+    #date = datetime.date(int(dt_lst[0]),int(dt_lst[1]),int(dt_lst[2]))
     segs = db(db.segment.pledgedrive == pledgedrive_id).select().find(lambda row:(row.start_time.year==int(dt_lst[0]) and row.start_time.month==int(dt_lst[1]) and row.start_time.day==int(dt_lst[2])))
 #    segs = segs.find(lambda row:row.start_time.month==dt_lst[1])
 #    segs = segs.find(lambda row:row.start_time.day==dt_lst[2])
@@ -875,15 +979,15 @@ def report_day_total_summary():
     total_dollars = 0
     total_pledges = 0
     for s in segs:
-	pledge_list = db(db.pledge.segment == s.id).select().as_list()
-    	segment_total_pledges = len(pledge_list)
-	total_pledges = total_pledges + segment_total_pledges
-    	segment_total_dollars = 0
-    	for i in pledge_list:
-        	segment_total_dollars = segment_total_dollars + i['amount']
-	total_dollars = total_dollars + segment_total_dollars
-	d = dict(start_time = s.start_time, end_time=s.end_time,goal=s.goal, goal_type=s.goal_type, title=s.title, total_pledges=segment_total_pledges, total_dollars = segment_total_dollars)
-	seg_dicts.append(d)
+        pledge_list = db(db.pledge.segment == s.id).select().as_list()
+        segment_total_pledges = len(pledge_list)
+        total_pledges = total_pledges + segment_total_pledges
+        segment_total_dollars = 0
+    for i in pledge_list:
+        segment_total_dollars = segment_total_dollars + i['amount']
+    total_dollars = total_dollars + segment_total_dollars
+    d = dict(start_time = s.start_time, end_time=s.end_time,goal=s.goal, goal_type=s.goal_type, title=s.title, total_pledges=segment_total_pledges, total_dollars = segment_total_dollars)
+    seg_dicts.append(d)
     return dict(form=form,seg_dicts=seg_dicts,total_dollars=total_dollars,total_pledges=total_pledges)
 
 
@@ -897,13 +1001,13 @@ def report_single_segment():
     pledgedrive=db.pledgedrive[pledgedrive_id] or redirect(error_page)
     request.vars.segment = request.vars.segment or session.segment_id
     form = SQLFORM.factory(\
-         Field('segment',default=request.vars.segment, requires=IS_IN_DB(db(db.segment.pledgedrive==pledgedrive_id),'segment.id','%(title)s'),unique=True),\
-                      _action=URL(r=request))
+        Field('segment',default=request.vars.segment, requires=IS_IN_DB(db(db.segment.pledgedrive==pledgedrive_id),'segment.id','%(title)s'),unique=True),\
+                    _action=URL(r=request))
     form.accepts(request.vars,session)
     if not form.errors:
-    	segment_id=request.vars.segment
+        segment_id=request.vars.segment
     else:
-	segment_id=session.segment_id
+        segment_id=session.segment_id
     segment = db.segment[segment_id] or redirect(error_page)
     program = db.program[segment.program]
     pledge_list = db(db.pledge.segment == segment_id).select().as_list()
@@ -951,7 +1055,7 @@ def report_segments_by_pledgedrive():
 
     compiled_list = [segment_dates,segment_titles,segment_goal_types,segment_goals,pledge_totals,dollar_totals]
     converted_list=[]
- 
+
     x = len(segment_dates)
 
     while x:
@@ -979,7 +1083,7 @@ def report_pledgedrive_totals():
     all_pledges = pledgedrive_pledges.as_list()
 
     pledgedrive_total_dollars = 0
-     
+    
     for o in all_pledges:
 
         pledgedrive_total_dollars = pledgedrive_total_dollars + o['amount']
@@ -1133,7 +1237,7 @@ def mini_pledgedrive_totals():
         all_pledges = pledgedrive_pledges.as_list()
 
         pledgedrive_total_dollars = 0
-         
+        
         for o in all_pledges:
             pledgedrive_total_dollars = pledgedrive_total_dollars + o['amount']
 
@@ -1300,7 +1404,7 @@ def mini_segment_totals():
     try:
         all_pledges_for_segment = segment_pledges.as_list()
         segment_total_dollars = 0
-         
+        
         for o in all_pledges_for_segment:
             segment_total_dollars = segment_total_dollars + o['amount']
 
