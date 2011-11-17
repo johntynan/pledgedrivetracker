@@ -1741,6 +1741,168 @@ def quick_setup_segment():
 
     return dict(form=form, segments=segments)
 
+@auth.requires_login()
+def quick_setup_pledgedrive():
+    """
+    Make a copy of the original_pledgedrive and all the original_segments associated with that drive.
+    Change the start_time and end_time for each new segment to correspond with the date(s) the user has supplied in the form.
+    Make a copy of all the original_challenges then create new challenges, make sure to associate each challenge with its corresponding newly created segment.
+    """
+    check_session()
+
+    form=SQLFORM(db.pledgedrive)
+
+    # this will be useful at various points within this function
+    time_format = "%Y-%m-%d %H:%M:%S"
+
+    # make a copy of the original_pledgedrive and all the original_segments associated with that drive
+    # make two lists of the unique original_segment_dates
+    original_pledgedrive=session.pledgedrive
+    original_segments=db(db.segment.pledgedrive==session.pledgedrive_id).select(orderby=db.segment.start_time)
+    original_segment_dates = []
+    original_segment_dates_labels = []
+
+    # make a lists of the original_challenges, and a list of orignal_challenge_ids
+    original_challenges=db(db.challenge.pledgedrive==session.pledgedrive_id).select(orderby=db.challenge.segment)
+
+    new_challenge_ids = []
+    """
+    for x in original_challenges:
+        original_challenge_ids.append(x.id)
+    """
+
+    # create a list of new challenges
+    new_challenges = []
+    """
+    for x in original_challenges:
+        new_challenges.append(x)
+    """
+
+    for s in original_segments:
+        x = str(s.start_time.year) + '-' + str(s.start_time.month) + '-' + str(s.start_time.day) + ' 00:00:00'
+        x = datetime.datetime.strptime(x,time_format)
+        if x not in original_segment_dates:
+            original_segment_dates.append(x)
+
+    counter = 0
+    # make two lists of the unique original_segment_dates, one as datetime type, the other as a string
+    # add form fields for these dates to the form for creating a new pledgedrive
+    for s in original_segment_dates:
+        s = s.strftime("%A, %B %d %Y")
+        original_segment_dates_labels.append(s)
+        fieldname = 'new_segment_date_' + str(counter)
+        fieldname = TR(LABEL(s),INPUT(_name=fieldname, _class='date', _id=counter, value=time.strftime("%Y-%m-%d"), _type='text'))
+        form[0].insert(-1,fieldname)
+        counter = counter + 1
+
+    form.vars.title = 'New: ' + original_pledgedrive['title']
+    form.vars.start_time = time.strftime(time_format)
+    form.vars.end_time = time.strftime(time_format)
+    form.vars.description = original_pledgedrive['description']
+    form.vars.pledge_goal = original_pledgedrive['pledge_goal']
+    form.vars.projected_average_pledge = original_pledgedrive['projected_average_pledge']
+
+    if form.accepts(request.vars, session): 
+        # create a new pledgedrive based on the values the user has added to the form
+        response.flash='record inserted'
+
+        # set the new pledgedrive as a variable for use here
+        # set the new pledgedrive as a session variable
+        # make the new pledgedrive the "currently selected pledgedrive"
+        pledgedrive_id = dict(form.vars)['id']
+        pledgedrive = db(db.pledgedrive.id==pledgedrive_id).select()
+        session.pledgedrive = pledgedrive.as_list()[0]
+        session.pledgedrive_id = pledgedrive.as_list()[0]['id']
+
+        organization_id=session.organization['id']
+        pledgedrive_id=session.pledgedrive['id']
+
+        # create a list of new segments
+        new_segments = []
+
+        for a in original_segments:
+            title = str(a.title)
+            description = str(a.description)
+            talkingpoints = str(a.talkingpoints)
+            goal = str(a.goal)
+            goal_type = str(a.goal_type)
+            program = str(a.program)
+            start_time = a.start_time
+            end_time = a.end_time
+            original_segment_id = a.id
+
+            # change the start_time and end_time for each new segment to correspond with the date(s) the user has supplied in the form
+            counter = 0
+            for x in original_segment_dates:
+                # check to see if the original_segment currently being tested (a) contains the same Year, Month and Day 
+                # (but not minutes, seconds or miliseconds) as a date in the list of original_segment_dates (x)
+                # then, replace this date with the corresponding (new_date) value that the user has supplied in the form
+
+                # does a == x?  If so:
+                if int(str(a.start_time.year) + str(a.start_time.month) + str(a.start_time.day)) == int(str(x.year) + str(x.month) + str(x.day)):
+                    # get the name(s) of the form fields where the user has entered in a new date                    
+                    segment_date_name = 'new_segment_date_' + str(counter)
+
+                    # create a string (new_date) with the date information from the form
+                    # then add some dummy time information
+                    new_date = dict(form.vars)[segment_date_name] + ' 00:00:00'
+                    # convert the new_date into a datetime object
+                    new_date = datetime.datetime.strptime(new_date,time_format)
+
+                    # replace the Year, Month and Day with the corresponding new_date provided in the form (temp variable z)
+                    z = str(new_date.year) + '-' + str(new_date.month) + '-' + str(new_date.day) + ' ' + str(a.start_time.hour) + ':' + str(a.start_time.minute) + ':' + str(a.start_time.second)
+                    start_time = datetime.datetime.strptime(z,time_format)
+
+                    end_time = str(new_date.year) + '-' + str(new_date.month) + '-' + str(new_date.day) + ' ' + str(a.end_time.hour) + ':' + str(a.end_time.minute) + ':' + str(a.end_time.second)
+
+                    end_time = datetime.datetime.strptime(end_time,time_format)
+
+                else:
+                    counter = counter + 1
+
+            d = dict(title=title,description=description,talkingpoints=talkingpoints,goal=goal,goal_type=goal_type,program=program,start_time=start_time,end_time=end_time)
+
+            # add the newly created segment to the list of new_segments
+            new_segments.append(d)
+
+            # add the newly created segment to the database, gets the id as a variable
+            new_segment_id=db.segment.insert(title=title,description=description,talkingpoints=talkingpoints,goal=goal,goal_type=goal_type,program=program,pledgedrive=pledgedrive_id,start_time=start_time,end_time=end_time)
+
+            for y in original_challenges:
+                # associate the new challenge with the newly created pledgedrive
+                y.pledgedrive = pledgedrive_id
+
+                # test to see if the segment id of the current challenge being iterated contains the original_segment_id
+                if y.segment == original_segment_id:
+                    # test to see if a challenge for this segment has not already been added to new_challenge_ids
+                    if y.segment not in new_challenge_ids:
+                        y.segment = new_segment_id
+                        new_challenge_ids.append(new_segment_id)
+                        new_challenges.append(y)
+
+                        # add the newly created challenge to the database
+                        db.challenge.insert(title=y.title,person=y.person,pledgedrive=y.pledgedrive,segment=y.segment,amount=y.amount,description=y.description,type=y.type,condition=y.condition,state=y.state,organization=y.organization)
+
+
+        # set the first segment and segment_id as session variables
+        segment_id = db(db.segment.pledgedrive==session.pledgedrive_id).select(orderby=db.segment.start_time)[0].id
+        segment = db(db.segment.id==segment_id).select()
+        session.segment = segment.as_list()[0]
+        session.segment_id = segment.as_list()[0]['id']
+
+
+        # the redirect will prevent response.flash from displaying the message, use session.flash instead
+        session.flash='Pledgedrive successfully copied'
+
+        # all done. back to the index page
+        redirect(URL(r=request, f='index'))
+
+    elif form.errors: response.flash='form errors'
+
+    # send these variables to the quick_setup_pledgedrive page, build the form.
+    return dict(form=form,original_segment_dates_labels=original_segment_dates_labels,original_segments=original_segments)
+
+
 @service.json
 @service.jsonrpc
 @service.xml
