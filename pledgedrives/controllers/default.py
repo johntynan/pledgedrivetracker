@@ -1766,17 +1766,9 @@ def quick_setup_pledgedrive():
     original_challenges=db(db.challenge.pledgedrive==session.pledgedrive_id).select(orderby=db.challenge.segment)
 
     new_challenge_ids = []
-    """
-    for x in original_challenges:
-        original_challenge_ids.append(x.id)
-    """
 
     # create a list of new challenges
     new_challenges = []
-    """
-    for x in original_challenges:
-        new_challenges.append(x)
-    """
 
     for s in original_segments:
         x = str(s.start_time.year) + '-' + str(s.start_time.month) + '-' + str(s.start_time.day) + ' 00:00:00'
