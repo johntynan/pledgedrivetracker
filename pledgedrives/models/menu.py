@@ -15,7 +15,7 @@ response.author = 'John Tynan'
 # demo app help file:
 helphome = "http://pledgedrivetrackerdemo.appspot.com/pledgedrives/static/documentation/_build/html/"
 helpdefault = "index.html"
-urls = {"frame_header_onair":"on_air_screen.html","frame_header_pledge_entry":"pledge_entry.html","create_program":"setup.html#program-s"}
+urls = {"frame_header_onair":"on_air_screen.html","frame_header_pledge_entry":"pledge_entry.html","create_program":"setup.html#programs"}
 
 
 ##########################################
