@@ -919,9 +919,6 @@ def frame_pledge_entry():
 
 @auth.requires_login()
 def report_pledge_level():
-    """
-    Docstring here.
-    """
     check_session()
     pledgedrive_id=session.pledgedrive_id
     pledgedrive=db.pledgedrive[pledgedrive_id] or redirect(error_page)
@@ -932,20 +929,19 @@ def report_pledge_level():
     buckets = [500,200,100,36,35,0]
     bucket_counter = [0,0,0,0,0,0]
     for s in segs:
-        pledge_list = db(db.pledge.segment == s.id).select().as_list()
-        segment_total_pledges = len(pledge_list)
-    total_pledges = total_pledges + segment_total_pledges
-    seg_bucket_counter = [0,0,0,0,0,0]
-    for i in pledge_list:
-        j = 0
-        while i['amount']<buckets[j]:
-            j = j+1
-        seg_bucket_counter[j] = seg_bucket_counter[j] + 1
-        bucket_counter[j] = bucket_counter[j] + 1
-    d = dict(title=s.title, total_pledges=segment_total_pledges, bucket_counter=seg_bucket_counter, dt=s.start_time)
-    seg_dicts.append(d)
+	pledge_list = db(db.pledge.segment == s.id).select().as_list()
+    	segment_total_pledges = len(pledge_list)
+	total_pledges = total_pledges + segment_total_pledges
+	seg_bucket_counter = [0,0,0,0,0,0]
+    	for i in pledge_list:
+		j = 0
+		while i['amount']<buckets[j]:
+			j = j+1
+		seg_bucket_counter[j] = seg_bucket_counter[j] + 1
+		bucket_counter[j] = bucket_counter[j] + 1
+	d = dict(title=s.title, total_pledges=segment_total_pledges, bucket_counter=seg_bucket_counter, dt=s.start_time)
+	seg_dicts.append(d)
     return dict(seg_dicts=seg_dicts,total_pledges=total_pledges,buckets=buckets,bucket_counter=bucket_counter)
-
 
 @auth.requires_login()
 def report_day_total_summary():
