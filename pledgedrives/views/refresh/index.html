@@ -1,0 +1,52 @@
+{{extend 'pledger_base.html'}}
+<script type="text/javascript">
+	refreshing_widgets = Array();
+	jQuery(document).ready(function(){
+	//Our scripts for this page will go here...
+	//The buttons that need an overlay...
+	$(".overlay_button")
+		.live("click", function(){
+			overlay = $(this).data("overlay");
+			console.log(overlay);
+			$("#"+overlay).toggle();
+			return false;
+		});
+	//The x on the top left of the overlays to close the overlay...
+	$('.overlay .close')
+		.live("click", function(){
+			$(this).parent().hide();
+		});
+	var widgets = Array();
+	
+	{{for widget in views:}}
+	widgets.push("{{=widget}}");
+	{{pass}}
+	function refresher()
+	{
+		for (i in refreshing_widgets){
+			$("#"+refreshing_widgets[i]).load("/pledgedrives/refresh/" + refreshing_widgets[i] + ".html");
+			}
+		refreshing_widgets = Array();
+	}
+	setInterval(refresher,5000);
+	});
+</script>
+
+{{for overlay in overlays:}}
+<div id="{{=overlay}}" class="overlay">
+	<a href="#" title="Close" class="close">X</a>
+	{{=LOAD('refresh', overlay, ajax=True)}}
+</div>
+{{pass}}
+<div class="toolbar">
+{{for overlay in overlays:}}
+	<button class="overlay_button" data-overlay="{{=overlay}}">{{=overlay}}</button>
+{{pass}}
+</div>
+<div class="row">
+{{for widget in views:}}
+	<div id="{{=widget}}" class="widget shadow">
+		{{=LOAD('refresh', widget, ajax=True)}}
+	</div>
+{{pass}}
+</div>

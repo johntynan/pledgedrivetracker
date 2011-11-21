@@ -1,0 +1,17 @@
+<h2>Thank you Messages</h2>
+
+<div style="overflow:auto;height:160px;width:100%">
+<table style="width:100%">
+    {{for h,i in enumerate(pledges):}}
+	<tr class="{{='odd' if h%2 else 'even'}}">
+		<td>{{=i['name']}}</td>
+		<td>{{=i['amount']}}</td>
+		<td>{{=i['comment']}}</td>
+	</tr>
+    {{pass}}
+</table>
+</div>
+
+<script type="text/javascript">
+refreshing_widgets.push("thank_yous");
+</script>
