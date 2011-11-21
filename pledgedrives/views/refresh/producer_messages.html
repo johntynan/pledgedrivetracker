@@ -2,8 +2,13 @@
 
 <div style="overflow:auto;height:160px;width:100%">
 <table style="width:100%">
-{{for h,i in enumerate(posts):}}
-<tr class="{{='odd' if h%2 else 'even'}}"><td>{{=i['body']}}</td><td><span style="align:right"><small>{{=i['created_on']}}</small></span></td></tr>
+{{for h,item in enumerate(posts):}}
+    <tr class="{{='odd' if h%2 else 'even'}}">
+        <td>{{=item['body']}}</td>
+		<td><a class="producer_message" data-id="{{=item.id}}" href="#">Mark as Read</a></td>
+		<td>{{=item['read']}}</td>
+        <td><span style="align:right"><small>{{=item['created_on']}}</small></span></td>
+    </tr>
 {{pass}}
 </table>
 </div>

@@ -2,11 +2,13 @@
 
 <div style="overflow:auto;height:160px;width:100%">
 <table style="width:100%">
-    {{for h,i in enumerate(pledges):}}
+    {{for h,item in enumerate(pledges):}}
 	<tr class="{{='odd' if h%2 else 'even'}}">
-		<td>{{=i['name']}}</td>
-		<td>{{=i['amount']}}</td>
-		<td>{{=i['comment']}}</td>
+		<td>{{=item['name']}}</td>
+		<td>{{=item['amount']}}</td>
+		<td>{{=item['comment']}}</td>
+		<td><a class="thank_you_message" data-id="{{=item.id}}" href="#">Mark as Read</a></td>
+		<td>{{=item['read']}}</td>
 	</tr>
     {{pass}}
 </table>

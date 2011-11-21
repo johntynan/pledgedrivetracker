@@ -1,5 +1,7 @@
 # coding: utf8
+from gluon.tools import prettydate
 
+@cache(request.env.path_info, time_expire=5, cache_model=cache.ram)
 def index():
     """
     Builds a special view based on parameters
@@ -9,13 +11,14 @@ def index():
         redirect(URL('refresh', "possible_views"))
     views = request.args
     #views = ["create_producer_message", 'segments', 'create_pledge', 'thank_yous', 'totals']
-    overlays = ["create_producer_message", "hide_producer_messages", "show_producer_messages", "hide_thank_yous", "show_thank_yous", "previous_segment", "next_segment", "select_different_segment"]
+    overlays = ["create_producer_message","previous_segment", "next_segment", "select_different_segment"]
     return dict(views=views, overlays = overlays)
 
+@cache(request.env.path_info, time_expire=5, cache_model=cache.ram)
 def possible_views():
     #A list of commonly used portal views
     return dict()
-    
+
 def create_producer_message():
     #The form for letting the producer post a message.
     form_producer_message = SQLFORM(db.post)
@@ -24,12 +27,14 @@ def create_producer_message():
     elif form_producer_message.errors: response.flash='Message had errors... did not post...'
     return dict(form_producer_message = form_producer_message)
 
+@cache(request.env.path_info, time_expire=5, cache_model=cache.ram)
 @auth.requires_login()
 def segments():
     #All Segments
     segments=db(db.segment.pledgedrive==session.pledgedrive_id).select(orderby=db.segment.start_time)
     return dict(segments=segments)
 
+@cache(request.env.path_info, time_expire=5, cache_model=cache.ram)
 def current_segment():
     return dict()
 
@@ -64,14 +69,17 @@ def create_pledge():
     elif form_pledge.errors:
         response.flash='There were errors in entering a pledge'
     return dict(form_pledge = form_pledge)
-        
+
+@cache(request.env.path_info, time_expire=5, cache_model=cache.ram)
 def thank_yous():
     #Get the thank you list...
     segment_id=session.segment['id']
     segment=db.segment[segment_id] or redirect(error_page)
-    pledges=db(db.pledge.segment==segment_id).select(orderby=~db.pledge.created_on)
+    # pledges=db(db.pledge.segment==segment_id).select(orderby=~db.pledge.created_on)
+    pledges=db((db.pledge.segment==segment_id) & (db.pledge.read == False)).select(orderby=~db.pledge.created_on)
     return dict(pledges = pledges)
 
+@cache(request.env.path_info, time_expire=5, cache_model=cache.ram)
 def totals():
     #The totals for the pledge drive...
     pledgedrive_id=session.pledgedrive_id
@@ -121,20 +129,22 @@ def totals():
     segment_totals = {"pledges":segment_total_pledges,"dollors":segment_total_dollars, "average":segment_average_pledge}
     return dict(drive_totals = drive_totals, segment_totals = segment_totals)
 
+@cache(request.env.path_info, time_expire=5, cache_model=cache.ram)
 def producers_posts():
     #Get all the producers Posts
-    producer_messages=db(db.post.organization==session.organization['id']).select(orderby=~db.post.created_on)
+    # producer_messages=db(db.post.organization==session.organization['id']).select(orderby=~db.post.created_on)
 
-    if segment[0].goal_type == 'Pledge':
-        goal = 'Pledge Goal:' + str(segment[0].goal)
-        progress = segment[0].goal - segment_total_pledges 
-    else:
-        goal = 'Dollar Goal:'+  str(segment[0].goal)
-        progress = segment[0].goal - segment_total_dollars
-    segment_goals = {"pledges":segment_total_pledges,"dollors":segment_total_dollars, "average":segment_average_pledge}
-    return dict()
+    messages=db(db.post.organization==session.organization['id']).select(orderby=~db.post.created_on)
+    return dict(messages = messages, prettydate = prettydate)
+
+def read_message():
+    if not request.args(0):
+        return None
+    db(db.pledge.id == request.args(0)).update(read=True)
+    return None
 
 
+@cache(request.env.path_info, time_expire=5, cache_model=cache.ram)
 def header():
     # display organization information
     organization_id=session.organization['id']
@@ -143,6 +153,7 @@ def header():
     return dict(organization=organization)
 
 
+@cache(request.env.path_info, time_expire=5, cache_model=cache.ram)
 def segment_goal():
     """
     Docstring here.
@@ -170,6 +181,8 @@ def segment_goal():
 
     return dict(segment_total_pledges=segment_total_pledges,segment_total_dollars=segment_total_dollars,goal=goal,progress=progress)
 
+
+@cache(request.env.path_info, time_expire=5, cache_model=cache.ram)
 def segment_totals():
     """
     Docstring here.
@@ -197,6 +210,7 @@ def segment_totals():
         
     return dict(segment_total_pledges=segment_total_pledges,segment_total_dollars=segment_total_dollars,segment_average_pledge=segment_average_pledge)    
 
+@cache(request.env.path_info, time_expire=5, cache_model=cache.ram)
 def segment_goal_and_totals():
     """
     Docstring here.
@@ -232,6 +246,7 @@ def segment_goal_and_totals():
     return dict(segment_total_pledges=segment_total_pledges,segment_total_dollars=segment_total_dollars,goal=goal,progress=progress,segment_average_pledge=segment_average_pledge)    
 
 
+@cache(request.env.path_info, time_expire=5, cache_model=cache.ram)
 def pledgedrive_totals():
     """
     Docstring here.
@@ -258,6 +273,7 @@ def pledgedrive_totals():
 
     return dict(pledgedrive_total_pledges=pledgedrive_total_pledges,pledgedrive_total_dollars=pledgedrive_total_dollars,pledgedrive_average_pledge=pledgedrive_average_pledge)
 
+@cache(request.env.path_info, time_expire=5, cache_model=cache.ram)
 def segment_challenge():
     """
     Docstring here.
@@ -267,6 +283,8 @@ def segment_challenge():
     challenge_desc = db(db.challenge.segment == segment_id).select().as_list()
     return dict(segment_challenges=challenge_desc, seg_talkingpoints=db.segment[segment_id].talkingpoints)
 
+
+@cache(request.env.path_info, time_expire=5, cache_model=cache.ram)
 def producer_messages():
     """
     Docstring here.
