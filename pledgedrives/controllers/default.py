@@ -1183,6 +1183,12 @@ def mini_create_pledge():
     Docstring here.
     """
     check_session()
+
+    segments=db(db.segment.pledgedrive==session.pledgedrive_id).select(orderby=db.segment.start_time)    
+    ids=[o.id for o in segments]
+    labels=[(str(o.start_time.strftime("%m/%d : %I:%M %p")) + ' - ' + o.title) for o in segments]
+    session.segments = segments.as_list()
+
     segment_id=session.segment['id']
     segment=db.segment[segment_id] or redirect(error_page)
     # form=crud.create()
@@ -1195,9 +1201,6 @@ def mini_create_pledge():
     elif form.errors:
         response.flash='there are errors'
 
-    segments=db(db.segment.pledgedrive==session.pledgedrive_id).select(orderby=db.segment.start_time)    
-    ids=[o.id for o in segments]
-    labels=[(str(o.start_time.strftime("%m/%d : %I:%M %p")) + ' - ' + o.title) for o in segments]
 
     form2=SQLFORM.factory(Field('segment_id',requires=IS_IN_SET(ids,labels))) 
     
