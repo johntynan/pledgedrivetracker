@@ -979,11 +979,11 @@ def report_day_total_summary():
         segment_total_pledges = len(pledge_list)
         total_pledges = total_pledges + segment_total_pledges
         segment_total_dollars = 0
-    for i in pledge_list:
-        segment_total_dollars = segment_total_dollars + i['amount']
-    total_dollars = total_dollars + segment_total_dollars
-    d = dict(start_time = s.start_time, end_time=s.end_time,goal=s.goal, goal_type=s.goal_type, title=s.title, total_pledges=segment_total_pledges, total_dollars = segment_total_dollars)
-    seg_dicts.append(d)
+        for i in pledge_list:
+            segment_total_dollars = segment_total_dollars + i['amount']
+        total_dollars = total_dollars + segment_total_dollars
+        d = dict(start_time = s.start_time, end_time=s.end_time,goal=s.goal, goal_type=s.goal_type, title=s.title, total_pledges=segment_total_pledges, total_dollars = segment_total_dollars)
+        seg_dicts.append(d)
     return dict(form=form,seg_dicts=seg_dicts,total_dollars=total_dollars,total_pledges=total_pledges)
 
 
