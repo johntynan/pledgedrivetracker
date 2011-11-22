@@ -70,7 +70,6 @@ def create_pledge():
         response.flash='There were errors in entering a pledge'
     return dict(form_pledge = form_pledge)
 
-@cache(request.env.path_info, time_expire=5, cache_model=cache.ram)
 def thank_yous():
     #Get the thank you list...
     segment_id=session.segment['id']
@@ -129,7 +128,6 @@ def totals():
     segment_totals = {"pledges":segment_total_pledges,"dollors":segment_total_dollars, "average":segment_average_pledge}
     return dict(drive_totals = drive_totals, segment_totals = segment_totals)
 
-@cache(request.env.path_info, time_expire=5, cache_model=cache.ram)
 def producers_posts():
     #Get all the producers Posts
     # producer_messages=db(db.post.organization==session.organization['id']).select(orderby=~db.post.created_on)
@@ -143,8 +141,6 @@ def read_message():
     db(db.pledge.id == request.args(0)).update(read=True)
     return None
 
-
-@cache(request.env.path_info, time_expire=5, cache_model=cache.ram)
 def header():
     # display organization information
     organization_id=session.organization['id']
