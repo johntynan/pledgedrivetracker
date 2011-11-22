@@ -31,6 +31,18 @@
 	setInterval(refresher,5000);
 	});
 </script>
+{{block header}}
+<div style="font-size: 1.5em;" align="center">
+
+<a href={{="/"+request.application+"/"}} target="_top">Home</a>  | 
+{{=session.organization['name']}}
+{{pass}}
+: <span style="color: red">{{=session.organization['phone']}} / {{=session.organization['phone_long_distance']}}</span> or on the web at <span style="color: blue">{{=session.organization['url']}}</span> <!-- | <span style="font-size: 0.8em;"><a HREF="#" onClick="openConsole('reports/selectbreak.asp');">Pledges for Break</a></span> -->
+{{if response.helpurl:}}
+| <A HREF={{=response.helpurl}} OnClick="return popup('{{=response.helpurl}}')">Help</A>
+{{pass}}
+</div>
+{{end}}
 
 {{for overlay in overlays:}}
 <div id="{{=overlay}}" class="overlay">
