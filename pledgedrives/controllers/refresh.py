@@ -279,8 +279,6 @@ def segment_challenge():
     challenge_desc = db(db.challenge.segment == segment_id).select().as_list()
     return dict(segment_challenges=challenge_desc, seg_talkingpoints=db.segment[segment_id].talkingpoints)
 
-
-@cache(request.env.path_info, time_expire=5, cache_model=cache.ram)
 def producer_messages():
     """
     Docstring here.
