@@ -70,6 +70,7 @@ def create_pledge():
         response.flash='There were errors in entering a pledge'
     return dict(form_pledge = form_pledge)
 
+@cache(request.env.path_info, time_expire=5, cache_model=cache.ram)
 def thank_yous():
     #Get the thank you list...
     segment_id=session.segment['id']
@@ -77,6 +78,7 @@ def thank_yous():
     # pledges=db(db.pledge.segment==segment_id).select(orderby=~db.pledge.created_on)
     pledges=db((db.pledge.segment==segment_id) & (db.pledge.read == False)).select(orderby=~db.pledge.created_on)
     return dict(pledges = pledges)
+    # return response.render(pledges)
 
 @cache(request.env.path_info, time_expire=5, cache_model=cache.ram)
 def totals():
@@ -279,6 +281,7 @@ def segment_challenge():
     challenge_desc = db(db.challenge.segment == segment_id).select().as_list()
     return dict(segment_challenges=challenge_desc, seg_talkingpoints=db.segment[segment_id].talkingpoints)
 
+@cache(request.env.path_info, time_expire=5, cache_model=cache.ram)
 def producer_messages():
     """
     Docstring here.
@@ -286,3 +289,13 @@ def producer_messages():
     posts=db(db.post.organization==session.organization['id']).select(orderby=~db.post.created_on)
     return dict(posts=posts)
 
+@cache(request.env.path_info, time_expire=5, cache_model=cache.ram)
+def producers_posts():
+    messages=db(db.post.organization==session.organization['id']).select(orderby=~db.post.created_on)
+    return dict(messages = messages, prettydate = prettydate)
+
+def read_message():
+    if not request.args(0):
+        return None
+    db(db.pledge.id == request.args(0)).update(read=True)
+    return None

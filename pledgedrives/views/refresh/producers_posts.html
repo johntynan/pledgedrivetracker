@@ -1,0 +1,10 @@
+<h1>Producer's Messages</h1>
+{{for message in messages:}}
+<div class="producers_message">
+	<p class="time">{{=prettydate(message.created_on,T)}}</p>
+	<p>{{=message.body}}</p>
+</div>
+{{pass}}
+<script type="text/javascript">
+refreshing_widgets.push("producers_posts");
+</script>

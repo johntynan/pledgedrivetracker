@@ -1,19 +1,21 @@
-<h2>Thank you Messages</h2>
-
-<div style="overflow:auto;height:160px;width:100%">
-<table style="width:100%">
-    {{for h,item in enumerate(pledges):}}
-	<tr class="{{='odd' if h%2 else 'even'}}">
-		<td>{{=item['name']}}</td>
-		<td>{{=item['amount']}}</td>
-		<td>{{=item['comment']}}</td>
-		<td><a class="thank_you_message" data-id="{{=item.id}}" href="#">Mark as Read</a></td>
-		<td>{{=item['read']}}</td>
+<h1>Thank you Messages</h1>
+<table>
+	<tr>
+		<th>Name</th>
+		<th>Amount</th>
+		<th>Comment</th>
+		<th>Delete</th>
 	</tr>
-    {{pass}}
+	{{for item in pledges:}}
+	<tr>
+		<td>{{=item.name}}</td>
+		<td>{{=item.amount}}</td>
+		<td>{{=item.comment}}</td>
+		<td><a class="thank_you_message" data-id="{{=item.id}}" href="#">Mark as Read</a></td>
+		<td>{{=item.read}}</td>
+	</tr>
+	{{pass}}
 </table>
-</div>
-
 <script type="text/javascript">
 refreshing_widgets.push("thank_yous");
 </script>
