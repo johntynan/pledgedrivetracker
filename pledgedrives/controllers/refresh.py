@@ -1,6 +1,7 @@
 # coding: utf8
 from gluon.tools import prettydate
 
+@auth.requires_login()
 @cache(request.env.path_info, time_expire=5, cache_model=cache.ram)
 def index():
     """
@@ -11,7 +12,7 @@ def index():
         redirect(URL('refresh', "possible_views"))
     views = request.args
     #views = ["create_producer_message", 'segments', 'create_pledge', 'thank_yous', 'totals']
-    overlays = ["create_producer_message","previous_segment", "next_segment", "select_different_segment"]
+    overlays = ["create_producer_message"]
     return dict(views=views, overlays = overlays)
 
 @cache(request.env.path_info, time_expire=5, cache_model=cache.ram)
@@ -288,3 +289,88 @@ def read_message():
         return None
     db(db.pledge.id == request.args(0)).update(read=True)
     return None
+
+
+def segment_navigation():
+    """
+    Docstring here.
+    """
+    # check_session()
+
+    segments=db(db.segment.pledgedrive==session.pledgedrive_id).select(orderby=db.segment.start_time)    
+    ids=[o.id for o in segments]
+    labels=[(str(o.start_time.strftime("%m/%d : %I:%M %p")) + ' - ' + o.title) for o in segments]
+    session.segments = segments.as_list()
+
+    form=SQLFORM.factory(Field('segment_id',requires=IS_IN_SET(ids,labels))) 
+    
+    if form.accepts(request.vars, session):
+        segment_id = form.vars.segment_id
+        segment = db(db.segment.id==segment_id).select()
+        session.segment = segment.as_list()[0]
+        session.segment_id = segment.as_list()[0]['id']
+        redirect(URL(r=request, f='segment_navigation'))
+
+    return dict(form=form,segments=segments)
+
+def segment_navigation_previous():
+    """
+    Docstring here.
+    """
+    segments=db(db.segment.pledgedrive==session.pledgedrive_id).select(orderby=db.segment.start_time)    
+    tests = [o.id for o in segments]
+    counter = 0
+    for i in tests:
+        if i == session.segment_id:
+            previous_test = int(tests[counter-1])
+            segment = db(db.segment.id==previous_test).select()
+            session.segment = segment.as_list()[0]
+            session.segment_id = segment.as_list()[0]['id']
+            break
+        counter = counter + 1
+
+    redirect(URL(r=request, f='segment_navigation'))
+    
+    return dict()
+
+def segment_navigation_next():
+    """
+    Docstring here.
+    """
+    segments=db(db.segment.pledgedrive==session.pledgedrive_id).select(orderby=db.segment.start_time)    
+    tests = [o.id for o in segments]
+    counter = 0
+    for i in tests:
+        if i == session.segment_id:
+            next_test = int(tests[counter+1])
+            segment = db(db.segment.id==next_test).select()
+            session.segment = segment.as_list()[0]
+            session.segment_id = segment.as_list()[0]['id']
+            break
+        counter = counter + 1
+
+    redirect(URL(r=request, f='segment_navigation'))
+    
+    return dict()
+
+def segment_select():
+    """
+    Docstring here.
+    """
+    # check_session()
+
+    segments=db(db.segment.pledgedrive==session.pledgedrive_id).select(orderby=db.segment.start_time)    
+    ids=[o.id for o in segments]
+    labels=[(str(o.start_time.strftime("%m/%d : %I:%M %p")) + ' - ' + o.title) for o in segments]
+
+    form=SQLFORM.factory(Field('segment_id',requires=IS_IN_SET(ids,labels))) 
+    
+    if form.accepts(request.vars, session):
+        segment_id = form.vars.segment_id
+        segment = db(db.segment.id==segment_id).select()
+        session.segment = segment.as_list()[0]
+        session.segment_id = segment.as_list()[0]['id']
+        redirect(URL(r=request, f='segment_navigation'))
+
+    return dict(form=form,segments=segments)
+
