@@ -1062,7 +1062,7 @@ def report_segments_by_pledgedrive():
     return dict(pledgedrive=pledgedrive,segments=segments,compiled_list=compiled_list,converted_list=converted_list)
 
 
-@service.json
+@cache(request.env.path_info, time_expire=3, cache_model=cache.ram)
 def report_pledgedrive_totals():
     """
     Docstring here.
@@ -1087,7 +1087,7 @@ def report_pledgedrive_totals():
     return dict(pledgedrive_total_pledges=pledgedrive_total_pledges,pledgedrive_total_dollars=pledgedrive_total_dollars)
 
 
-@service.json
+@cache(request.env.path_info, time_expire=3, cache_model=cache.ram)
 def report_pledgedrive_totals_detailed():
     """
     Docstring here.
@@ -1213,7 +1213,7 @@ def mini_create_pledge():
 
     return dict(form=form,form2=form2,segment=segment,segments=segments)
 
-@service.json
+@cache(request.env.path_info, time_expire=3, cache_model=cache.ram)
 def mini_pledgedrive_goal():
     """
     Docstring here.
@@ -1221,7 +1221,7 @@ def mini_pledgedrive_goal():
     check_session()
     return dict()
 
-@service.json
+@cache(request.env.path_info, time_expire=3, cache_model=cache.ram)
 def mini_pledgedrive_totals():
     """
     Docstring here.
@@ -1248,7 +1248,7 @@ def mini_pledgedrive_totals():
 
     return dict(pledgedrive_total_pledges=pledgedrive_total_pledges,pledgedrive_total_dollars=pledgedrive_total_dollars,pledgedrive_average_pledge=pledgedrive_average_pledge)
 
-@service.json
+@cache(request.env.path_info, time_expire=3, cache_model=cache.ram)
 def mini_pledgedrive_totals_no_reload():
     """
     Docstring here.
@@ -1273,7 +1273,7 @@ def mini_pledgedrive_totals_no_reload():
 
     return dict(pledgedrive_total_pledges=pledgedrive_total_pledges,pledgedrive_total_dollars=pledgedrive_total_dollars,pledgedrive_average_pledge=pledgedrive_average_pledge)
 
-@service.json
+@cache(request.env.path_info, time_expire=3, cache_model=cache.ram)
 @service.xml
 def report_progress_meter_flash():
     """
@@ -1324,7 +1324,7 @@ def report_progress_meter_flash():
 
     return dict(pledgedrive_total_dollars=pledgedrive_total_dollars,dollar_goal_adjusted=dollar_goal_adjusted,factor_text=factor_text)
     
-@service.json
+@cache(request.env.path_info, time_expire=3, cache_model=cache.ram)
 def mini_segment_goal():
     """
     Docstring here.
@@ -1353,7 +1353,7 @@ def mini_segment_goal():
     return dict(segment_total_pledges=segment_total_pledges,segment_total_dollars=segment_total_dollars,goal=goal,progress=progress)    
 
 
-@service.json
+@cache(request.env.path_info, time_expire=3, cache_model=cache.ram)
 def mini_segment_goal_and_totals():
     """
     Docstring here.
@@ -1388,7 +1388,7 @@ def mini_segment_goal_and_totals():
 
     return dict(segment_total_pledges=segment_total_pledges,segment_total_dollars=segment_total_dollars,goal=goal,progress=progress,segment_average_pledge=segment_average_pledge)    
 
-@service.json
+@cache(request.env.path_info, time_expire=3, cache_model=cache.ram)
 def mini_segment_totals():
     """
     Docstring here.
@@ -1416,7 +1416,7 @@ def mini_segment_totals():
         
     return dict(segment_total_pledges=segment_total_pledges,segment_total_dollars=segment_total_dollars,segment_average_pledge=segment_average_pledge)    
     
-@service.json
+@cache(request.env.path_info, time_expire=3, cache_model=cache.ram)
 def mini_segment_challenge():
     """
     Docstring here.
@@ -1643,16 +1643,17 @@ def mini_post_add():
     
     return dict(form=form)
 
+@cache(request.env.path_info, time_expire=3, cache_model=cache.ram)
 @auth.requires_login()
 def mini_post_list():
     """
     Docstring here.
     """
     posts=db(db.post.organization==session.organization['id']).select(orderby=~db.post.created_on)
-    return dict(posts=posts)
+    # return dict(posts=posts)
+    return response.render(dict(posts=posts))
 
-
-@service.json
+@cache(request.env.path_info, time_expire=3, cache_model=cache.ram)
 def mini_pledge_names():
     """
     Docstring here.
@@ -1660,9 +1661,10 @@ def mini_pledge_names():
     segment_id=session.segment['id']
     segment=db.segment[segment_id] or redirect(error_page)
     pledges=db(db.pledge.segment==segment_id).select(orderby=~db.pledge.created_on)
-    return dict(pledges=pledges,segment_id=segment_id)
+    # return dict(pledges=pledges,segment_id=segment_id)
+    return response.render(dict(pledges=pledges,segment_id=segment_id))
 
-@service.json
+@cache(request.env.path_info, time_expire=3, cache_model=cache.ram)
 def mini_pledge_names_no_reload():
     """
     Docstring here.
@@ -1670,9 +1672,10 @@ def mini_pledge_names_no_reload():
     segment_id=session.segment['id']
     segment=db.segment[segment_id] or redirect(error_page)
     pledges=db(db.pledge.segment==segment_id).select(orderby=~db.pledge.created_on)
-    return dict(pledges=pledges,segment_id=segment_id)
+    # return dict(pledges=pledges,segment_id=segment_id)
+    return response.render(dict(pledges=pledges,segment_id=segment_id))
 
-@service.json
+@cache(request.env.path_info, time_expire=3, cache_model=cache.ram)
 def mini_pledge_names_nav():
     """
     Docstring here.
@@ -1894,8 +1897,7 @@ def quick_setup_pledgedrive():
     return dict(form=form,original_segment_dates_labels=original_segment_dates_labels,original_segments=original_segments)
 
 
-@service.json
-@service.jsonrpc
+@cache(request.env.path_info, time_expire=3, cache_model=cache.ram)
 @service.xml
 @service.xmlrpc
 @service.run

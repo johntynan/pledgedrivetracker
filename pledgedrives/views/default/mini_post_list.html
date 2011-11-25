@@ -8,7 +8,9 @@
 
 <table style="width:100%">
 {{for h,i in enumerate(posts):}}
-<tr class="{{='odd' if h%2 else 'even'}}"><td>{{=i['body']}}</td><td><span style="align:right"><small>{{=i['created_on']}}</small></span></td></tr>
+<tr class="{{='odd' if h%2 else 'even'}}">
+    <td>{{=i['body']}}</td><td><span style="align:right"><small>{{=i['created_on']}}</small></span></td>
+</tr>
 {{pass}}
 </table>
 

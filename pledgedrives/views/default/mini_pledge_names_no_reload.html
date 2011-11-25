@@ -8,9 +8,9 @@
 <tr>
 <th>Name</th><th>Amount</th><th>Comment</th>
 </tr>
-{{for i in pledges:}}
-<tr>
-<td>{{=i['name']}}</td><td>{{=i['amount']}}</td><td>{{=i['comment']}}</td>
+{{for h,i in enumerate(pledges):}}
+<tr class="{{='odd' if h%2 else 'even'}}">
+    <td>{{=i['name']}}</td><td>{{=i['amount']}}</td><td>{{=i['comment']}}</td>
 </tr>
 {{pass}}
 </table>
