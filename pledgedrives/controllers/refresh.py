@@ -2,7 +2,7 @@
 from gluon.tools import prettydate
 
 @auth.requires_login()
-@cache(request.env.path_info, time_expire=5, cache_model=cache.ram)
+@cache(request.env.path_info, time_expire=3, cache_model=cache.ram)
 def index():
     """
     Builds a special view based on parameters
@@ -15,7 +15,7 @@ def index():
     overlays = ["create_producer_message"]
     return dict(views=views, overlays = overlays)
 
-@cache(request.env.path_info, time_expire=5, cache_model=cache.ram)
+@cache(request.env.path_info, time_expire=3, cache_model=cache.ram)
 def possible_views():
     #A list of commonly used portal views
     return dict()
@@ -28,14 +28,14 @@ def create_producer_message():
     elif form_producer_message.errors: response.flash='Message had errors... did not post...'
     return dict(form_producer_message = form_producer_message)
 
-@cache(request.env.path_info, time_expire=5, cache_model=cache.ram)
+@cache(request.env.path_info, time_expire=3, cache_model=cache.ram)
 @auth.requires_login()
 def segments():
     #All Segments
     segments=db(db.segment.pledgedrive==session.pledgedrive_id).select(orderby=db.segment.start_time)
     return dict(segments=segments)
 
-@cache(request.env.path_info, time_expire=5, cache_model=cache.ram)
+@cache(request.env.path_info, time_expire=3, cache_model=cache.ram)
 def current_segment():
     return dict()
 
@@ -80,7 +80,7 @@ def thank_yous():
     return dict(pledges = pledges)
     # return response.render(pledges)
 
-@cache(request.env.path_info, time_expire=5, cache_model=cache.ram)
+@cache(request.env.path_info, time_expire=3, cache_model=cache.ram)
 def totals():
     #The totals for the pledge drive...
     pledgedrive_id=session.pledgedrive_id
@@ -143,7 +143,7 @@ def read_message():
     db(db.pledge.id == request.args(0)).update(read=True)
     return None
 
-@cache(request.env.path_info, time_expire=5, cache_model=cache.ram)
+@cache(request.env.path_info, time_expire=3, cache_model=cache.ram)
 def segment_goal():
     """
     Docstring here.
@@ -172,7 +172,7 @@ def segment_goal():
     return dict(segment_total_pledges=segment_total_pledges,segment_total_dollars=segment_total_dollars,goal=goal,progress=progress)
 
 
-@cache(request.env.path_info, time_expire=5, cache_model=cache.ram)
+@cache(request.env.path_info, time_expire=3, cache_model=cache.ram)
 def segment_totals():
     """
     Docstring here.
@@ -200,7 +200,7 @@ def segment_totals():
         
     return dict(segment_total_pledges=segment_total_pledges,segment_total_dollars=segment_total_dollars,segment_average_pledge=segment_average_pledge)    
 
-@cache(request.env.path_info, time_expire=5, cache_model=cache.ram)
+@cache(request.env.path_info, time_expire=3, cache_model=cache.ram)
 def segment_goal_and_totals():
     """
     Docstring here.
@@ -236,7 +236,7 @@ def segment_goal_and_totals():
     return dict(segment_total_pledges=segment_total_pledges,segment_total_dollars=segment_total_dollars,goal=goal,progress=progress,segment_average_pledge=segment_average_pledge)    
 
 
-@cache(request.env.path_info, time_expire=5, cache_model=cache.ram)
+@cache(request.env.path_info, time_expire=3, cache_model=cache.ram)
 def pledgedrive_totals():
     """
     Docstring here.
@@ -263,7 +263,7 @@ def pledgedrive_totals():
 
     return dict(pledgedrive_total_pledges=pledgedrive_total_pledges,pledgedrive_total_dollars=pledgedrive_total_dollars,pledgedrive_average_pledge=pledgedrive_average_pledge)
 
-@cache(request.env.path_info, time_expire=5, cache_model=cache.ram)
+@cache(request.env.path_info, time_expire=3, cache_model=cache.ram)
 def segment_challenge():
     """
     Docstring here.

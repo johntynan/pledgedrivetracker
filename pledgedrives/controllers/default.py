@@ -692,6 +692,7 @@ def list_pledges():
     pledges=db(db.pledge.id>0).select(orderby=db.pledge.name)
     return dict(pledges=pledges)
 
+@cache(request.env.path_info, time_expire=3, cache_model=cache.ram)
 @auth.requires_login()
 def list_pledges_by_pledgedrive():
     """
@@ -703,6 +704,7 @@ def list_pledges_by_pledgedrive():
     pledges=db(db.pledge.pledgedrive==pledgedrive.id).select(orderby=db.pledge.id)
     return dict(pledges=pledges)
 
+# @cache(request.env.path_info, time_expire=3, cache_model=cache.ram)
 @auth.requires_login()
 def list_pledges_by_segment():
     """
@@ -713,6 +715,7 @@ def list_pledges_by_segment():
     segment=db.segment[segment_id] or redirect(error_page)
     pledges=db(db.pledge.segment==segment_id).select()
     return dict(pledges=pledges,segment_id=segment_id)
+    # return response(dict(pledges=pledges,segment_id=segment_id))
 
 @auth.requires_login()
 def delete_pledges_by_pledgedrive():
@@ -917,6 +920,7 @@ def frame_pledge_entry():
     check_session()
     return dict()
 
+@cache(request.env.path_info, time_expire=3, cache_model=cache.ram)
 @auth.requires_login()
 def report_pledge_level():
     check_session()
@@ -943,6 +947,7 @@ def report_pledge_level():
 	seg_dicts.append(d)
     return dict(seg_dicts=seg_dicts,total_pledges=total_pledges,buckets=buckets,bucket_counter=bucket_counter)
 
+@cache(request.env.path_info, time_expire=3, cache_model=cache.ram)
 @auth.requires_login()
 def report_day_total_summary():
     """
@@ -984,9 +989,10 @@ def report_day_total_summary():
         total_dollars = total_dollars + segment_total_dollars
         d = dict(start_time = s.start_time, end_time=s.end_time,goal=s.goal, goal_type=s.goal_type, title=s.title, total_pledges=segment_total_pledges, total_dollars = segment_total_dollars)
         seg_dicts.append(d)
-    return dict(form=form,seg_dicts=seg_dicts,total_dollars=total_dollars,total_pledges=total_pledges)
+    # return dict(form=form,seg_dicts=seg_dicts,total_dollars=total_dollars,total_pledges=total_pledges)
+    return response.render(dict(form=form,seg_dicts=seg_dicts,total_dollars=total_dollars,total_pledges=total_pledges))
 
-
+@cache(request.env.path_info, time_expire=3, cache_model=cache.ram)
 @auth.requires_login()
 def report_single_segment():
     """
@@ -1011,10 +1017,10 @@ def report_single_segment():
     segment_total_dollars = 0
     for i in pledge_list:
         segment_total_dollars = segment_total_dollars + i['amount']
-    return dict(segment=segment,pledge_list=pledge_list,segment_total_pledges=segment_total_pledges,segment_total_dollars=segment_total_dollars,program_title=program.title,form=form)
+    # return dict(segment=segment,pledge_list=pledge_list,segment_total_pledges=segment_total_pledges,segment_total_dollars=segment_total_dollars,program_title=program.title,form=form)
+    return response.render(dict(segment=segment,pledge_list=pledge_list,segment_total_pledges=segment_total_pledges,segment_total_dollars=segment_total_dollars,program_title=program.title,form=form))
 
-
-
+@cache(request.env.path_info, time_expire=3, cache_model=cache.ram)
 @auth.requires_login()
 def report_segments_by_pledgedrive():
     """
@@ -1059,8 +1065,8 @@ def report_segments_by_pledgedrive():
         new_row = [compiled_list[0][x],compiled_list[1][x],compiled_list[2][x],compiled_list[3][x],compiled_list[4][x],compiled_list[5][x]]
         converted_list.append(new_row)
 
-    return dict(pledgedrive=pledgedrive,segments=segments,compiled_list=compiled_list,converted_list=converted_list)
-
+    # return dict(pledgedrive=pledgedrive,segments=segments,compiled_list=compiled_list,converted_list=converted_list)
+    return response.render(dict(pledgedrive=pledgedrive,segments=segments,compiled_list=compiled_list,converted_list=converted_list))
 
 @cache(request.env.path_info, time_expire=3, cache_model=cache.ram)
 def report_pledgedrive_totals():
@@ -1140,6 +1146,7 @@ def report_mini_segment_challenge():
     check_session()
     return dict()
 
+@cache(request.env.path_info, time_expire=3, cache_model=cache.ram)
 @auth.requires_login()
 def report_mini_segment_select():
     """
@@ -1605,13 +1612,15 @@ def post_edit():
 
     return dict(form=form)
 
+@cache(request.env.path_info, time_expire=3, cache_model=cache.ram)
 @auth.requires_login()
 def post_list():
     """
     Docstring here.
     """
     posts=db(db.post.organization==session.organization['id']).select(orderby=~db.post.created_on)
-    return dict(posts=posts)
+    # return dict(posts=posts)
+    return response.render(dict(posts=posts))
 
 @auth.requires_login()
 def delete_posts_by_organization():
