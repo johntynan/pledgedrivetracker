@@ -33,7 +33,7 @@
 </script>
 {{block header}}
 <div style="font-size: 1.5em;" align="center">
-<iframe src="/pledgedrives/refresh/segment_navigation_previous/" width="40%" style="float:right">
+<iframe src="/pledgedrives/refresh/segment_navigation/" width="40%" style="float:right">
 </iframe>
 <a href="{{="/"+request.application+"/"}}">Home</a>  | 
 {{=session.organization['name']}}
@@ -63,3 +63,5 @@
 	</div>
 {{pass}}
 </div>
+{{block footer}}
+{{pass}}

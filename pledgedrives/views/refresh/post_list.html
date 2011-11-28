@@ -1,0 +1,20 @@
+<h2>Producer Messages</h2>
+
+<div style="overflow:auto;height:160px;width:100%">
+<form><input id="id" name="id" value="" style="border:1px"/><!-- type="hidden" --></form>
+<table style="width:100%">
+{{for h,item in enumerate(posts):}}
+    <tr class="{{='odd' if h%2 else 'even'}}">
+        <td>{{=item['body']}}</td>
+        <td><span id="item{{=item.id}}">{{=item.read}}</span> [<span onclick="jQuery('#id').val('{{=item.id}}');ajax('post_mark_as_read', ['id'], 'item{{=item.id}}');javascript:alert(jQuery('#id').val());">Mark as Read</span>]</td>
+		<!-- td>{{=item['read']}}</td>
+		<td><a class="producer_message" data-id="{{=item.id}}" href="#">Mark as Read</a></td>
+        <td><span style="align:right"><small>{{=item['created_on']}}</small></span></td -->
+    </tr>
+{{pass}}
+</table>
+</div>
+
+<script type="text/javascript">
+refreshing_widgets.push("producer_messages");
+</script>

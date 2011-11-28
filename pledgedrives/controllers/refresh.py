@@ -71,12 +71,12 @@ def create_pledge():
         response.flash='There were errors in entering a pledge'
     return dict(form_pledge = form_pledge)
 
-def thank_yous():
+def pledge_list():
     #Get the thank you list...
     segment_id=session.segment['id']
     segment=db.segment[segment_id] or redirect(error_page)
     # pledges=db(db.pledge.segment==segment_id).select(orderby=~db.pledge.created_on)
-    pledges=db((db.pledge.segment==segment_id) & (db.pledge.read == False)).select(orderby=~db.pledge.created_on)
+    pledges=db((db.pledge.segment==segment_id) & (db.pledge.read != True)).select(orderby=~db.pledge.created_on)
     return dict(pledges = pledges)
     # return response.render(pledges)
 
@@ -273,18 +273,33 @@ def segment_challenge():
     challenge_desc = db(db.challenge.segment == segment_id).select().as_list()
     return dict(segment_challenges=challenge_desc, seg_talkingpoints=db.segment[segment_id].talkingpoints)
 
-def producer_messages():
+def post_list():
     """
     Docstring here.
     """
-    posts=db(db.post.organization==session.organization['id']).select(orderby=~db.post.created_on)
+    posts=db((db.post.organization==session.organization['id']) & (db.post.read != True)).select(orderby=~db.post.created_on)
     return dict(posts=posts)
+
+def post_mark_as_read():
+    """
+    if not request.args(0):
+        print 'nuthin'
+        return None
+    """
+    row = db(db.post.id == request.args(0)).update(read=True)
+    # print request.args(0)
+    # print request
+    row.update(read=True)
+    row.update_record()
+    # print row
+    return None
+
 
 def producers_posts():
     messages=db(db.post.organization==session.organization['id']).select(orderby=~db.post.created_on)
     return dict(messages = messages, prettydate = prettydate)
 
-def read_message():
+def pledge_mark_as_read():
     if not request.args(0):
         return None
     db(db.pledge.id == request.args(0)).update(read=True)

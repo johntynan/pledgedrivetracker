@@ -1,5 +1,6 @@
 <h1>Thank you Messages</h1>
 <div style="overflow:auto;height:160px;width:100%">
+<form><input id="id" name="id" value="" style="border:1px"/><!-- type="hidden" --></form>
 <table>
 	<tr>
 		<th>Name</th>
@@ -13,7 +14,7 @@
 		<td>{{=item['name']}}</td>
 		<td>{{=item['amount']}}</td>
 		<td>{{=item['comment']}}</td>
-		<td><a class="thank_you_message" data-id="{{=item.id}}" href="#">Mark as Read</a></td>
+		<td><span id="item{{=item.id}}">{{=item.read}}</span> [<span onclick="jQuery('#id').val('{{=item.id}}');ajax('pledge_mark_as_read', ['id'], 'item{{=item.id}}');javascript:alert(jQuery('#id').val());">Mark as Read</span>]</td>
 		<td>{{=item['read']}}</td>
 	</tr>
     {{pass}}

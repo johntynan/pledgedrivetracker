@@ -18,10 +18,10 @@ $(document).ready(function(){
 </script>
 
 <div>
-<!-- button onclick="document.location='/pledgedrives/refresh/index/segment_goal/segment_totals/pledgedrive_totals/thank_yous/segment_challenge/producer_messages/'">On-air Screen</button>
-<button onclick="document.location='/pledgedrives/refresh/index/segment_goal/segment_totals/pledgedrive_totals/thank_yous/producer_messages/create_pledge/'">Pledge Entry</button -->
-{{=button('On-air Screen','frame_wrapper_onair.html')}}
-{{=button('Pledge Entry','frame_wrapper_pledge_entry.html')}}
+<button onclick="document.location='/pledgedrives/refresh/index/segment_goal/segment_totals/pledgedrive_totals/pledge_list/segment_challenge/post_list/'">On-air Screen</button>
+<button onclick="document.location='/pledgedrives/refresh/index/segment_goal/segment_totals/pledgedrive_totals/pledge_list/post_list/create_pledge/'">Pledge Entry</button>
+<!-- {{=button('On-air Screen','frame_wrapper_onair.html')}}
+{{=button('Pledge Entry','frame_wrapper_pledge_entry.html')}} -->
 <button onclick="jQuery('div.reports,div#_reports').slideToggle();">Reports</button>
 <button onclick="jQuery('div.setup,div#_setup').slideToggle();">Setup</button>
 <button onclick="return popup('{{=response.helpurl}}')">Help</A>
