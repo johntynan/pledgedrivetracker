@@ -71,14 +71,16 @@ def create_pledge():
         response.flash='There were errors in entering a pledge'
     return dict(form_pledge = form_pledge)
 
+@cache(request.env.path_info, time_expire=3, cache_model=cache.ram)
 def pledge_list():
     #Get the thank you list...
     segment_id=session.segment['id']
     segment=db.segment[segment_id] or redirect(error_page)
-    # pledges=db(db.pledge.segment==segment_id).select(orderby=~db.pledge.created_on)
-    pledges=db((db.pledge.segment==segment_id) & (db.pledge.read != True)).select(orderby=~db.pledge.created_on)
-    return dict(pledges = pledges)
-    # return response.render(pledges)
+    # pledges=db((db.pledge.segment==segment_id) & (db.pledge.read != True)).select(orderby=~db.pledge.created_on)
+    # orderby=~db.pledge.created_on seems to cause an error in GAE when cache is turned on:
+    pledges=db((db.pledge.segment==segment_id) & (db.pledge.read != True)).select()
+    # return dict(pledges = pledges)
+    return response.render(dict(pledges=pledges))
 
 @cache(request.env.path_info, time_expire=3, cache_model=cache.ram)
 def totals():
@@ -273,12 +275,16 @@ def segment_challenge():
     challenge_desc = db(db.challenge.segment == segment_id).select().as_list()
     return dict(segment_challenges=challenge_desc, seg_talkingpoints=db.segment[segment_id].talkingpoints)
 
+@cache(request.env.path_info, time_expire=3, cache_model=cache.ram)
 def post_list():
     """
     Docstring here.
     """
-    posts=db((db.post.organization==session.organization['id']) & (db.post.read != True)).select(orderby=~db.post.created_on)
-    return dict(posts=posts)
+    # posts=db((db.post.organization==session.organization['id']) & (db.post.read != True)).select(orderby=~db.post.created_on)
+    # orderby=~db.post.created_on seems to cause an error in GAE when cache is turned on:
+    posts=db((db.post.organization==session.organization['id']) & (db.post.read != True)).select()
+    # return dict(posts=posts)
+    return response.render(dict(posts=posts))
 
 def post_mark_as_read():
     """
