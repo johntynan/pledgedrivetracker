@@ -74,13 +74,17 @@ def create_pledge():
 @cache(request.env.path_info, time_expire=3, cache_model=cache.ram)
 def pledge_list():
     #Get the thank you list...
+    sorted_pledges = []
     segment_id=session.segment['id']
     segment=db.segment[segment_id] or redirect(error_page)
     # pledges=db((db.pledge.segment==segment_id) & (db.pledge.read != True)).select(orderby=~db.pledge.created_on)
     # orderby=~db.pledge.created_on seems to cause an error in GAE when cache is turned on:
     pledges=db((db.pledge.segment==segment_id) & (db.pledge.read != True)).select()
     # return dict(pledges = pledges)
-    return response.render(dict(pledges=pledges))
+    # This seems to resolve the error with GAE:
+    for row in pledges.sort(lambda row: row.created_on,reverse=True):
+        sorted_pledges.append(row)
+    return response.render(dict(pledges=sorted_pledges))
 
 @cache(request.env.path_info, time_expire=3, cache_model=cache.ram)
 def totals():
@@ -280,11 +284,15 @@ def post_list():
     """
     Docstring here.
     """
+    sorted_posts=[]
     # posts=db((db.post.organization==session.organization['id']) & (db.post.read != True)).select(orderby=~db.post.created_on)
     # orderby=~db.post.created_on seems to cause an error in GAE when cache is turned on:
     posts=db((db.post.organization==session.organization['id']) & (db.post.read != True)).select()
+    # This seems to resolve the error with GAE:
+    for row in posts.sort(lambda row: row.created_on,reverse=True):
+        sorted_posts.append(row)
     # return dict(posts=posts)
-    return response.render(dict(posts=posts))
+    return response.render(dict(posts=sorted_posts))
 
 def post_mark_as_read():
     """
