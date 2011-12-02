@@ -46,14 +46,13 @@
     {{redirect(URL(r=request, c='default'))}}
 {{else:}}
 <a href="{{="/"+request.application+"/"}}">Home</a>  | 
-{{=session.organization['name']}}
-
-: <span style="color: red">{{=session.organization['phone']}} / {{=session.organization['phone_long_distance']}}</span> or on the web at <span style="color: blue">{{=session.organization['url']}}</span> <!-- | <span style="font-size: 0.8em;"><a HREF="#" onClick="openConsole('reports/selectbreak.asp');">Pledges for Break</a></span> -->
+{{=session.organization['name']}} : <span style="color: red">{{=session.organization['phone']}} / {{=session.organization['phone_long_distance']}}</span> or on the web at <span style="color: blue">{{=session.organization['url']}}</span>
 {{pass}}
 
 {{if response.helpurl:}}
 | <A HREF={{=response.helpurl}} OnClick="return popup('{{=response.helpurl}}')">Help</A>
 {{pass}}
+
 </div>
 {{end}}
 
