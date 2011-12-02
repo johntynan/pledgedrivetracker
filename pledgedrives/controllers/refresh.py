@@ -154,7 +154,6 @@ def segment_goal():
     """
     Docstring here.
     """
-    # check_session()
     segment_id=session.segment['id']
     segment=db(db.segment.id==segment_id).select()
     
@@ -183,8 +182,6 @@ def segment_totals():
     """
     Docstring here.
     """
-    # check_session()
-
     segment_id=session.segment['id']
     segment=db(db.segment.id==segment_id).select()
     segment_pledges = db(db.pledge.segment==segment_id).select()
@@ -211,8 +208,6 @@ def segment_goal_and_totals():
     """
     Docstring here.
     """
-    # check_session()
-
     segment_id=session.segment['id']
     segment=db(db.segment.id==segment_id).select()
     segment_pledges = db(db.pledge.segment==segment_id).select()
@@ -247,7 +242,6 @@ def pledgedrive_totals():
     """
     Docstring here.
     """
-    # check_session()
     pledgedrive_id=session.pledgedrive_id
     
     try:
@@ -274,7 +268,6 @@ def segment_challenge():
     """
     Docstring here.
     """
-    # check_session()
     segment_id=session.segment_id
     challenge_desc = db(db.challenge.segment == segment_id).select().as_list()
     return dict(segment_challenges=challenge_desc, seg_talkingpoints=db.segment[segment_id].talkingpoints)
@@ -324,8 +317,6 @@ def segment_navigation():
     """
     Docstring here.
     """
-    # check_session()
-
     segments=db(db.segment.pledgedrive==session.pledgedrive_id).select(orderby=db.segment.start_time)    
     ids=[o.id for o in segments]
     labels=[(str(o.start_time.strftime("%m/%d : %I:%M %p")) + ' - ' + o.title) for o in segments]
@@ -386,8 +377,6 @@ def segment_select():
     """
     Docstring here.
     """
-    # check_session()
-
     segments=db(db.segment.pledgedrive==session.pledgedrive_id).select(orderby=db.segment.start_time)    
     ids=[o.id for o in segments]
     labels=[(str(o.start_time.strftime("%m/%d : %I:%M %p")) + ' - ' + o.title) for o in segments]
