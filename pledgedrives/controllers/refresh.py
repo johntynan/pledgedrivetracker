@@ -12,7 +12,7 @@ def index():
         redirect(URL('refresh', "possible_views"))
     views = request.args
     #views = ["create_producer_message", 'segments', 'create_pledge', 'thank_yous', 'totals']
-    overlays = ["create_producer_message"]
+    overlays = ["create_producer_message","edit_producer_messages","delete_producer_messages","edit_pledges"]
     return dict(views=views, overlays = overlays)
 
 @cache(request.env.path_info, time_expire=3, cache_model=cache.ram)
@@ -301,6 +301,19 @@ def post_mark_as_read():
     # print row
     return None
 
+def edit_producer_messages():
+    """
+    Docstring here.
+    """
+    redirect(URL(r=request,c='default',f='post_list',args=session.organization['id']))
+    return dict()
+
+def delete_producer_messages():
+    """
+    Docstring here.
+    """
+    redirect(URL(r=request,c='default',f='delete_posts_by_organization',args=session.organization['id']))
+    return dict()
 
 def producers_posts():
     messages=db(db.post.organization==session.organization['id']).select(orderby=~db.post.created_on)
@@ -311,6 +324,13 @@ def pledge_mark_as_read():
         return None
     db(db.pledge.id == request.args(0)).update(read=True)
     return None
+
+def edit_pledges():
+    """
+    Docstring here.
+    """
+    redirect(URL(r=request,c='default',f='list_pledges_by_segment',args=session.segment['id']))
+    return dict()
 
 
 def segment_navigation():
