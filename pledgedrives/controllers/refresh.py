@@ -144,10 +144,18 @@ def producers_posts():
     return dict(messages = messages, prettydate = prettydate)
 
 def read_message():
+    #We also need to check if this item is part of this segment... don't want people to rendomly delete posts do we?
+    if not request.args(0):
+        return None
+    db(db.post.id == request.args(0)).update(read=True)
+    return "Processing..."
+
+def read_pledge():
+    #We also need to check if this item is part of this segment... don't want people to rendomly delete posts do we?
     if not request.args(0):
         return None
     db(db.pledge.id == request.args(0)).update(read=True)
-    return None
+    return "Processing..."
 
 @cache(request.env.path_info, time_expire=3, cache_model=cache.ram)
 def segment_goal():

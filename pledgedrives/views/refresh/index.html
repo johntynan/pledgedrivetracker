@@ -29,6 +29,18 @@
 		refreshing_widgets = Array();
 	}
 	setInterval(refresher,5000);
+	$(".producer_message")
+		.live("click", function(){
+			var location = "{{=URL('read_message')}}/" + $(this).data('id');
+			$(this).load(location);
+			return false;
+		});
+	$(".pledge_message")
+		.live("click", function(){
+			var location = "{{=URL('read_pledge')}}/" + $(this).data('id');
+			$(this).load(location);
+			return false;
+		});
 	});
 </script>
 

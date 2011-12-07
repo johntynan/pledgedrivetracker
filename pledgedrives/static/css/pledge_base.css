@@ -114,3 +114,8 @@ h1 {
 .even {
     background-color: white;
 } 
+#post_list div , #pledge_list div{
+	overflow:auto;
+	height:160px;
+	width:100%;
+}
