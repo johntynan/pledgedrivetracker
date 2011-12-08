@@ -5,7 +5,7 @@
 {{for h,item in enumerate(posts):}}
 	<tr class="{{='odd' if h%2 else 'even'}}">
 		<td>{{=item['body']}}</td>
-		<td><a class="producer_message" data-id="{{=item.id}}" href="#">Mark as Read</a></td>
+		<td><a class="producer_message" data-id="{{=item.id}}" href="#">Hide</a></td>
 		<td><span style="align:right"><small>{{=item['created_on']}}</small></span></td>
 	</tr>
 {{pass}}

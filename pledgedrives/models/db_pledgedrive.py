@@ -166,7 +166,8 @@ db.define_table('pledge',
     Field('organization',db.organization,default=session.organization_id,readable=False,writable=False),
     Field('created_by',default=me,writable=False,readable=False),
     Field('created_on','datetime',default=request.now,writable=False,readable=False),
-    Field('read', 'boolean',default=False, readable=False, writable=False)
+    # Field('read', 'boolean',default=False, readable=False, writable=False)
+    Field('read', 'boolean',default=False)
 )
 #Validate:
 #On Insert: that segment has this pledgedrive; that pledgedrive shares this organization; validate that user is in group for organization, else deny;
@@ -185,7 +186,8 @@ db.define_table('post',
     Field('organization',db.organization,default=session.organization_id,readable=False,writable=False),
     Field('created_by',default=me,writable=False,readable=False),
     Field('created_on','datetime',default=request.now,writable=False,readable=False),
-    Field('read', 'boolean',default=False, readable=False, writable=False)
+    # Field('read', 'boolean',default=False, readable=False, writable=False)
+    Field('read', 'boolean',default=False)
     #should this also have an item for pledgedrive? #If an organization will have more that one pledgedrive them most certainly yes.
     )
 #Validate:
