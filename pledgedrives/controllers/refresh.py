@@ -12,7 +12,7 @@ def index():
         redirect(URL('refresh', "possible_views"))
     views = request.args
     #views = ["create_producer_message", 'segments', 'create_pledge', 'thank_yous', 'totals']
-    overlays = ["create_producer_message","edit_producer_messages","delete_producer_messages","edit_pledges"]
+    overlays = ["create_producer_message"]
     return dict(views=views, overlays = overlays)
 
 @cache(request.env.path_info, time_expire=3, cache_model=cache.ram)
@@ -82,6 +82,17 @@ def pledge_list():
     pledges=db((db.pledge.segment==segment_id) & (db.pledge.read != True)).select()
     # return dict(pledges = pledges)
     # This seems to resolve the error with GAE:
+    for row in pledges.sort(lambda row: row.created_on,reverse=True):
+        sorted_pledges.append(row)
+    return response.render(dict(pledges=sorted_pledges))
+
+@cache(request.env.path_info, time_expire=3, cache_model=cache.ram)
+def pledge_list_all():
+    #Get the thank you list...
+    sorted_pledges = []
+    segment_id=session.segment['id']
+    segment=db.segment[segment_id] or redirect(error_page)
+    pledges=db(db.pledge.segment==segment_id).select()
     for row in pledges.sort(lambda row: row.created_on,reverse=True):
         sorted_pledges.append(row)
     return response.render(dict(pledges=sorted_pledges))
