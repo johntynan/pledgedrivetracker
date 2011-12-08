@@ -309,18 +309,27 @@ def post_mark_as_read():
     # print row
     return None
 
+@cache(request.env.path_info, time_expire=3, cache_model=cache.ram)
 def edit_producer_messages():
     """
     Docstring here.
     """
-    redirect(URL(r=request,c='default',f='post_list',args=session.organization['id']))
-    return dict()
+    sorted_posts = []
+
+    posts=db(db.post.organization==session.organization['id']).select()
+
+    for row in posts.sort(lambda row: row.created_on,reverse=True):
+        sorted_posts.append(row)
+
+    return response.render(dict(posts=sorted_posts))
+    # return response.render(dict(posts=posts))
+    # return dict(posts=posts)
 
 def delete_producer_messages():
     """
     Docstring here.
     """
-    redirect(URL(r=request,c='default',f='delete_posts_by_organization',args=session.organization['id']))
+    # redirect(URL(r=request,c='default',f='delete_posts_by_organization',args=session.organization['id']))
     return dict()
 
 def producers_posts():
@@ -337,9 +346,14 @@ def edit_pledges():
     """
     Docstring here.
     """
-    redirect(URL(r=request,c='default',f='list_pledges_by_segment',args=session.segment['id']))
-    return dict()
+    sorted_pledges = []
 
+    pledges=db(db.pledge.segment==session.segment['id']).select()
+
+    for row in pledges.sort(lambda row: row.created_on,reverse=True):
+        sorted_pledges.append(row)
+
+    return response.render(dict(pledges=sorted_pledges))
 
 def segment_navigation():
     """

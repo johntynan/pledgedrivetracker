@@ -1,5 +1,14 @@
-<script type="text/javascript">
-<!--
-// window.location = "{{=URL(r=request,c='default',f='list_pledges_by_segment',args=session.segment['id']))}}"
-//-->
-</script>
+<h2>Edit Pledges</h2>
+
+<div style="height:250px;overflow: auto;">
+<table style="width:100%">
+    {{for h,item in enumerate(pledges):}}
+	<tr class="{{='odd' if h%2 else 'even'}}">
+		<td>{{=item['name']}}</td>
+		<td>{{=item['amount']}}</td>
+		<td>{{=item['comment']}}</td>
+        <td><a href="{{=URL(r=request,c='default',f='edit_pledge',args=item.id)}}">Edit</a></td>
+	</tr>
+    {{pass}}
+</table>
+</div>
