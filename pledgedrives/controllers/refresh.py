@@ -13,6 +13,13 @@ def index():
     views = request.args
     #views = ["create_producer_message", 'segments', 'create_pledge', 'thank_yous', 'totals']
     overlays = ["create_producer_message"]
+
+    segments=db(db.segment.pledgedrive==session.pledgedrive_id).select(orderby=db.segment.start_time)    
+    segment_id = session.segment_id
+    segment = db(db.segment.id==segment_id).select()
+    session.segment = segment.as_list()[0]
+    session.segment_id = segment.as_list()[0]['id']
+
     return dict(views=views, overlays = overlays)
 
 @cache(request.env.path_info, time_expire=3, cache_model=cache.ram)
