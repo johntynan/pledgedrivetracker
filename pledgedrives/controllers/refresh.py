@@ -14,6 +14,7 @@ def index():
     #views = ["create_producer_message", 'segments', 'create_pledge', 'thank_yous', 'totals']
     overlays = ["create_producer_message"]
 
+    # set segment information (to allow for segment_navigation to work)
     segments=db(db.segment.pledgedrive==session.pledgedrive_id).select(orderby=db.segment.start_time)    
     segment_id = session.segment_id
     segment = db(db.segment.id==segment_id).select()
