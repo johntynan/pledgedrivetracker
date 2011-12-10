@@ -24,11 +24,11 @@
 	function refresher()
 	{
 		for (i in refreshing_widgets){
-			$("#"+refreshing_widgets[i]).load("/pledgedrives/refresh/" + refreshing_widgets[i] + ".html");
+			$("#"+refreshing_widgets[i]).load("/{{=request.application}}/refresh/" + refreshing_widgets[i] + ".html");
 			}
 		refreshing_widgets = Array();
 	}
-	setInterval(refresher,5000);
+	setInterval(refresher,10000);
 	$(".producer_message")
 		.live("click", function(){
 			var location = "{{=URL('read_message')}}/" + $(this).data('id');
@@ -45,7 +45,7 @@
 </script>
 <script type="text/javascript">
 <!--
-// clear flash div on load
+// Give "amount" form field focus onload
 jQuery(".flash").html("").slideDown().delay(1000).slideUp();
 //-->
 </script>

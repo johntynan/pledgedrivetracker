@@ -18,8 +18,8 @@ $(document).ready(function(){
 </script>
 
 <div>
-<button onclick="document.location='/pledgedrives/refresh/index/segment_goal/segment_totals/pledgedrive_totals/pledge_list/segment_challenge/post_list/'">On-air Screen</button>
-<button onclick="document.location='/pledgedrives/refresh/index/segment_goal/segment_totals/pledgedrive_totals/post_list/pledge_list_all/create_pledge/'">Pledge Entry</button>
+<button onclick="document.location='{{=URL('refresh', 'index/segment_goal/segment_totals/pledgedrive_totals/pledge_list/segment_challenge/post_list/')}}'">On-air Screen</button>
+<button onclick="document.location='{{=URL('refresh', 'index/segment_goal/segment_totals/pledgedrive_totals/post_list/pledge_list/create_pledge/')}}'">Pledge Entry</button>
 <!-- {{=button('On-air Screen','frame_wrapper_onair.html')}}
 {{=button('Pledge Entry','frame_wrapper_pledge_entry.html')}} -->
 <button onclick="jQuery('div.reports,div#_reports').slideToggle();">Reports</button>
