@@ -26,13 +26,15 @@
 	<div id="container">
 		<div id="wrapper" style="width:95%">
 		{{try:}}{{=auth.navbar(action=URL('default','user'))}}{{except:pass}}
-			<div id="header">
+            <!-- {{=response.title}} -->
+            <!-- div id="header">
 				{{block header}}
-				<h1>
-					<span id="appname"><a href="/{{=request.application}}">{{=response.title}}</a></span>
-				</h1>
+				<h2>
+					<span id="appname"><a href="/{{=request.application}}">Pledge Drive Tracker</a></span>
+				</h2>
+                <span>{{=response.subtitle}}</span>
 				{{end}}
-			</div>
+			</div -->
 			<div id="statusbar">
 				{{block statusbar}}
 				{{end}}

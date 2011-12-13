@@ -45,15 +45,29 @@
 </script>
 <script type="text/javascript">
 <!--
-// Give "amount" form field focus onload
+// clear flash div on load
 jQuery(".flash").html("").slideDown().delay(1000).slideUp();
 //-->
 </script>
 
-{{block header}}
-<div style="font-size: 1.5em;" align="center">
-<iframe src="/pledgedrives/refresh/segment_navigation" width="45%" style="float:right">
-</iframe>
+{{for overlay in overlays:}}
+<div id="{{=overlay}}" class="overlay">
+	<a href="#" title="Close" class="close">X</a>
+	{{=LOAD('refresh', overlay, ajax=True)}}
+</div>
+{{pass}}
+<div> <!--  class="toolbar" -->
+<!-- {{for overlay in overlays:}}
+	<button class="overlay_button" data-overlay="{{=overlay}}">{{=overlay}}</button>
+{{pass}} -->
+    <button onclick="document.location='{{="/"+request.application+"/"}}'">Home</button>
+    <button onclick="document.location='{{="/"+request.application+"/"}}';jQuery('div.reports,div#_reports').slideToggle();">Reports</button>
+    <button onclick="document.location='{{="/"+request.application+"/"}}';jQuery('div.setup,div#_setup').slideToggle();">Setup</button>
+    <button onclick="return popup('{{=response.helpurl}}')">Help</A>
+</div>
+
+
+<div class="row">
 
 {{if not session.organization:}}
     {{redirect(URL(r=request, c='default'))}}
@@ -62,28 +76,28 @@ jQuery(".flash").html("").slideDown().delay(1000).slideUp();
 {{elif not session.segment:}}
     {{redirect(URL(r=request, c='default'))}}
 {{else:}}
-<a href="{{="/"+request.application+"/"}}">Home</a>  | 
-{{=session.organization['name']}} : <span style="color: red">{{=session.organization['phone']}} / {{=session.organization['phone_long_distance']}}</span> or on the web at <span style="color: blue">{{=session.organization['url']}}</span>
+
+<div class="widget shadow" style="font-size: 1.5em;">
+<h3>{{=session.organization['name']}}</h3>
+<span style="color: red">{{=session.organization['phone']}} <br />
+{{=session.organization['phone_long_distance']}}</span> <br />
+or on the web at <span style="color: blue">{{=session.organization['url']}}</span>
+</div>
+
+<div id="create_producer_message" class="widget shadow">
+    {{=LOAD('refresh', 'create_producer_message', ajax=True)}}
+</div>
+
+<div class="widget shadow">
+<iframe src="{{=URL('refresh', 'segment_navigation')}}" width="100%">
+</iframe>
+</div>
+
 {{pass}}
 
-{{if response.helpurl:}}
-| <A HREF={{=response.helpurl}} OnClick="return popup('{{=response.helpurl}}')">Help</A>
-{{pass}}
 
-</div>
-{{end}}
+<br clear="all"/>
 
-{{for overlay in overlays:}}
-<div id="{{=overlay}}" class="overlay">
-	<a href="#" title="Close" class="close">X</a>
-	{{=LOAD('refresh', overlay, ajax=True)}}
-</div>
-{{pass}}
-<div class="toolbar">
-{{for overlay in overlays:}}
-	<button class="overlay_button" data-overlay="{{=overlay}}">{{=overlay}}</button>
-{{pass}}
-</div>
 <div class="row">
 {{for widget in views:}}
 	<div id="{{=widget}}" class="widget shadow">
