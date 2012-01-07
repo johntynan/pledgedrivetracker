@@ -143,21 +143,13 @@
     
     <div id="footer">
       {{block footer}} <!-- this is default footer -->
-      <a href="http://www.web2py.com/" style="float: left; padding-right: 6px;">
-        <img src="{{=URL('static','images/poweredby.png')}}"/>
-      </a>
-      {{=T('Copyright')}} &#169; 2011               
+      {{=T('Copyright')}} &#169; 2011
       <div style="clear: both;"></div><!-- Clear the divs -->
       {{end}}
 
     </div><!-- footer -->           
       </div><!-- wrapper -->
     </div><!-- container -->        
-    
-    <!--[if lt IE 7 ]>
-    <script src="{{=URL('static','js/dd_belatedpng.js')}}"></script>
-    <script> DD_belatedPNG.fix('img, .png_bg'); //fix any <img> or .png_bg background-images </script>
-    <![endif]-->
     {{if response.google_analytics_id:}}<script>/* http://mathiasbynens.be/notes/async-analytics-snippet */ var _gaq=[['_setAccount','{{=response.google_analyitics_id}}'],['_trackPageview']];(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.src='//www.google-analytics.com/ga.js';s.parentNode.insertBefore(g,s)}(document,'script')) </script>{{pass}}
   </body>
 </html>
