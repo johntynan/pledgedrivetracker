@@ -3,10 +3,10 @@
   <head>
     <title>{{=response.title or request.application}}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />     
-    {{response.files.append(URL(request.application,'static','base.css'))}}
+    {{response.files.append(URL(request.application,'static','css/base.css'))}}
     {{include 'web2py_ajax.html'}}
   </head>
-  <body>
+  <body style="height:2000px;width:2000px;background:#FFFFFF;">
   <!-- {{='/'.join(['',request.application,request.controller,request.function]+request.args)}} -->
 
   {{include}}

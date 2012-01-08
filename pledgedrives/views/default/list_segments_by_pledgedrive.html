@@ -1,10 +1,13 @@
-{{response.files.append(URL(r=request,c='static',f='jquery.dataTables.min.js'))}}
-{{response.files.append(URL(r=request,c='static',f='demo_table.css'))}}
+{{response.files.append(URL(r=request,c='static',f='js/jquery.dataTables.min.js'))}}
+{{response.files.append(URL(r=request,c='static',f='css/demo_table.css'))}}
 {{extend 'layout.html'}}
 
 <script type="text/javascript" charset="utf-8">
 $(document).ready(function() {
-    jQuery('.smarttable').dataTable();
+    jQuery('.smarttable').dataTable({
+        "iDisplayLength": 100,
+        "aaSorting": []
+    });
 } );
 </script>
 
@@ -12,8 +15,10 @@ $(document).ready(function() {
 
 <button onclick="document.location='{{=URL(r=request,f='create_segment',args=pledgedrive.id)}}'">Create a New segment</button>
 
+<div>
 <table class="smarttable">
 <thead>
+<tr>
     <th>Title</th>
     <th>start_time</th>
     <th>end_time</th>
@@ -21,8 +26,8 @@ $(document).ready(function() {
     <th>goal</th>
     <th>goal_type</th>
     <th>program</th>
-    <th>challenge</th>
     <th>Actions</th>
+</tr>
 </thead>
 <tbody>
 {{for segment in segments:}}
@@ -34,11 +39,12 @@ $(document).ready(function() {
     <td>{{=segment.goal}}</td>
     <td>{{=segment.goal_type}}</td> 
     <td>{{=segment.program}}</td>
-    <td>{{=segment.challenge}}</td>    
     <td>
+    <a href="{{=URL(r=request,f='view_segment',args=segment.id)}}">View</a> | 
     <a href="{{=URL(r=request,f='edit_segment',args=segment.id)}}">Edit</a>
     </td>
 </tr>
 {{pass}}
 </tbody>
 </table>
+</div>

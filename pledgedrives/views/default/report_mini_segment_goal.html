@@ -1,3 +1,14 @@
 {{extend 'layout.html'}}
-<h1>This is the default/report_mini_segment_goal.html template</h1>
-{{=BEAUTIFY(response._vars)}}
+
+<div style="background-color:white;">
+
+<script>
+jQuery(document).ready(function(){
+    jQuery("#content").load("/pledgedrives/default/mini_segment_goal");
+});
+</script>
+
+<div id="content" style="background-color: skyblue;">
+</div>
+
+</div>

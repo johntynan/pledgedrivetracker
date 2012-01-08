@@ -1,0 +1,18 @@
+{{extend 'layout.html'}}
+
+<div id="content" style="background-color:white;">
+
+<h1>Segment Report</h1>
+
+<table border="1">
+<tr>
+<th>Date</th><th>Title</th><th>Goal Type</th><th>Goal</th><th>Total Pledges</th><th>Total Dollars</th>
+</tr>
+{{for i in converted_list:}}
+<tr>
+<td>{{=i[0]}}</td><td>{{=i[1]}}</td><td>{{=i[2]}}</td><td>{{=i[3]}}</td><td>{{=i[4]}}</td><td>{{=i[5]}}</td>
+</tr>
+{{pass}}
+</table>
+
+</div>

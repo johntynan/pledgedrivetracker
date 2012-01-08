@@ -10,6 +10,7 @@ import datetime
 import copy
 import gluon.contenttype
 import gluon.fileutils
+import StringIO
 
 # ## critical --- make a copy of the environment
 
@@ -299,4 +300,31 @@ def update():
 def state():
     return dict()
 
+
+# ##########################################################
+# ## export, import_and_sync
+# ###########################################################
+
+
+def export():
+    s = StringIO.StringIO()
+    db.export_to_csv_file(s)
+    response.headers['Content-Type'] = 'text/csv'
+    return s.getvalue()
+
+def import_and_sync():
+    form = FORM(INPUT(_type='file', _name='data'), INPUT(_type='submit'))
+    if form.accepts(request.vars):
+        db.import_from_csv_file(form.vars.data.file,unique=False)
+        # for every table
+        for table in db.tables:
+            # for every uuid, delete all but the latest
+            items = db(db[table].id>0).select(db[table].id,
+                       db[table].uuid,
+                       orderby=db[table].modified_on,
+                       groupby=db[table].uuid)
+            for item in items:
+                db((db[table].uuid==item.uuid)&\
+                   (db[table].id!=item.id)).delete()
+    return dict(form=form)
 

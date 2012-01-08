@@ -1,0 +1,19 @@
+<h1>Segments</h1>
+<ul>
+	{{for segment in segments:}}
+	<li class="segment">
+		{{=segment.title}} : {{=segment.start_time}}
+		<div class="details">
+			{{=segment.end_time}}<br />
+			{{=segment.description}}<br />
+			{{=segment.goal}}<br />
+			{{=segment.program}}<br />
+			{{=segment.pledgedrive}}<br />
+			{{=segment.organization}}<br />
+		</div>
+	</li>
+	{{pass}}
+</ul>
+<script type="text/javascript">
+refreshing_widgets.push("segments");
+</script>

@@ -1,0 +1,17 @@
+<h2>Producer Messages</h2>
+
+<div style="overflow:auto;height:150px;width:100%">
+<table style="width:100%">
+{{for h,item in enumerate(posts):}}
+	<tr class="{{='odd' if h%2 else 'even'}}">
+		<td>{{=item['body']}}</td>
+		<td><a class="producer_message" data-id="{{=item.id}}" href="#">Hide</a></td>
+		<td><span style="align:right"><small>{{=item['created_on']}}</small></span></td>
+	</tr>
+{{pass}}
+</table>
+</div>
+
+<script type="text/javascript">
+refreshing_widgets.push("post_list");
+</script>

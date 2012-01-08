@@ -1,0 +1,28 @@
+{{extend 'layout.html'}}
+
+<div id="content" style="background-color:white;">
+
+<h2>Single Segment Report</h2>
+{{=form}}
+</br>
+<h1>{{=program_title}}</h1>
+<h2>{{=segment.start_time}} to {{=segment.end_time}}</h2>
+<h2>Pledges / Dollars for Program</h2>
+<table border="1">
+<tr>
+<th>Pledge Number</th><th>Amount</th><th>Donor</th><th>Comment</th>
+</tr>
+{{for ct, i in enumerate(pledge_list):}}
+<tr>
+<td>{{=ct+1}}</td><td>{{=i['amount']}}</td><td>{{=i['name']}}</td><td>{{=i['comment']}}</td>
+</tr>
+{{pass}}
+</table>
+<h2>Total Pledges: {{=segment_total_pledges}}</h2>
+<h2>Total Dollars: ${{=segment_total_dollars}}</h2>
+{{if segment_total_pledges > 0:}}
+<h2>Average Pledge Amount: {{=segment_total_dollars/segment_total_pledges}}</h2>
+{{else:}}
+<h2>Average Pledge Amount: $0</h2>
+{{pass}}
+</div>
