@@ -56,14 +56,16 @@ jQuery(".flash").html("").slideDown().delay(1000).slideUp();
 	{{=LOAD('refresh', overlay, ajax=True)}}
 </div>
 {{pass}}
-<div> <!--  class="toolbar" -->
-<!-- {{for overlay in overlays:}}
-	<button class="overlay_button" data-overlay="{{=overlay}}">{{=overlay}}</button>
-{{pass}} -->
+<div class="toolbar">
     <button onclick="document.location='{{="/"+request.application+"/"}}'">Home</button>
     <button onclick="document.location='{{="/"+request.application+"/"}}';jQuery('div.reports,div#_reports').slideToggle();">Reports</button>
     <button onclick="document.location='{{="/"+request.application+"/"}}';jQuery('div.setup,div#_setup').slideToggle();">Setup</button>
     <button onclick="return popup('{{=response.helpurl}}')">Help</A>
+</div>
+<div class="toolbar">
+{{for overlay in overlays:}}
+	<a class="overlay_button" data-overlay="{{=overlay}}">{{=overlay}}</a>
+{{pass}}
 </div>
 
 

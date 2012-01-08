@@ -3,19 +3,9 @@
 {{=form_producer_message}}
 
 <script type="text/javascript">
-<!--
 // Hide "read" checkbox
-var form_element = document.getElementById('post_read');
-var visibility = form_element.style;
-visibility.display = 'none';
-
-// Hide label for "read" checkbox
-var form_element = document.getElementById('post_read__label');
-var visibility = form_element.style;
-visibility.display = 'none';
-
-// Close overlay when form is submitted
-// $(this).parent().hide();
-
-//-->
+$('#post_read').parent().parent().hide()
+//close form when submitted...
+$("#create_producer_message form").submit(function () {
+	$("#create_producer_message").hide()});
 </script>
