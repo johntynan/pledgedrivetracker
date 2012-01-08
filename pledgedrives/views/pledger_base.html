@@ -2,7 +2,7 @@
 <html lang="{{=T.accepted_language or 'en'}}">
 <head>
 	<meta charset="utf-8" />
-    {{response.files.append(URL(request.application,'static','css/base.css'))}}
+	{{response.files.append(URL(request.application,'static','css/base.css'))}}
 	{{response.files.append(URL(request.application,'static','css/pledge_base.css'))}}
 	{{include 'web2py_ajax.html'}}
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -24,15 +24,15 @@
 		{{=response.flash or ''}}
 	</div>
 	<div id="container">
-		<div id="wrapper" style="width:95%">
+		<div id="wrapper">
 		{{try:}}{{=auth.navbar(action=URL('default','user'))}}{{except:pass}}
-            <!-- {{=response.title}} -->
-            <!-- div id="header">
+			<!-- {{=response.title}} -->
+			<!-- div id="header">
 				{{block header}}
 				<h2>
 					<span id="appname"><a href="/{{=request.application}}">Pledge Drive Tracker</a></span>
 				</h2>
-                <span>{{=response.subtitle}}</span>
+				<span>{{=response.subtitle}}</span>
 				{{end}}
 			</div -->
 			<div id="statusbar">
