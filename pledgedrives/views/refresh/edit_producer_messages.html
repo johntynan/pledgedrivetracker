@@ -1,0 +1,13 @@
+<h2>Producer Messages</h2>
+
+<div style="width:350px;height:250px;overflow: auto;">
+<table>
+{{for h,i in enumerate(posts):}}
+<tr class="{{='odd' if h%2 else 'even'}}">
+    <td>{{=i['body']}}</td>
+    <td><a href="{{=URL(r=request,c='default',f='post_edit',args=i.id)}}">Edit</a></td>
+    <td><span style="align:right"><small>{{=i['created_on']}}</small></span></td>
+</tr>
+{{pass}}
+</table>
+</div>

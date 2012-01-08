@@ -1,5 +1,5 @@
-{{response.files.append(URL(r=request,c='static',f='jquery.dataTables.min.js'))}}
-{{response.files.append(URL(r=request,c='static',f='demo_table.css'))}}
+{{response.files.append(URL(r=request,c='static',f='js/jquery.dataTables.min.js'))}}
+{{response.files.append(URL(r=request,c='static',f='css/demo_table.css'))}}
 {{extend 'layout.html'}}
 
 <script type="text/javascript" charset="utf-8">
@@ -12,18 +12,22 @@ $(document).ready(function() {
 
 <button onclick="document.location='{{=URL(r=request,f='create_pledge',args=segment_id)}}'">Create a New Pledge</button>
 
+<div>
 <table class="smarttable">
 <thead>
+<tr>
     <th>Amount</th>
     <th>Name</th>
+    <th>Time Created</th>
     <th>Actions</th>
+</tr>
 </thead>
 <tbody>
 {{for pledge in pledges:}}
 <tr>
     <td>{{=pledge.amount}}</td>    
     <td>{{=pledge.name}}</td>    
-
+    <td>{{=pledge.created_on}}</td>
     <td>
     <a href="{{=URL(r=request,f='edit_pledge',args=pledge.id)}}">Edit</a>
     </td>
@@ -31,3 +35,4 @@ $(document).ready(function() {
 {{pass}}
 </tbody>
 </table>
+</div>

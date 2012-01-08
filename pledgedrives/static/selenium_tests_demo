@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://localhost:8088/pledgedrives/" />
+<title>selenium_tests_demo</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">selenium_tests_demo</td></tr>
+</thead><tbody>
+<tr>
+	<td>click</td>
+	<td>//button[@onclick=&quot;jQuery('div.reports,div#_reports').slideToggle();&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/pledgedrives/default/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Segment Report</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Pledge Drive Tracker Demo</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//button[@onclick=&quot;jQuery('div.reports,div#_reports').slideToggle();&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Single Segment Report</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Pledge Drive Tracker Demo</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//button[@onclick=&quot;jQuery('div.reports,div#_reports').slideToggle();&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Pledge Levels Report</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Pledge Drive Tracker Demo</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//button[@onclick=&quot;jQuery('div.reports,div#_reports').slideToggle();&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Day Totals Report</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Pledge Drive Tracker Demo</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//button[@onclick=&quot;jQuery('div.reports,div#_reports').slideToggle();&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Drive Totals (detailed)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Pledge Drive Tracker Demo</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//button[@onclick=&quot;jQuery('div.reports,div#_reports').slideToggle();&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Drive Totals (summary)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Pledge Drive Tracker Demo</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=List Organizations</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/pledgedrives/default/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=View Currently Selected Organization</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/pledgedrives/default/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Edit Selected Organization</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/pledgedrives/default/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=List Programs</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/pledgedrives/default/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Add a New Program</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/pledgedrives/default/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=List Persons</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/pledgedrives/default/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Add a New Person</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/pledgedrives/default/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=List Pledge Drives</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/pledgedrives/default/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Add a New Pledge Drive</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/pledgedrives/default/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=View Currently Selected Pledge Drive</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//a[contains(@href, '/pledgedrives/default/edit_pledgedrive/')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/pledgedrives/default/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=List Challenges for Current Pledge Drive</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//a[contains(@href, '/pledgedrives/default/edit_challenge/')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/pledgedrives/default/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Add Challenge to Current Pledge Drive</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/pledgedrives/default/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=List Segments for Current Pledge Drive</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//a[contains(@href, '/pledgedrives/default/edit_segment/')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/pledgedrives/default/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Add Segment to Current Pledge Drive</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/pledgedrives/default/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=List Pledges for Current Pledge Drive</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/pledgedrives/default/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=List Pledges for Current Segment</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/pledgedrives/default/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Add Pledge to Current Segment</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/pledgedrives/default/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Pledge Drive Tracker Demo</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=List Pledges for Current Segment</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Pledge Drive Tracker Demo</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//button[@onclick=&quot;jQuery('div.setup,div#_setup').slideToggle();&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=List Pledges for Current Segment</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Pledge Drive Tracker Demo</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//button[@onclick=&quot;jQuery('div.setup,div#_setup').slideToggle();&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=List Producer Messages</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Pledge Drive Tracker Demo</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//button[@onclick=&quot;jQuery('div.reports,div#_reports').slideToggle();&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Pledge Drive Tracker Demo</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Segment Report</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Pledge Drive Tracker Demo</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//button[@onclick=&quot;jQuery('div.reports,div#_reports').slideToggle();&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Drive Totals (detailed)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Pledge Drive Tracker Demo</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//button[@onclick=&quot;jQuery('div.reports,div#_reports').slideToggle();&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Pledge Drive Tracker Demo</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Drive Totals (summary)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Pledge Drive Tracker Demo</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//button[@onclick=&quot;document.location='/pledgedrives/default/frame_wrapper_pledge_entry.html'&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Home</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Pledge Drive Tracker Demo</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//button[@onclick=&quot;document.location='/pledgedrives/default/frame_wrapper_onair.html'&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Home</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

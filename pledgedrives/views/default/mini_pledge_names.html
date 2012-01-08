@@ -1,0 +1,20 @@
+{{extend 'layout_plain.html'}}
+
+<META HTTP-EQUIV="Refresh" Content="5; URL=mini_pledge_names.html">
+
+<div class="frame_content">
+
+<h2>Thank You Names</h2>
+
+<table border="1">
+<tr>
+<th>Name</th><th>Amount</th><th>Comment</th>
+</tr>
+{{for h,i in enumerate(pledges):}}
+<tr class="{{='odd' if h%2 else 'even'}}">
+    <td>{{=i['name']}}</td><td>{{=i['amount']}}</td><td>{{=i['comment']}}</td>
+</tr>
+{{pass}}
+</table>
+
+</div>

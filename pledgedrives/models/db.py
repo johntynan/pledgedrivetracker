@@ -32,6 +32,9 @@ auth.define_tables()                         # creates all needed tables
 crud=Crud(globals(),db)                      # for CRUD helpers using auth
 service=Service(globals())                   # for json, xml, jsonrpc, xmlrpc, amfrpc
 
+# comment out the next line if allowing registrations (for demo app)
+# auth.settings.actions_disabled.append('register')
+
 # crud.settings.auth=auth                      # enforces authorization on crud
 # mail=Mail()                                  # mailer
 # mail.settings.server='smtp.gmail.com:587'    # your SMTP server

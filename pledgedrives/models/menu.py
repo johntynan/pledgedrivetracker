@@ -4,8 +4,19 @@
 ## Customize your APP title, subtitle and menus here
 #########################################################################
 
-response.title = request.application
-response.subtitle = T('customize me!')
+# response.title = request.application
+# response.title = T('Pledge Drive Tracker')
+response.title = T('Pledge Drive Tracker Demo')
+response.subtitle = T('Making Public Broadcasting Fund Drives More Efficient')
+response.author = 'John Tynan'
+
+# subscription app help file:
+# helphome = "http://pledgedrivetracker.appspot.com/pledgedrives/static/documentation/_build/html/"
+# demo app help file:
+helphome = "http://pledgedrivetrackerdemo.appspot.com/pledgedrives/static/documentation/_build/html/"
+helpdefault = "index.html"
+urls = {"frame_header_onair":"on_air_screen.html","frame_header_pledge_entry":"pledge_entry.html","create_program":"setup.html#programs"}
+
 
 ##########################################
 ## this is the authentication menu
@@ -13,6 +24,8 @@ response.subtitle = T('customize me!')
 ##########################################
 
 if 'auth' in globals():
+    # comment out for the following block of code if you are using the subscription app
+
     if not auth.is_logged_in():
        response.menu_auth = [
            [T('Login'), False, auth.settings.login_url,
@@ -24,7 +37,10 @@ if 'auth' in globals():
             ],
            ]
     else:
-        response.menu_auth = [
+
+    # comment out the following line if you are using the demo app
+    # if auth.is_logged_in():
+       response.menu_auth = [
             ['User: '+auth.user.first_name,False,None,
              [
                     [T('Logout'), False, 
@@ -40,6 +56,9 @@ if 'auth' in globals():
 ## this is the main application menu
 ## add/remove items as required
 ##########################################
+response.helpurl = helphome + helpdefault
+if urls.has_key(str(request.function)):
+    response.helpurl = helphome + urls[str(request.function)] 
 
 response.menu = [
     [T('Index'), False, 
@@ -51,7 +70,7 @@ response.menu = [
 ## this is here to provide shortcuts
 ## during development. remove in production 
 ##########################################
-
+'''
 response.menu_edit=[
   [T('Edit'), False, URL('admin', 'default', 'design/%s' % request.application),
    [
@@ -78,3 +97,4 @@ response.menu_edit=[
             ]
    ],
   ]
+'''

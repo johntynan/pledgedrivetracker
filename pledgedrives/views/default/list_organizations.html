@@ -1,22 +1,44 @@
-{{response.files.append(URL(r=request,c='static',f='jquery.dataTables.min.js'))}}
-{{response.files.append(URL(r=request,c='static',f='demo_table.css'))}}
+{{response.files.append(URL(r=request,c='static',f='js/jquery.dataTables.min.js'))}}
+{{response.files.append(URL(r=request,c='static',f='css/demo_table.css'))}}
 {{extend 'layout.html'}}
 
-<table id="list_organizations">
-<th>Organization</th>
-<th>Url</th>
-<th>Address</th>
-<th>Phone</th>
-<th>Actions</th>
+<script type="text/javascript" charset="utf-8">
+$(document).ready(function() {
+    jQuery('.smarttable').dataTable({
+        "iDisplayLength": 100,
+        "aaSorting": []
+    });
+} );
+</script>
+
+<div>
+<table class="smarttable" id="list_organizations">
+<thead>
+<tr>
+    <th>Organization</th>
+    <th>Url</th>
+    <th>Address</th>
+    <th>Phone</th>
+    <th>Phone Long Distance</th>
+    <th>Actions</th>
+</tr>
+</thead>
+<tbody>
 {{for organization in organizations:}}
 <tr>
     <td><a href="{{=URL(r=request,f='view_organization',args=organization.id)}}">{{=organization.name}}</a></td>
     <td>{{=organization.url}}</td>
     <td>{{=organization.address}}</td>
     <td>{{=organization.phone}}</td>
-    <td><a href="{{=URL(r=request,f='view_organization',args=organization.id)}}">View Organization</a> |
-    <a href="{{=URL(r=request,f='edit_organization',args=organization.id)}}">Edit Organization</a> |<br />
+    <td>{{=organization.phone_long_distance}}</td>
+    <td>    <a href="{{=URL(r=request,f='edit_organization',args=organization.id)}}">Edit Organization</a>
     </td>
 </tr>
 {{pass}}
+</tbody>
 </table>
+</div>
+
+<!-- 
+{{=BEAUTIFY(session)}}
+ -->

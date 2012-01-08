@@ -1,0 +1,110 @@
+Setting Up a Pledge Drive
+============================
+
+As you begin setting up your pledge drive, you will be guided through the following screens.  The are presented here, in the order that you will encounter them in the Pledge Drive Tracker.
+
+Login
+------
+Enter the email address and password used to create your account.  Note: A single login can serve many organizations and each organization can have numerable pledge drives.
+
+Organization
+--------------
+
+This will most likely be your station's call letters.  Be sure to include your web address and your phone number (you may also want to include a long distance number) this will be displayed on the "On-air Screen" to remind announcers the options that listeners can use to make their pledges.
+
+You also have the option to select an exisiting organization (if one has already been entered).
+
+Once you have created (or selected) an organization, this is marked as the "Current Organization".  All all reports, all pledges, donors, everything will refer back to this organization.
+
+Pledge Drive
+---------------
+
+When creating a new pledge drive, it will be helpful to title this with the year and the season (or title) of the drive, such as "2010 Spring Drive"  It may also be helpful to know the start and end dates of the drive (drives will be sorted by their start date).
+
+The most important part of setting up a pledge drive is entering your goal for the drive.  This is expressed as the projected total pledges * average pledge = projected dollar goal.  Your pledge drive should be set up for success, so knowing the average dollar amount per pledge for your station, and figuring out how many pledges you are likely to receive, will help you to plan your overall goal, as well as your goals for individual segments.
+
+You also have the option to select an exisiting pledge drive (if one has already been entered).
+
+Once you have created (or selected) a pledge drive, this is marked as the "Current Pledge Drive".  All pledges entered, all reports, everything will refer back to this drive.
+
+
+Program(s)
+-----------
+
+Programs are the titles of shows that you carry regularly on your station.  You may have entered your programs into the Pledge Drive Tracker from a previous drive.  Please know that this only has to be done once.  A program is different from a segment in that a program can have multiple segments on the same day or on different days, or have segments extending across pledge drives.  Each program should only be entered into the Pledge Drive Tracker once; but each program can have multiple segements associated with it (see below).
+
+Prior to entering a Segment (see below), the Pledge Drive Tracker will prompt you to enter at least one program into the Pledge Drive Tracker.  During this initial setup, I recommend entering a program that may not be on your official, on-air program schedule, something like "Pre-drive Announcements" or "Web Announcements" this way, if you choose to import your program list (see below) you will not inadvertently create duplicates of this initial program.
+
+Note: if you have already entered at least program into the database from a previous session, when first logging into the Pledge Drive Tracker, you will not be prompted to complete this initial step again.  Although, you can always come back and enter as may programs into the Pledge Drive Tracker as you would like or are needed; there also is an option to import programs (see below).
+
+
+
+Import Program List
+---------------------
+
+Importing your programs will save you one small, mundane and slightly time consuming task.  To do this, prepare a list of your programs as a simple comma delimited list (no single or double quotes or linebreaks are necessary.  Under the setup option, you will notice the option to Import Program List.  Simply go to this page, paste your list of programs into the textarea, then submit the form.  In the right hand side of the page, you will receive a notification that your programs have been imported.  Please note: you only have to do this once.  The programs you have entered will then persist across numberable drives.
+
+
+Segment(s)
+------------
+
+Segment(s) are also commonly referred to has "Pledge Breaks" or "Pitches"  Some stations divide up a single hour into many segments, other stations' segments last an entire hour.  It is up to you to determine how to best utilize this feature.
+
+Segments are the centerpiece of the Pledge Drive Tracker.  As you use the program, you will see how important segments are to conducting a successful drive.
+
+When you first set up a segment, you'll be asked to enter the following information:
+
+    * Title: Try to describe a title in a way where it can be easily identified, like: "Fresh Air, Hour 1, Day One"
+
+    * Start Time: Segments are sorted by date/time.  Use the calendar to select the appropriate date for the segment.  Use time controls at the bottom of the calendar to set the time (shift click and drag to adjust the hour and minutes).  You can also type times in a text editor in the format: 2010-05-14 13:00:00 and paste these into the block.
+
+    * End Time: Segment end times are important when using the Quick Setup feature (see below).  End times may also become important in the future should we create planned widgets which could post the progress of your pledge drive on web sites, social networking sites, twitter updates, etc.
+
+    * Description (optional):  A description of the challenge should be placed here.  You may find it useful to use this space to print the language about the challenge, as it should be read on the air, as this information in this space will be displayed for announcers via the on-air screen.
+
+    * Talkingpoints (optional): This is also not displayed elsewhere in the program.  If you find this will be useful, please let me know, and we can figure out how to best display this to meet your needs.
+
+    * Goal: Goals can be expressed in terms of dollars or number of pledges.  Enter the dollar or pledge amount here.
+
+    * Goal Type: Goal types are either pledge or dollar goals.  Dollar goals can be thought of as "matching goals".  Goal Types are related to the corresponding Challenge for the segment.  If the Donor and your station's development professional decided that a Challenge would only be fulfilled if a certain number of pledges were attained, then you would set the goal type as Pledge.  If the Donor and your station's development professional decided that the Challenge should be a matching goal, that is, that any dollar pledged would be matched dollar for dollar, then you would set the goal type as Dollar.
+
+    * Program: Select the corresponding program.  This will be useful in the future in reporting on the number or pledges or total dollars raised for a particular program.
+
+    * Challenge: Select the appropriate challenge for the segment.
+
+
+
+Person(s) (Donors)
+--------------------
+Prior to entering a Challenge (see below), you need to have at least one person (Donor) entered into the Pledge Drive Tracker.  If you have already entered at least person into the database, when first logging into the program, this step will be skipped (although you can always come back and enter as may donors as you would like).
+
+A person is either a listener or a donor.  Donors are people who generously provide challenges to entice listeners to make pledges.
+
+Entering the name of donors into the program will help you to manage a donation within a single drive, or track a donor's contributions over time.
+
+At the moment, the person/listener distinction is not associated with any kind of special function within the program, but is here as a placeholder for use in the future (for example, if the functionality is put in place to make a distinction between donor's challenges and collective dollars from a "listener challenge pool" or perhaps for listeners to informally create challenges via widgets on social networks, or other instances as people suggest).
+
+Challenge(s)
+--------------
+
+Prior to entering a Segment (see below), you need to have at least one Challenge entered into the Pledge Drive Tracker.  If you have already entered at least challenge into the database, when first logging into the program, you will not be asked to complete this step (although you can always come back and enter as may challenges as you would like or are needed).
+
+When entering a challenge you will be asked to 
+    * identify the challenge with a Title, 
+    * associate this challenge with a Person, 
+    * enter the challenge Amount, briefly 
+    * Describe the challenge (or add any notes as needed), 
+    * specify the Condition under which the donor makes the challenge available to the station (Refundable, Non-refundable).  This will be important if a challenge "is not met", if the goal for the challenge falls short.
+    * Describe the State of the challenge (Pending, Achieved, Missed, Recycled).  This will be important in knowing if you have remaining challenges to be "recycled" associated with segments towards the end of a drive, in knowing if you need to contact a donor about a missed challenge, or knowing if you have remaining challenges to be assigned to a segment towards the end of a drive.
+
+Please note: the functionality of challenges have not been defined.  There is ample room to refine the way these work depending on the needs of your station and on the collective needs of users of the Pledge Drive Tracker.
+
+Quick Setup: Segments
+-----------------------
+
+To use the "Quick Setup" feature, click on the "Setup" feature, then click on the "Quick Setup: Segments" link.
+
+The "Quick Setup" feature allows you to make sequential copies of a single segment.  The Quick Setup feature allow you to set up placeholders for most of the segments for a single day in one click.  In order to use the Quick Setup, you'll need to have at least one segment entered the way you would like it in the Pledge Drive Tracker.  Note: quick setup takes the total duration of your "sample segment" and creates an identical segment immediately following, only with the start and end times shifted forward.
+
+
+
