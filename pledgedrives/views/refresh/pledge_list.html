@@ -1,4 +1,5 @@
 <h1>Thank you Messages</h1>
+<a href="{{=URL('default', 'all_pledges', args=session.segment_id)}}">Edit Pedges</a>
 <div style="overflow:auto;height:150px;width:100%">
 <table>
 	<tr>
@@ -7,14 +8,14 @@
 		<th>Comment</th>
 		<th>Action</th>
 	</tr>
-    {{for h,item in enumerate(pledges):}}
+	{{for h,item in enumerate(pledges):}}
 	<tr class="{{='odd' if h%2 else 'even'}}">
 		<td>{{=item['name']}}</td>
 		<td>{{=item['amount']}}</td>
 		<td>{{=item['comment']}}</td>
 		<td><a class="pledge_message" data-id="{{=item.id}}" href="#">Hide</a></td>
 	</tr>
-    {{pass}}
+	{{pass}}
 </table>
 </div>
 

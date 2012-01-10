@@ -751,9 +751,19 @@ def edit_pledge():
     """
     check_session()
     pledge_id=get_valid_id(request.args(0),db.pledge)
-    pledge=db.pledge[pledge_id] or redirect(error_page)
+    pledge=db.pledge[pledge_id] or redirect(URL('default', 'all_pledges'))
     form=crud.update(db.pledge,pledge,next=url('list_pledges_by_segment'))
     return dict(form=form)
+
+def all_pledges():
+    '''
+    NOTES:Returns a list of all pledges for a particular segment.  You can then edit a pledge from there.
+    TODO: No view implemented
+    '''
+    all_segments = db(db.segment.id > 0).select(orderby=db.segment.start_time)
+    segment_pledges = db(db.pledge.segment == (request.args(0) or session.segment_id)).select()
+    return dict(segments = all_segments, pledges = segment_pledges)
+
 
 @auth.requires_login()
 def list_pledges_by_pledgedrive():
