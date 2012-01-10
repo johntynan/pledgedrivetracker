@@ -55,10 +55,10 @@ jQuery(".flash").html("").slideDown().delay(1000).slideUp();
 </div>
 {{pass}}
 <div class="toolbar">
-    <button onclick="document.location='{{="/"+request.application+"/"}}'">Home</button>
-    <button onclick="document.location='{{="/"+request.application+"/"}}';jQuery('div.reports,div#_reports').slideToggle();">Reports</button>
-    <button onclick="document.location='{{="/"+request.application+"/"}}';jQuery('div.setup,div#_setup').slideToggle();">Setup</button>
-    <button onclick="return popup('{{=response.helpurl}}')">Help</A>
+	<a href='{{="/"+request.application+"/"}}'">Home</a>
+	<a href='{{="/"+request.application+"/"}}'>Reports</a>
+	<a href='{{="/"+request.application+"/"}}'>Setup</button>
+	<a href='{{=response.helpurl}}'>Help</a>
 </div>
 <div class="toolbar">
 {{for overlay in overlays:}}
@@ -70,11 +70,11 @@ jQuery(".flash").html("").slideDown().delay(1000).slideUp();
 <div class="row">
 
 {{if not session.organization:}}
-    {{redirect(URL(r=request, c='default'))}}
+	{{redirect(URL(r=request, c='default'))}}
 {{elif not session.pledgedrive:}}
-    {{redirect(URL(r=request, c='default'))}}
+	{{redirect(URL(r=request, c='default'))}}
 {{elif not session.segment:}}
-    {{redirect(URL(r=request, c='default'))}}
+	{{redirect(URL(r=request, c='default'))}}
 {{else:}}
 
 <div class="widget shadow" style="font-size: 1.5em;">
@@ -85,7 +85,7 @@ or on the web at <span style="color: blue">{{=session.organization['url']}}</spa
 </div>
 
 <div id="create_producer_message" class="widget shadow">
-    {{=LOAD('refresh', 'create_producer_message', ajax=True)}}
+	{{=LOAD('refresh', 'create_producer_message', ajax=True)}}
 </div>
 
 <div class="widget shadow">
@@ -105,5 +105,3 @@ or on the web at <span style="color: blue">{{=session.organization['url']}}</spa
 	</div>
 {{pass}}
 </div>
-{{block footer}}
-{{pass}}

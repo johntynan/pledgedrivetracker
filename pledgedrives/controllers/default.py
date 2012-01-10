@@ -762,6 +762,8 @@ def all_pledges():
     '''
     all_segments = db(db.segment.id > 0).select(orderby=db.segment.start_time)
     segment_pledges = db(db.pledge.segment == (request.args(0) or session.segment_id)).select()
+    print all_segments
+    print segment_pledges
     return dict(segments = all_segments, pledges = segment_pledges)
 
 
