@@ -166,19 +166,14 @@ db.define_table('pledge',
     Field('organization',db.organization,default=session.organization_id,readable=False,writable=False),
     Field('created_by',default=me,writable=False,readable=False),
     Field('created_on','datetime',default=request.now,writable=False,readable=False),
-    # Field('read', 'boolean',default=False, readable=False, writable=False)
-    Field('read', 'boolean',default=False)
+    Field('read', 'boolean',default=False, readable=False, writable=False)
 )
 #Validate:
 #On Insert: that segment has this pledgedrive; that pledgedrive shares this organization; validate that user is in group for organization, else deny;
 #On Read: Validate that user is in group for organization, else deny.
-
-# db.pledge.person.requires=IS_IN_DB(db,'person.id','%(name)s')
-# db.pledge.program.requires=IS_IN_DB(db,'program.id','%(title)s')
 db.pledge.segment.requires=IS_IN_DB(db,'segment.id','%(title)s')
 db.pledge.pledgedrive.requires=IS_IN_DB(db,'pledgedrive.id','%(title)s')
 db.pledge.organization.requires=IS_IN_DB(db,'organization.id','%(name)s')
-# db.pledge.name.requires=IS_ALPHANUMERIC()
 db.pledge.amount.requires=IS_NOT_EMPTY()
 
 db.define_table('post',
@@ -186,14 +181,11 @@ db.define_table('post',
     Field('organization',db.organization,default=session.organization_id,readable=False,writable=False),
     Field('created_by',default=me,writable=False,readable=False),
     Field('created_on','datetime',default=request.now,writable=False,readable=False),
-    # Field('read', 'boolean',default=False, readable=False, writable=False)
-    Field('read', 'boolean',default=False)
-    #should this also have an item for pledgedrive? #If an organization will have more that one pledgedrive them most certainly yes.
+    Field('read', 'boolean',default=False, readable=False, writable=False)
     )
 #Validate:
 #On Insert: validate that user is in group for organization, else deny;
 #On Read: Validate that user is in group for organization, else deny;
-
 db.post.body.requires=IS_NOT_EMPTY()
 db.post.organization.requires=IS_IN_DB(db,'organization.id','%(name)s')
 
@@ -209,3 +201,11 @@ for tablename in db.tables:  # Copy tables!
     test_db.define_table(tablename, *table_copy) 
 '''
 #########################################################################
+response.page_templates = {"on_air": [
+                            "segment_goal",
+                            "segment_totals",
+                            "pledgedrive_totals",
+                            "post_list",
+                            "pledge_list",
+                            "create_pledge"
+                            ]}

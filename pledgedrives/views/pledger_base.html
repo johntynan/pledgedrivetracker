@@ -20,21 +20,12 @@
 	</script>
 </head>
 <body>
-	<div class="flash" style="top:90px; left:50px; width:200px;">
+	<div class="flash">
 		{{=response.flash or ''}}
 	</div>
 	<div id="container">
 		<div id="wrapper">
 		{{try:}}{{=auth.navbar(action=URL('default','user'))}}{{except:pass}}
-			<!-- {{=response.title}} -->
-			<!-- div id="header">
-				{{block header}}
-				<h2>
-					<span id="appname"><a href="/{{=request.application}}">Pledge Drive Tracker</a></span>
-				</h2>
-				<span>{{=response.subtitle}}</span>
-				{{end}}
-			</div -->
 			<div id="statusbar">
 				{{block statusbar}}
 				{{end}}

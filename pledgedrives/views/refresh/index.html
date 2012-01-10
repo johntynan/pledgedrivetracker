@@ -28,7 +28,7 @@
 			}
 		refreshing_widgets = Array();
 	}
-	setInterval(refresher,10000);
+	setInterval(refresher,5000);
 	$(".producer_message")
 		.live("click", function(){
 			var location = "{{=URL('read_message')}}/" + $(this).data('id');
@@ -44,10 +44,8 @@
 	});
 </script>
 <script type="text/javascript">
-<!--
 // clear flash div on load
 jQuery(".flash").html("").slideDown().delay(1000).slideUp();
-//-->
 </script>
 
 {{for overlay in overlays:}}
