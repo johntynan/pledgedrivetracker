@@ -3,5 +3,10 @@
 
 <div>
 {{=form}}
-{{=button('Add a New Organization','create_organization')}}
+<script type="text/javascript">
+$('select').change(function() {
+	$('form').submit();
+});
+</script>
+<a class="button" href="{{=URL('default', 'create_organization')}}">Create a New Organization</a>
 </div>

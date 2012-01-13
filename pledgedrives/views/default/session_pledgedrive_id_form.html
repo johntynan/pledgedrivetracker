@@ -3,7 +3,10 @@
 
 <div>
 {{=form}}
-</div>
-<div>
-{{=button('Add a New pledgedrive','create_pledgedrive')}}
+<script type="text/javascript">
+$('select').change(function() {
+	$('form').submit();
+});
+</script>
+<a class="button" href="{{=URL('default', 'create_pledgedrive')}}">Create a New pledgedrive</a>
 </div>

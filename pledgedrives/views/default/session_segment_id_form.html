@@ -3,8 +3,11 @@
 
 <div>
 {{=form}}
-</div>
-<div>
-{{=button('Add a New segment','create_segment')}}
+<script type="text/javascript">
+$('select').change(function() {
+	$('form').submit();
+});
+</script>
+<a class="button" href="{{=URL('default', 'create_segment')}}">Create a New segment</a>
 </div>
 
