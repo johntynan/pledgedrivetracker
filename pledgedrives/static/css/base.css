@@ -773,3 +773,6 @@ div.reports,div#_reports {
 	float:left;
 	width:330px;
 }
+.button.help {
+	float:right;
+}
