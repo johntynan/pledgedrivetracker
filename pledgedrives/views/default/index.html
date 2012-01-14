@@ -68,13 +68,13 @@ $(document).ready(function(){
 	<h1>Setup</h1>
 	<ul>
 		<li>
-			<a href="{{=URL(r=request,f='list_organizations')}}">List Organizations</a>
+			<a href="{{=URL(r=request,f='list_organizations')}}">Manage Organizations</a>
 		</li>
 		<li>
-			<a href="{{=URL(r=request,f='view_organization',args=session.organization['id'])}}">View Currently Selected Organization</a>
+			<a href="{{=URL(r=request,f='list_organizations',args=session.organization['id'])}}">View Currently Selected Organization</a>
 		</li>
 		<li>
-			<a href="{{=URL(r=request,f='edit_organization',args=session.organization['id'])}}">Edit Selected Organization</a>
+			<a href="{{=URL(r=request,f='list_organizations',args=session.organization['id'])}}">Edit Selected Organization</a>
 		</li>
 		<li>
 			<a href="{{=URL(r=request,f='list_programs_by_organization',args=session.organization['id'])}}">List Programs</a>
