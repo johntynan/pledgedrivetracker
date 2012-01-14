@@ -776,3 +776,9 @@ div.reports,div#_reports {
 .button.help {
 	float:right;
 }
+.hidden {
+	display:none;
+}
+.clear, table.smarttable {
+	clear:both;
+}

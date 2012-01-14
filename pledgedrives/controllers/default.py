@@ -274,6 +274,7 @@ def session_challenge_id_form():
 
     return dict(form=form,challenges=challenges)
     
+#TODO: Don't think this method is needed anymore....
 @auth.requires_login()
 def create_organization():
     """
@@ -296,6 +297,7 @@ def create_organization():
     elif form.errors: response.flash='form errors'
     return dict(form=form)
 
+#TODO: Don't think this method is needed anymore....
 @auth.requires_login()
 def view_organization():
     """
@@ -317,9 +319,25 @@ def list_organizations():
     """
     List organizations created by the current user.
     """
+    check_session()
+    new_item = False
+    if request.args(0):
+        try:
+            record = db((db.organization.id == request.args(0)) & (db.organization.created_by == auth.user.id)).select()[0]
+        except:
+            redirect(URL('default', 'list_organizations'))
+        form = SQLFORM(db.organization, record, deletable=True)
+    else:
+        form  = SQLFORM(db.organization)
+        new_item = True
+    if form.process().accepted:
+        response.flash = 'Organization Updated'
+    elif form.errors:
+        response.flash = 'There were errors in the form.  Please check your work and try again.'
     organizations=db(db.organization.created_by==auth.user.id).select(orderby=db.organization.name)
-    return dict(organizations=organizations)
+    return dict(organizations=organizations, form = form, new_item = new_item)
 
+#TODO: Don't think this method is needed anymore....
 @auth.requires_login()
 def edit_organization():
     """
