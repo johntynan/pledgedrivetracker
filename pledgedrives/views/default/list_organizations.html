@@ -4,41 +4,57 @@
 
 <script type="text/javascript" charset="utf-8">
 $(document).ready(function() {
-    jQuery('.smarttable').dataTable({
-        "iDisplayLength": 100,
-        "aaSorting": []
-    });
+	jQuery('.smarttable').dataTable({
+		"iDisplayLength": 100,
+		"aaSorting": []
+	});
+	jQuery("#create_new").click(function(){
+		jQuery("#create_or_edit").show();
+		return false;
+	});
 } );
 </script>
-
+{{if new_item:}}
+<h1>
+	<a href="#" id="create_new">Create New Organization</a>
+</h1>
+<div id="create_or_edit" class="hidden">
+	{{=form}}
+</div>
+{{else:}}
 <div>
+<h1>
+	Edit Organization
+</h1>
+<div id="create_or_edit">
+	{{=form}}
+<div>
+{{pass}}
+<div class="clear"></div>
 <table class="smarttable" id="list_organizations">
 <thead>
 <tr>
-    <th>Organization</th>
-    <th>Url</th>
-    <th>Address</th>
-    <th>Phone</th>
-    <th>Phone Long Distance</th>
-    <th>Actions</th>
+	<th>Organization</th>
+	<th>Url</th>
+	<th>Address</th>
+	<th>Phone</th>
+	<th>Phone Long Distance</th>
+	<th>Actions</th>
 </tr>
 </thead>
 <tbody>
 {{for organization in organizations:}}
 <tr>
-    <td><a href="{{=URL(r=request,f='view_organization',args=organization.id)}}">{{=organization.name}}</a></td>
-    <td>{{=organization.url}}</td>
-    <td>{{=organization.address}}</td>
-    <td>{{=organization.phone}}</td>
-    <td>{{=organization.phone_long_distance}}</td>
-    <td>    <a href="{{=URL(r=request,f='edit_organization',args=organization.id)}}">Edit Organization</a>
-    </td>
+	<td><a href="{{=URL(r=request,f='list_organizations',args=organization.id)}}">{{=organization.name}}</a></td>
+	<td>{{=organization.url}}</td>
+	<td>{{=organization.address}}</td>
+	<td>{{=organization.phone}}</td>
+	<td>{{=organization.phone_long_distance}}</td>
+	<td>
+		<a href="{{=URL(r=request,f='list_organizations',args=organization.id)}}">Edit Organization</a>
+	</td>
 </tr>
 {{pass}}
 </tbody>
 </table>
 </div>
-
-<!-- 
-{{=BEAUTIFY(session)}}
- -->
