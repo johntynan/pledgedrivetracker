@@ -4,33 +4,43 @@
 
 <script type="text/javascript" charset="utf-8">
 $(document).ready(function() {
-    jQuery('.smarttable').dataTable({
-        "iDisplayLength": 100,
-        "aaSorting": []
-    });
+	jQuery('.smarttable').dataTable({
+		"iDisplayLength": 100,
+		"aaSorting": []
+	});
+	jQuery('#organization_selection select').change(function(){
+		var value = $(this).val()
+		alert("{{=URL('default', 'list_programs_by_organization')}}/"+value);
+		window.location = "{{=URL('default', 'list_programs_by_organization')}}/"+value
+	});
 } );
 </script>
-
-<h1>Programs by Organization</h1>
-
-<button onclick="document.location='{{=URL(r=request,f='create_program',args=organization.id)}}'">Create a New Program</button>
+<form id="organization_selection" action="">
+	<select name="" id="">
+		<option value="0">-- Select Organization --</option>
+		{{for organization in organizations:}}
+		<option value="{{=organization.id}}">{{=organization.name}}</option>
+		{{pass}}
+	</select>
+</form>
+{{=form}}
+<a href="#">Create a New Program</a>
 
 <div>
 <table class="smarttable">
 <thead>
 <tr>
-    <th>Title</th>
-    <th>Actions</th>
+	<th>Title</th>
+	<th>Actions</th>
 </tr>
 </thead>
 <tbody>
 {{for program in programs:}}
 <tr>
-    <td>{{=program.title}}</td>    
-    <td>
-    <a href="{{=URL(r=request,f='view_program',args=program.id)}}">View</a> | 
-    <a href="{{=URL(r=request,f='edit_program',args=program.id)}}">Edit</a>
-    </td>
+	<td>{{=program.title}}</td>    
+	<td>
+	<a href="{{=URL(r=request,f='list_programs_by_organization',args=[request.args(0), program.id])}}">View | Edit</a>
+	</td>
 </tr>
 {{pass}}
 </tbody>

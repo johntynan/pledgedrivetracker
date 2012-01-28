@@ -25,6 +25,9 @@ def possible_views():
     return dict()
 
 def create_producer_message():
+    #make a part of feilds in the database not readable here...
+    db.post.read.readable=False
+    db.post.read.writable=False
     #The form for letting the producer post a message.
     form_producer_message = SQLFORM(db.post)
     if form_producer_message.accepts(request.vars, session): 
@@ -65,6 +68,10 @@ def create_segment():
     return dict(form=form)
 
 def create_pledge():
+    #make certain feilds in the pledge unreadable and unwritable as 
+    #they are not needed here.
+    db.pledge.read.readable=False
+    db.pledge.read.writable=False
     #Pledge Form
     form_pledge=SQLFORM(db.pledge)
     if form_pledge.accepts(request.vars, session):

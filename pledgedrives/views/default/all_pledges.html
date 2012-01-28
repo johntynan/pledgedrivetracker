@@ -1,0 +1,30 @@
+{{extend 'layout.html'}}
+<a href="">Edit Segments (Not Implemented)</a>
+<select name="segment_list" id="segment_list">
+{{for segment in segments:}}
+	<option {{if segment.id == session.segment_id:}}selected="yes"{{pass}} value="{{=segment.id}}">{{=segment.title}}</option>
+{{pass}}
+</select>
+<script type="text/javascript">
+$('#segment_list').change(function() {
+  alert('Handler for .change() called.');
+});
+</script>
+{{=pledges}}
+<table>
+{{for pledge in pledges:}}
+	<tr>
+		<th>Name</th>
+		<th>Amount</th>
+		<th>Comment</th>
+		<th>Read</th>
+	</tr>
+	<tr>
+		<td><a href="{{=URL('default', 'edit_pledge', args=pledge.id)}}">{{=pledge.name}}</a></td>
+		<td><a href="{{=URL('default', 'edit_pledge', args=pledge.id)}}">{{=pledge.amount}}</a></td>
+		<td><a href="{{=URL('default', 'edit_pledge', args=pledge.id)}}">{{=pledge.comment}}</a></td>
+		<td><a href="{{=URL('default', 'edit_pledge', args=pledge.id)}}">{{=pledge.read}}</a></td>
+	</tr>
+{{pass}}
+</table>
+<h1>All Pledges</h1>
