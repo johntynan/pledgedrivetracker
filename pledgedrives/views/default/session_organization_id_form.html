@@ -1,5 +1,5 @@
 {{extend 'layout.html'}}
-<h1>Select or Add an Organization</h1>
+<h1>Select an Organization</h1>
 
 <div>
 {{=form}}
@@ -7,6 +7,15 @@
 $('select').change(function() {
 	$('form').submit();
 });
+
+// Hide submit button
+var form_element = document.getElementsByTagName("input")[0];
+var visibility = form_element.style;
+visibility.display = 'none';
+ 
+//-->
 </script>
+
+<h1>Create a New Organization</h1>
 <a class="button" href="{{=URL('default', 'create_organization')}}">Create a New Organization</a>
 </div>

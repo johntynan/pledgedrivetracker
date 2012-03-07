@@ -49,16 +49,16 @@ $(document).ready(function(){
 		<h1>Current Status</h1>
 		<h2>Organization:</h2>
 			{{=session.organization['name']}}
-		<h2>Pledge Drive:</h2>
-			{{=session.pledgedrive['title']}}
-		<h2>Segment:</h2>
-			{{=session.segment['title']}}
 		<p>
 			<a class="button" href="{{=URL('default', 'session_organization_id_form')}}">Select a new organization</a>
 		</p>
+		<h2>Pledge Drive:</h2>
+			{{=session.pledgedrive['title']}}
 		<p>
 			<a class="button" href="{{=URL('default', 'session_pledgedrive_id_form')}}">Select a new pledgedrive</a>
 		</p>
+		<h2>Segment:</h2>
+			{{=session.segment['title']}}
 		<p>
 			<a class="button" href="{{=URL('default', 'session_segment_id_form')}}">Select a new segment</a>
 		</p>
@@ -66,6 +66,7 @@ $(document).ready(function(){
 </div>
 <div class="setup">
 	<h1>Setup</h1>
+  <h2>Organizations</h2>
 	<ul>
 		<li>
 			<a href="{{=URL(r=request,f='list_organizations')}}">Manage Organizations</a>
@@ -76,6 +77,9 @@ $(document).ready(function(){
 		<li>
 			<a href="{{=URL(r=request,f='list_organizations',args=session.organization['id'])}}">Edit Selected Organization</a>
 		</li>
+  </ul>
+  <h2>Programs</h2>
+	<ul>
 		<li>
 			<a href="{{=URL(r=request,f='list_programs_by_organization',args=session.organization['id'])}}">List Programs</a>
 		</li>
@@ -85,12 +89,9 @@ $(document).ready(function(){
 		<li>
 			<a href="{{=URL(r=request,f='create_program_import',args=session.organization['id'])}}">Import Program List</a>
 		</li>
-		<li>
-			<a href="{{=URL(r=request,f='list_persons_by_organization',args=session.organization['id'])}}">List Persons</a>
-		</li>
-		<li>
-			<a href="{{=URL(r=request,f='create_person',args=session.organization['id'])}}">Add a New Person</a>
-		</li>
+  </ul>
+  <h2>Pledge Drives</h2>
+	<ul>
 		<li>
 			<a href="{{=URL(r=request,f='list_pledgedrives_by_organization',args=session.organization['id'])}}">List Pledge Drives</a>
 		</li>
@@ -100,15 +101,36 @@ $(document).ready(function(){
 		<li>
 			<a href="{{=URL(r=request,f='view_pledgedrive',args=session.pledgedrive['id'])}}">View Currently Selected Pledge Drive</a>
 		</li>
+  </ul>
+  <h2>People</h2>
+	<ul>
+		<li>
+			<a href="{{=URL(r=request,f='list_persons_by_organization',args=session.organization['id'])}}">List Persons</a>
+		</li>
+		<li>
+			<a href="{{=URL(r=request,f='create_person',args=session.organization['id'])}}">Add a New Person</a>
+		</li>
+  </ul>
+  <h2>Challenges</h2>
+	<ul>
 		<li>
 			<a href="{{=URL(r=request,f='list_challenges_by_pledgedrive',args=session.pledgedrive['id'])}}">List Challenges for Current Pledge Drive</a>
 		</li>
 		<li>
 			<a href="{{=URL(r=request,f='create_challenge',args=session.pledgedrive['id'])}}">Add Challenge to Current Pledge Drive</a>
 		</li>
+  </ul>
+  <h2>Segments</h2>
+	<ul>
 		<li>
-			<a href="{{=URL(r=request,f='list_segments_by_pledgedrive',args=session.pledgedrive['id'])}}">List Segments for Current Pledge Drive</a>    <a href="{{=URL(r=request,f='create_segment',args=session.pledgedrive['id'])}}">Add Segment to Current Pledge Drive</a> 
+			<a href="{{=URL(r=request,f='list_segments_by_pledgedrive',args=session.pledgedrive['id'])}}">List Segments for Current Pledge Drive</a>
+    </li>
+    <li>
+      <a href="{{=URL(r=request,f='create_segment',args=session.pledgedrive['id'])}}">Add Segment to Current Pledge Drive</a> 
 		</li>
+  </ul>
+  <h2>Pledges</h2>
+	<ul>
 		<li>
 			<a href="{{=URL(r=request,f='list_pledges_by_pledgedrive',args=session.pledgedrive['id'])}}">List Pledges for Current Pledge Drive</a> 
 		</li>
@@ -118,6 +140,9 @@ $(document).ready(function(){
 		<li>
 			<a href="{{=URL(r=request,f='create_pledge',args=session.segment['id'])}}">Add Pledge to Current Segment</a>
 		</li>
+  </ul>
+  <h2>Messages</h2>
+	<ul>
 		<li>
 			<a href="{{=URL(r=request,f='post_list',args=session.organization['id'])}}">List Producer Messages</a> 
 		</li>
@@ -127,6 +152,9 @@ $(document).ready(function(){
 		<li>
 			<a href="{{=URL(r=request,f='post_add',args=session.organization['id'])}}">Add Message</a>
 		</li>
+  </ul>
+  <h2>Quick Setup</h2>
+	<ul>
 		<li>
 			<a class="button" href="{{=URL('default', 'quick_setup_segment')}}">Quick Setup: Segments</a>
 		</li>
