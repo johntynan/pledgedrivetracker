@@ -1,5 +1,5 @@
 {{extend 'layout.html'}}
-<h1>Select or Add an pledgedrive</h1>
+<h1>Select a Pledge Drive</h1>
 
 <div>
 {{=form}}
@@ -7,6 +7,15 @@
 $('select').change(function() {
 	$('form').submit();
 });
+
+// Hide submit button
+var form_element = document.getElementsByTagName("input")[0];
+var visibility = form_element.style;
+visibility.display = 'none';
+ 
+//-->
 </script>
+
+<h1>Create a New Pledge Drive</h1>
 <a class="button" href="{{=URL('default', 'create_pledgedrive')}}">Create a New pledgedrive</a>
 </div>

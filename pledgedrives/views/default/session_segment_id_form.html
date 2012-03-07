@@ -1,13 +1,23 @@
 {{extend 'layout.html'}}
-<h1>Select or Add a Segment</h1>
+<h1>Select a Segment</h1>
 
 <div>
 {{=form}}
 <script type="text/javascript">
+<!--
 $('select').change(function() {
 	$('form').submit();
 });
+
+// Hide submit button
+var form_element = document.getElementsByTagName("input")[0];
+var visibility = form_element.style;
+visibility.display = 'none';
+ 
+//-->
 </script>
+
+<h1>Create a New segment</h1>
 <a class="button" href="{{=URL('default', 'create_segment')}}">Create a New segment</a>
 </div>
 
