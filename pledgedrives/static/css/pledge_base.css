@@ -37,7 +37,7 @@ body {
 	padding:5px;
 	min-height:200px;
 	background-color:lightgrey;
-	min-width:380px;
+	/* min-width:380px; */
 	border-radius: 10px;
 }
 
@@ -127,4 +127,7 @@ h1 {
 }
 #wrapper {
 	width:95%;
+}
+#post_body{
+	width:100%;
 }
