@@ -93,7 +93,16 @@
 	<h1>
 		<span id="appname"><a href="/{{=request.application}}">{{=response.title}}</a></span>
 	</h1>
-	<span>{{=response.subtitle}}</span>
+	<!--span>{{=response.subtitle}}</span -->
+  <a class="button" href='{{="/"+request.application+"/"}}'">
+  	Home
+  </a>
+	<a class="button" href='{{=URL('refresh', 'index/segment_goal/segment_totals/pledgedrive_totals/pledge_list/segment_challenge/post_list/')}}'">
+		On-air Screen
+	</a>
+	<a class="button" href='{{=URL('refresh', 'index/segment_goal/segment_totals/pledgedrive_totals/post_list/pledge_list/create_pledge/')}}'">
+		Pledge Entry
+	</a>
 	<a class="button help" href="{{=response.helpurl}}" target="_blank">
 		Help
 	</a>

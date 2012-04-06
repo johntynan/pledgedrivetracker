@@ -469,32 +469,13 @@ def edit_program():
 @auth.requires_login()
 def list_programs_by_organization():
     """
-    Takes two arguments... the first is the organization (if any) the second is the program (if any)
+    Docstring here.
     """
-    #TODO: I don't think verification is correct here.  It could be hacked!
     check_session()
-    #get all the organizations
-    organizations = db(db.organization.created_by == auth.user.id).select()
-    selected_organization_id = request.args(0)
-    selected_program_id = request.args(1)
-    
-    new_item = False
-    if selected_program_id:
-        try:
-            record = db((db.program.id == selected_program_id) and \
-                    (db.programs.organization == selected_organization_id)).select()[0]
-        except:
-            redirect(URL('default', 'list_programs_by_organization'))
-        form = SQLFORM(db.program, record, deletable=True)
-    else:
-        form  = SQLFORM(db.program)
-        new_item = True
-    if form.process().accepted:
-        response.flash = 'Program Updated'
-    elif form.errors:
-        response.flash = 'There were errors in the form.  Please check your work and try again.'
-    programs=db(db.program.organization == selected_organization_id).select(orderby=db.program.title)
-    return dict(form = form, new_item = new_item, programs=programs, organizations = organizations)
+    organization_id=session.organization['id']
+    organization=db.organization[organization_id] or redirect(error_page)
+    programs=db(db.program.organization==organization.id).select(orderby=db.program.title)
+    return dict(organization=organization, programs=programs)
 
 @auth.requires_login()
 def create_pledgedrive():
