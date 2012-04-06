@@ -10,7 +10,7 @@ $(document).ready(function() {
 
 <h1>Pledges by Segment</h1>
 
-<button onclick="document.location='{{=URL(r=request,f='create_pledge',args=segment_id)}}'">Create a New Pledge</button>
+<!-- <button onclick="document.location='{{=URL(r=request,f='create_pledge',args=segment_id)}}'">Create a New Pledge</button> -->
 
 <div>
 <table class="smarttable">
@@ -18,6 +18,8 @@ $(document).ready(function() {
 <tr>
     <th>Amount</th>
     <th>Name</th>
+    <th>Comment</th>
+    <th>Read</th>
     <th>Time Created</th>
     <th>Actions</th>
 </tr>
@@ -26,9 +28,11 @@ $(document).ready(function() {
 {{for pledge in pledges:}}
 <tr>
     <td>{{=pledge.amount}}</td>    
-    <td>{{=pledge.name}}</td>    
+    <td>{{=pledge.name}}</td>
+    <td>{{=pledge.comment}}</td>
+    <td>{{=pledge.read}}</td>
     <td>{{=pledge.created_on}}</td>
-    <td>
+   <td>
     <a href="{{=URL(r=request,f='edit_pledge',args=pledge.id)}}">Edit</a>
     </td>
 </tr>

@@ -2,23 +2,34 @@
 {{extend 'layout.html'}}
 <script type="text/javascript">
 $(document).ready(function(){
-	jQuery('a.get_reports').click(function(){
-		jQuery('div.reports,div#_reports').slideToggle();
+	// jQuery('a.get_reports').click(function(){
+		// jQuery('div.reports,div#_reports').slideToggle();
 	});
 });
 </script>
 <div id="left_column">
-	<div id="views">
-		<h1>Views</h1>
-		<a class="button" href='{{=URL('refresh', 'index/segment_goal/segment_totals/pledgedrive_totals/pledge_list/segment_challenge/post_list/')}}'">
-			On-air Screen
-		</a>
-		<a class="button" href='{{=URL('refresh', 'index/segment_goal/segment_totals/pledgedrive_totals/post_list/pledge_list/create_pledge/')}}'">
-			Pledge Entry
-		</a>
-		<a class="button get_reports" href="#">
-			Reports
-		</a>
+	<div id="status">
+		<h1>Current Status</h1>
+		<h2>Organization:</h2>
+			{{=session.organization['name']}}
+		<p>
+			<a class="button" href="{{=URL('default', 'session_organization_id_form')}}">Select a new organization</a>
+		</p>
+		<h2>Pledge Drive:</h2>
+			{{=session.pledgedrive['title']}}
+		<p>
+			<a class="button" href="{{=URL('default', 'session_pledgedrive_id_form')}}">Select a new pledgedrive</a>
+		</p>
+		<h2>Segment:</h2>
+			{{=session.segment['title']}}
+		<p>
+			<a class="button" href="{{=URL('default', 'session_segment_id_form')}}">Select a new segment</a>
+		</p>
+	</div>
+
+	<div id="status">
+		<!-- a class="button get_reports" href="#"></a -->
+		<h1>Reports</h1>
 		<div class="reports">
 			<ul>
 				<li>
@@ -45,25 +56,9 @@ $(document).ready(function(){
 			</ul>
 		</div>
 	</div>
-	<div id="status">
-		<h1>Current Status</h1>
-		<h2>Organization:</h2>
-			{{=session.organization['name']}}
-		<p>
-			<a class="button" href="{{=URL('default', 'session_organization_id_form')}}">Select a new organization</a>
-		</p>
-		<h2>Pledge Drive:</h2>
-			{{=session.pledgedrive['title']}}
-		<p>
-			<a class="button" href="{{=URL('default', 'session_pledgedrive_id_form')}}">Select a new pledgedrive</a>
-		</p>
-		<h2>Segment:</h2>
-			{{=session.segment['title']}}
-		<p>
-			<a class="button" href="{{=URL('default', 'session_segment_id_form')}}">Select a new segment</a>
-		</p>
-	</div>
+
 </div>
+
 <div class="setup">
 	<h1>Setup</h1>
   <h2>Organizations</h2>

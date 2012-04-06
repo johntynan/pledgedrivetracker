@@ -55,16 +55,24 @@ jQuery(".flash").html("").slideDown().delay(1000).slideUp();
 </div>
 {{pass}}
 <div class="toolbar">
-	<a href='{{="/"+request.application+"/"}}'">Home</a>
-	<a href='{{="/"+request.application+"/"}}'>Reports</a>
-	<a href='{{="/"+request.application+"/"}}'>Setup</button>
-	<a href='{{=response.helpurl}}'>Help</a>
+	<a class="button" href='{{="/"+request.application+"/"}}'">
+		Home
+	</a>
+	<a class="button" href='{{=URL('refresh', 'index/segment_goal/segment_totals/pledgedrive_totals/pledge_list/segment_challenge/post_list/')}}'">
+		On-air Screen
+	</a>
+	<a class="button" href='{{=URL('refresh', 'index/segment_goal/segment_totals/pledgedrive_totals/post_list/pledge_list/create_pledge/')}}'">
+		Pledge Entry
+	</a>
+	<a class="button help" href="{{=response.helpurl}}" target="_blank">
+		Help
+	</a>
 </div>
-<div class="toolbar">
+<!-- div class="toolbar">
 {{for overlay in overlays:}}
 	<a class="overlay_button" data-overlay="{{=overlay}}">{{=overlay}}</a>
 {{pass}}
-</div>
+</div -->
 
 
 <div class="row">

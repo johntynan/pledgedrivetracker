@@ -80,11 +80,12 @@ h1 {
 	font-weight:bold;
 }
 .toolbar {
-	background-color:lightblue;
-	border:1px solid grey;
-	border-radius: 5px;
+	/* background-color:lightblue; */
+	/* border:1px solid grey; */
+	/* border-radius: 5px; */
 	max-width:100%;
 	margin:5px auto;
+	border-bottom:1px solid grey;
 }
 #producer_messages li {
 	display:block;
