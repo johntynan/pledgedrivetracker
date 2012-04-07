@@ -12,16 +12,6 @@
 <tr><td rowspan="1" colspan="3">selenium_tests_demo</td></tr>
 </thead><tbody>
 <tr>
-	<td>click</td>
-	<td>link=Reports</td>
-	<td></td>
-</tr>
-<tr>
-	<td>open</td>
-	<td>/pledgedrives/default/</td>
-	<td></td>
-</tr>
-<tr>
 	<td>clickAndWait</td>
 	<td>link=Segment Report</td>
 	<td></td>
@@ -29,11 +19,6 @@
 <tr>
 	<td>clickAndWait</td>
 	<td>link=Pledge Drive Tracker Demo</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>link=Reports</td>
 	<td></td>
 </tr>
 <tr>
@@ -47,11 +32,6 @@
 	<td></td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>link=Reports</td>
-	<td></td>
-</tr>
-<tr>
 	<td>clickAndWait</td>
 	<td>link=Pledge Levels Report</td>
 	<td></td>
@@ -59,11 +39,6 @@
 <tr>
 	<td>clickAndWait</td>
 	<td>link=Pledge Drive Tracker Demo</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>link=Reports</td>
 	<td></td>
 </tr>
 <tr>
@@ -77,11 +52,6 @@
 	<td></td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>link=Reports</td>
-	<td></td>
-</tr>
-<tr>
 	<td>clickAndWait</td>
 	<td>link=Drive Totals (detailed)</td>
 	<td></td>
@@ -89,11 +59,6 @@
 <tr>
 	<td>clickAndWait</td>
 	<td>link=Pledge Drive Tracker Demo</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>link=Reports</td>
 	<td></td>
 </tr>
 <tr>
