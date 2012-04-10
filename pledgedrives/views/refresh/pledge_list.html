@@ -14,7 +14,13 @@
 		<td>{{=item['name']}}</td>
 		<td>{{=item['amount']}}</td>
 		<td>{{=item['comment']}}</td>
-		<td><span style="align:right">{{=item['created_on'].strftime('%H:%M:%S')}}</span></td>
+{{
+import datetime
+offset = datetime.timedelta(hours=6)
+p  = item['created_on']
+p = p - offset
+}}
+		<td><span style="align:right">{{=p.strftime('%H:%M:%S')}}</span></td>
 		<td><a class="pledge_message" data-id="{{=item.id}}" href="#">Hide</a></td>
 	</tr>
 	{{pass}}
