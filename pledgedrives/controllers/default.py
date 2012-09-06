@@ -1292,7 +1292,7 @@ def mini_pledgedrive_totals_no_reload():
     """
     check_session()
 
-    pledgedrive_id=session.pledgedrive_id
+    # pledgedrive_id=session.pledgedrive_id
     
     try:
         pledges = db(db.pledge.pledgedrive==pledgedrive_id).select()
@@ -1367,7 +1367,9 @@ def mini_segment_goal():
     Docstring here.
     """
     check_session()
-    segment_id=session.segment['id']
+    # segment_id=session.segment['id']
+    segment_id = request.args[0]
+
     segment=db(db.segment.id==segment_id).select()
     
     segment_pledges = db(db.pledge.segment==segment_id).select()
@@ -1397,7 +1399,8 @@ def mini_segment_goal_and_totals():
     """
     check_session()
 
-    segment_id=session.segment['id']
+    # segment_id=session.segment['id']
+    segment_id = request.args[0]
     segment=db(db.segment.id==segment_id).select()
     segment_pledges = db(db.pledge.segment==segment_id).select()
     segment_total_pledges = len(segment_pledges)
@@ -1432,7 +1435,8 @@ def mini_segment_totals():
     """
     check_session()
 
-    segment_id=session.segment['id']
+    # segment_id=session.segment['id']
+    segment_id = request.args[0]
     segment=db(db.segment.id==segment_id).select()
     segment_pledges = db(db.pledge.segment==segment_id).select()
     segment_total_pledges = len(segment_pledges)
@@ -1697,7 +1701,9 @@ def mini_pledge_names():
     """
     Docstring here.
     """
-    segment_id=session.segment['id']
+    # segment_id=session.segment['id']
+    segment_id = request.args[0]
+
     segment=db.segment[segment_id] or redirect(error_page)
     pledges=db(db.pledge.segment==segment_id).select(orderby=~db.pledge.created_on)
     # return dict(pledges=pledges,segment_id=segment_id)
@@ -1708,7 +1714,9 @@ def mini_pledge_names_no_reload():
     """
     Docstring here.
     """
-    segment_id=session.segment['id']
+    # segment_id=session.segment['id']
+    segment_id = request.args[0]
+
     segment=db.segment[segment_id] or redirect(error_page)
     pledges=db(db.pledge.segment==segment_id).select(orderby=~db.pledge.created_on)
     # return dict(pledges=pledges,segment_id=segment_id)
