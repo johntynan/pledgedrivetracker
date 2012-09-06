@@ -3,11 +3,11 @@
  <title>Pledge Drive Manager</title>
 
 <frameset  rows="35%,35%,*" cols="33%,33%,*">
-    <frame name="goals" src="mini_segment_goal.html" marginwidth="10" marginheight="10" scrolling="auto" frameborder="1">
-    <frame name="segment_totals" src="mini_segment_totals.html" marginwidth="10" marginheight="10" scrolling="auto" frameborder="1">
+    <frame name="goals" src="{{=URL(r=request,f='mini_segment_goal',args=session.segment['id'])}}" marginwidth="10" marginheight="10" scrolling="auto" frameborder="1">
+    <frame name="segment_totals" src="{{=URL(r=request,f='mini_segment_totals',args=session.segment['id'])}}" marginwidth="10" marginheight="10" scrolling="auto" frameborder="1">
     <frame name="pledgedrive_totals" src="mini_pledgedrive_totals_no_reload.html" marginwidth="10" marginheight="10" scrolling="auto" frameborder="1">
 
-    <frame name="pledge_names" src="mini_pledge_names_no_reload.html" marginwidth="10" marginheight="10" scrolling="auto" frameborder="1">
+    <frame name="pledge_names" src="{{=URL(r=request,f='mini_pledge_names_no_reload',args=session.segment['id'])}}" marginwidth="10" marginheight="10" scrolling="auto" frameborder="1">
     <frame name="challenges" src="mini_segment_challenge.html" marginwidth="10" marginheight="10" scrolling="auto" frameborder="1">
     <frame name="post_list" src="mini_post_list.html" marginwidth="10" marginheight="10" scrolling="auto" frameborder="1">
 
