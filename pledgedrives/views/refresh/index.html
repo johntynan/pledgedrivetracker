@@ -17,15 +17,18 @@
 			$(this).parent().hide();
 		});
 	var widgets = Array();
-	
+
 	{{for widget in views:}}
 	widgets.push("{{=widget}}");
 	{{pass}}
+  // alert(widgets);
+
 	function refresher()
 	{
 		for (i in refreshing_widgets){
 			$("#"+refreshing_widgets[i]).load("/{{=request.application}}/refresh/" + refreshing_widgets[i] + ".html");
 			}
+    // alert(refreshing_widgets);
 		refreshing_widgets = Array();
 	}
 	setInterval(refresher,5000);
@@ -58,12 +61,15 @@ jQuery(".flash").html("").slideDown().delay(1000).slideUp();
 	<a class="button" href='{{="/"+request.application+"/"}}'">
 		Home
 	</a>
-	<a class="button" href='{{=URL('refresh', 'index/segment_goal/segment_totals/pledgedrive_totals/pledge_list/segment_challenge/post_list/')}}'">
+
+  <a class="button" href='../index/on_air'"> 
 		On-air Screen
-	</a>
-	<a class="button" href='{{=URL('refresh', 'index/segment_goal/segment_totals/pledgedrive_totals/post_list/pledge_list/create_pledge/')}}'">
+	</a> 
+
+  <a class="button" href='../index/pledge_entry'"> 
 		Pledge Entry
-	</a>
+	</a> 
+
 	<a class="button help" href="{{=response.helpurl}}" target="_blank">
 		Help
 	</a>

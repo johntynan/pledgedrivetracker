@@ -97,16 +97,10 @@
   <a class="button" href='{{="/"+request.application+"/"}}'">
   	Home
   </a>
-	<a class="button" href='{{=URL('refresh', 'index/segment_goal/segment_totals/pledgedrive_totals/pledge_list/segment_challenge/post_list/')}}'">
+	<a class="button" href='{{=URL('refresh/index', 'on_air')}}'">
 		On-air Screen
 	</a>
-	<a class="button" href='{{=URL('refresh', 'index/segment_goal/segment_totals/pledgedrive_totals/post_list/pledge_list/create_pledge/')}}'">
-		Pledge Entry
-	</a>
-	<a class="button" href='{{=URL('default', 'frame_wrapper_onair.html')}}'">
-		On-air Screen
-	</a>
-	<a class="button" href='{{=URL('default', 'frame_wrapper_pledge_entry.html')}}'">
+	<a class="button" href='{{=URL('refresh/index', 'pledge_entry')}}'">
 		Pledge Entry
 	</a>
 	<a class="button help" href="{{=response.helpurl}}" target="_blank">
