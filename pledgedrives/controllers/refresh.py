@@ -7,14 +7,31 @@ def index():
     """
     Builds a special view based on parameters
     """
-    response.title="Pick a view..."
+    # response.title="Pick a view..."
+    """
     if not len(request.args):
         redirect(URL('refresh', "possible_views"))
     elif request.args(0) in response.page_templates:
         views = response.page_templates[request.args(0)]
     else:
         views = request.args
-    #views = ["create_producer_message", 'segments', 'create_pledge', 'thank_yous', 'totals']
+    """
+
+    segement_goal_url = 'segment_goal/' + str(session.segment_id) + '/'
+    segment_totals_url = 'segment_totals/' + str(session.segment_id) + '/'
+    segment_challenge_url = 'segment_challenge/' + str(session.segment_id) + '/'
+
+    if not len(request.args):
+        redirect(URL('default', "index"))
+    elif request.args(0) == 'pledge_entry':
+        views = [segement_goal_url, segment_totals_url, "pledgedrive_totals", "post_list", "create_pledge", "pledge_list"]
+        response.title="Pledge Entry"
+    elif request.args(0) == 'on_air':
+        views = [segement_goal_url, segment_totals_url, "pledgedrive_totals", "pledge_list", segment_challenge_url, "post_list"]
+        response.title="On-air Screen"
+    else:
+        redirect(URL('default', "index"))
+
     overlays = ["create_producer_message"]
 
     return dict(views=views, overlays = overlays)
@@ -184,7 +201,8 @@ def segment_goal():
     """
     Docstring here.
     """
-    segment_id=session.segment['id']
+    # segment_id=session.segment['id']
+    segment_id = request.args[0]
     segment=db(db.segment.id==segment_id).select()
     
     segment_pledges = db(db.pledge.segment==segment_id).select()
@@ -212,7 +230,8 @@ def segment_totals():
     """
     Docstring here.
     """
-    segment_id=session.segment['id']
+    # segment_id=session.segment['id']
+    segment_id = request.args[0]
     segment=db(db.segment.id==segment_id).select()
     segment_pledges = db(db.pledge.segment==segment_id).select()
     segment_total_pledges = len(segment_pledges)
@@ -298,7 +317,8 @@ def segment_challenge():
     """
     Docstring here.
     """
-    segment_id=session.segment_id
+    # segment_id=session.segment_id
+    segment_id = request.args[0]
     challenge_desc = db(db.challenge.segment == segment_id).select().as_list()
     return dict(segment_challenges=challenge_desc, seg_talkingpoints=db.segment[segment_id].talkingpoints)
 
