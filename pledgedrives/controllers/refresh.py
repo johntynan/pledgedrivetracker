@@ -20,14 +20,15 @@ def index():
     segement_goal_url = 'segment_goal/' + str(session.segment_id)
     segment_totals_url = 'segment_totals/' + str(session.segment_id)
     segment_challenge_url = 'segment_challenge/' + str(session.segment_id)
+    pledge_list_url = 'pledge_list/' + str(session.segment_id)
 
     if not len(request.args):
         redirect(URL('default', "index"))
     elif request.args(0) == 'pledge_entry':
-        views = [segement_goal_url, segment_totals_url, "pledgedrive_totals", "post_list", "create_pledge", "pledge_list"]
+        views = [segement_goal_url, segment_totals_url, "pledgedrive_totals", "post_list", "create_pledge", pledge_list_url]
         response.title="Pledge Entry"
     elif request.args(0) == 'on_air':
-        views = [segement_goal_url, segment_totals_url, "pledgedrive_totals", "pledge_list", segment_challenge_url, "post_list"]
+        views = [segement_goal_url, segment_totals_url, "pledgedrive_totals", pledge_list_url, segment_challenge_url, "post_list"]
         response.title="On-air Screen"
     else:
         redirect(URL('default', "index"))
