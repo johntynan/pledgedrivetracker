@@ -16,4 +16,24 @@
 
 <br />
 <button onclick="document.location='segment_select'">Select a Different Segment</button>
-
+<script type="text/javascript">
+<!--
+var url = document.referrer
+var last_slash = url.lastIndexOf("/") + 1
+var page = url.substr(last_slash,100)
+if (page == "pledge_entry")
+  {
+  // document.onload=alert(window.top.location.href);
+  }
+else if (page == "on_air")
+  {
+  // document.onload=alert(window.top.location.href);
+  }
+else
+  {
+  document.onload=alert(window.top.location.href);
+  document.onload=alert(page);
+  parent.location.reload();
+  }
+//-->
+</script>
