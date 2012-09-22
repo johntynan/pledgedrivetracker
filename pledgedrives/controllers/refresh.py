@@ -436,6 +436,7 @@ def segment_navigation_previous():
             break
         counter = counter + 1
 
+    session.refreshed = 0
     redirect(URL(r=request, f='segment_navigation'))
     
     return dict()
@@ -456,6 +457,7 @@ def segment_navigation_next():
             break
         counter = counter + 1
 
+    session.refreshed = 0
     redirect(URL(r=request, f='segment_navigation'))
     
     return dict()
