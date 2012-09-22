@@ -25,9 +25,11 @@ def index():
     if not len(request.args):
         redirect(URL('default', "index"))
     elif request.args(0) == 'pledge_entry':
+        session.refreshed = 1
         views = [segement_goal_url, segment_totals_url, "pledgedrive_totals", "post_list", "create_pledge", pledge_list_url]
         response.title="Pledge Entry"
     elif request.args(0) == 'on_air':
+        session.refreshed = 1
         views = [segement_goal_url, segment_totals_url, "pledgedrive_totals", pledge_list_url, segment_challenge_url, "post_list"]
         response.title="On-air Screen"
     else:
@@ -467,12 +469,15 @@ def segment_select():
     labels=[(str(o.start_time.strftime("%m/%d : %I:%M %p")) + ' - ' + o.title) for o in segments]
 
     form=SQLFORM.factory(Field('segment_id',requires=IS_IN_SET(ids,labels))) 
-    
+
     if form.accepts(request.vars, session):
         segment_id = form.vars.segment_id
         segment = db(db.segment.id==segment_id).select()
         session.segment = segment.as_list()[0]
         session.segment_id = segment.as_list()[0]['id']
+
+        session.refreshed = 0
+    
         redirect(URL(r=request, f='segment_navigation'))
 
     return dict(form=form,segments=segments)
