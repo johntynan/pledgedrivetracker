@@ -32,6 +32,10 @@ def index():
         session.refreshed = 1
         views = [segement_goal_url, segment_totals_url, "pledgedrive_totals", pledge_list_url, segment_challenge_url, "post_list"]
         response.title="On-air Screen"
+    elif request.args(0) == 'pitch':
+        session.refreshed = 1
+        views = [pledge_list_url, "post_list"]
+        response.title="Pitch Screen"
     else:
         redirect(URL('default', "index"))
 
