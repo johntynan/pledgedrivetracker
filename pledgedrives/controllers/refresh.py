@@ -31,7 +31,7 @@ def index():
     elif request.args(0) == 'on_air':
         session.refreshed = 1
         views = [segement_goal_url, segment_totals_url, "pledgedrive_totals", pledge_list_url, segment_challenge_url, "post_list"]
-        response.title="On-air Screen"
+        response.title="Producer Screen"
     elif request.args(0) == 'pitch':
         session.refreshed = 1
         views = [pledge_list_url, "post_list"]
