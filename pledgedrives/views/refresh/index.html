@@ -62,7 +62,7 @@ jQuery(".flash").html("").slideDown().delay(1000).slideUp();
 		Home
 	</a>
 
-	<a class="button" href='{{=URL('refresh/index', 'pitch')}}'">
+	<a class="button" href='../index/pitch'">
 		Pitch Screen
 	</a>
 
@@ -95,7 +95,18 @@ jQuery(".flash").html("").slideDown().delay(1000).slideUp();
 	{{redirect(URL(r=request, c='default'))}}
 {{else:}}
 
-<div class="widget shadow" style="font-size: 1.5em;">
+
+{{if request.args(0) == 'pitch':}}
+
+<div class="widget shadow" id="segment_navigation">
+<iframe src="{{=URL('refresh', 'segment_navigation')}}" width="100%">
+</iframe>
+</div>
+
+
+{{else:}}
+
+<div class="widget shadow" id="organization" style="font-size: 1.5em;">
 <h3>{{=session.organization['name']}}</h3>
 <span style="color: red">{{=session.organization['phone']}} <br />
 {{=session.organization['phone_long_distance']}}</span> <br />
@@ -113,8 +124,33 @@ or on the web at <span style="color: blue">{{=session.organization['url']}}</spa
 
 {{pass}}
 
+{{pass}}
+
 
 <br clear="all"/>
+
+
+{{if request.args(0) == 'pitch':}}
+
+<div class="row">
+{{for widget in views:}}
+	<div id="{{=widget}}" class="widget shadow" style="min-width:400px;">
+		{{=LOAD('refresh', widget, ajax=True)}}
+	</div>
+{{pass}}
+</div>
+
+<script type="text/javascript">
+<!--
+var x= document.getElementById("segment_navigation");
+x.style.width="400px";
+x.style.position="absolute";
+x.style.bottom="0";
+
+//-->
+</script>
+
+{{else:}}
 
 <div class="row">
 {{for widget in views:}}
@@ -123,3 +159,9 @@ or on the web at <span style="color: blue">{{=session.organization['url']}}</spa
 	</div>
 {{pass}}
 </div>
+
+
+{{pass}}
+
+
+
