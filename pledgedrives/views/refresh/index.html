@@ -98,10 +98,13 @@ jQuery(".flash").html("").slideDown().delay(1000).slideUp();
 
 {{if request.args(0) == 'pitch':}}
 
-<div class="widget shadow" id="segment_navigation">
-<iframe src="{{=URL('refresh', 'segment_navigation')}}" width="100%">
-</iframe>
-</div>
+<div class="row">
+{{for widget in views:}}
+	<div id="{{=widget}}" class="widget shadow" style="min-width:400px;">
+		{{=LOAD('refresh', widget, ajax=True)}}
+	</div>
+{{pass}}
+
 
 
 {{else:}}
@@ -127,30 +130,28 @@ or on the web at <span style="color: blue">{{=session.organization['url']}}</spa
 {{pass}}
 
 
-<br clear="all"/>
-
-
 {{if request.args(0) == 'pitch':}}
 
-<div class="row">
-{{for widget in views:}}
-	<div id="{{=widget}}" class="widget shadow" style="min-width:400px;">
-		{{=LOAD('refresh', widget, ajax=True)}}
-	</div>
-{{pass}}
+<div class="widget shadow" id="segment_navigation">
+<iframe src="{{=URL('refresh', 'segment_navigation')}}" width="100%">
+</iframe>
 </div>
 
 <script type="text/javascript">
 <!--
 var x= document.getElementById("segment_navigation");
 x.style.width="400px";
-x.style.position="absolute";
-x.style.bottom="0";
+// x.style.position="absolute";
+// x.style.bottom="0";
 
 //-->
 </script>
 
+</div>
+
 {{else:}}
+
+<br clear="all"/>
 
 <div class="row">
 {{for widget in views:}}
@@ -162,6 +163,4 @@ x.style.bottom="0";
 
 
 {{pass}}
-
-
 
