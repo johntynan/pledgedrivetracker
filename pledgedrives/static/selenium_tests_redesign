@@ -348,7 +348,17 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=On-air Screen</td>
+	<td>link=Producer Screen</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Home</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Pitch Screen</td>
 	<td></td>
 </tr>
 <tr>
