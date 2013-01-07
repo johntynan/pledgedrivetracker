@@ -34,7 +34,7 @@ def index():
         response.title="Producer Screen"
     elif request.args(0) == 'pitch':
         session.refreshed = 1
-        views = [pledge_list_url, segement_goal_url]
+        views = [pledge_list_url]
         response.title="Pitch Screen"
     else:
         redirect(URL('default', "index"))
