@@ -1,0 +1,3 @@
+The Pledge Drive Tracker helps to plan a successful pledge drive and to keep track of donations and pledges during a fund drive. Based on the public radio pledge drive model as implemented at KJZZ, the previous version of this software was used in production for over seven years and the methods and processes have been refined considerably.
+
+This application primarily uses python, jquery and web2py.
